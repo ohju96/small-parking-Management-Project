@@ -26,6 +26,14 @@
 	</repositories>
 
 	<dependencies>
+	
+	<!-- MySQL -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>6.0.5</version>
+	</dependency>
+	
 
 		<!-- logging -->
 		<!-- 스프링 초기 자동설정되는 로깅 방식이며, 로깅 처리를 위해 수정함 -->
