@@ -48,4 +48,5 @@
 <br>
 
 ## 프로젝트 관련 링크
+- [ Ctrl + Click ] 을 통해 새로운 창에서 확인하실 수 있습니다.<br>
 [소경관 프로젝트 블로그](https://ohju.tistory.com/category/Project/%EC%86%8C%EA%B2%BD%EA%B4%80)
