@@ -1,0 +1,18 @@
+# 1. user_info 테이블 생성| 21.12.22
+create table user_info (
+SEQ INT NOT NULL AUTO_INCREMENT,
+USER_EMAIL VARCHAR(20),
+USER_PASSWORD VARCHAR(20),
+USER_ADDRESS VARCHAR(100),
+PRIMARY KEY(SEQ)
+);
+
+# 2. user_info 테이블 컬럼 NOT NULL 부여| 21.12.22
+alter table user_info 
+modify column USER_EMAIL VARCHAR(20) NOT NULL,
+modify column USER_PASSWORD VARCHAR(20) NOT NULL,
+modify column USER_ADDRESS VARCHAR(100) NOT NULL;
+
+# 3. user_info 테이블에 USER_NAME 컬럼 추가 | 21.12.22
+alter table user_info add USER_NAME VARCHAR(20) NOT NULL;
+
