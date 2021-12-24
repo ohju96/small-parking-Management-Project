@@ -59,13 +59,8 @@
 
 	<!-- log4j -->
 	<listener>
-		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+		<listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
 	</listener>
-
-	<context-param>
-		<param-name>log4jConfigLocation</param-name>
-		<param-value>/WEB-INF/log4j.properties</param-value>
-	</context-param>
 
 	<!-- 스프링에서 사용되는 프로파일에 강제로 이름 추가 -->
 	<context-param>

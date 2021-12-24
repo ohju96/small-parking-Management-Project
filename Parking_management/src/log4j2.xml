@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+	<!-- Appender, Layout 설정 -->
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout />
+		</Console>
+		<RollingFile name="LogToRollingFile"
+			fileName="/data/log/MySpringPRJ/app.log"
+			filePattern="/data/log/MySpringPRJ/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+	</Appenders>
+
+	<!-- Logger 설정 -->
+	<Loggers>
+		<Logger name="MySpringPRJ" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="LogToRollingFile" />
+		</Logger>
+		<Root level="ERROR">
+			<AppenderRef ref="console" />
+		</Root>
+	</Loggers>
+
+</Configuration>
