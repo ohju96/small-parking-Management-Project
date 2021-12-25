@@ -27,6 +27,13 @@
 	</repositories>
 
 	<dependencies>
+	
+		<!-- 데이터 전송시 문자가 깨지는 현상을 방지하기 위햔 base64 인코딩 사용할 라이브러리 추가 -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
 
 		<!-- logging -->
 		<dependency>
