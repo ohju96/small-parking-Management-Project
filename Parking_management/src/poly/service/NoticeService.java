@@ -4,7 +4,7 @@ import java.util.List;
 
 import poly.dto.NoticeDTO;
 
-public interface INoticeService {
+public interface NoticeService {
 
 	List<NoticeDTO> getNoticeList() throws Exception;
 	

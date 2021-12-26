@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import poly.controller.comm.AbstractController;
 import poly.dto.NoticeDTO;
-import poly.service.INoticeService;
+import poly.service.NoticeService;
 import poly.util.CmmUtil;
 
 /*
@@ -29,7 +29,7 @@ public class NoticeController extends AbstractController {
 	 * 비즈니스 로직(중요 로직을 수행하기 위해 사용되는 서비스를 메모리에 적재(싱글톤패턴 적용됨)
 	 */
 	@Resource(name = "NoticeService")
-	private INoticeService noticeService;
+	private NoticeService noticeService;
 
 	/*
 	 * 함수명 위의 value="notice/NoticeList" => /notice/NoticeList.do로 호출되는 url은 무조건 이

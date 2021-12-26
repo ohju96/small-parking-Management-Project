@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import poly.dto.NoticeDTO;
 import poly.persistance.mapper.NoticeMapper;
-import poly.service.INoticeService;
+import poly.service.NoticeService;
 import poly.service.comm.AbstractService;
 
 @Service("NoticeService")
-public class NoticeService extends AbstractService implements INoticeService {
+public class NoticeServiceImpl extends AbstractService implements NoticeService {
 
 	@Resource(name = "NoticeMapper")
 	private NoticeMapper noticeMapper;
