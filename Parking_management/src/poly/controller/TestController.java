@@ -1,7 +1,5 @@
 package poly.controller;
 
-import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,20 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller("TestController")
 public class TestController {
 
-	
-//	@ResponseBody
-//	@RequestMapping(value = "test")
-//	public String flaskTest(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-//			@RequestParam(value="fileUpload") MultipartFile mf) throws Exception {
-//		
-//		
-//		
-//		
-//		return "/test";
-	@RequestMapping(value = "test")
-	public String Index() {
+	@ResponseBody 
+	   @RequestMapping(value = "test") 
+	   public String flaskTest(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			   @RequestParam(value="fileUpload") MultipartFile mf) throws Exception { 
+	 
 		return "/test";
 	}
-	
-	
 }
