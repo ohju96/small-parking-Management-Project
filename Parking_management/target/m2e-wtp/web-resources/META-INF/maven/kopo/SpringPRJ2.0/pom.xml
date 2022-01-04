@@ -27,7 +27,21 @@
 	</repositories>
 
 	<dependencies>
-	
+
+		<!-- 몽고디비 접속을 위한 드라이버 -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.11.1</version>
+		</dependency>
+		
+		<!-- MongoDB와 스프링 프레임워크와의 연동을 위해 추가 -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>2.0.14.RELEASE</version>
+		</dependency>
+
 		<!-- 데이터 전송시 문자가 깨지는 현상을 방지하기 위햔 base64 인코딩 사용할 라이브러리 추가 -->
 		<dependency>
 			<groupId>commons-codec</groupId>
