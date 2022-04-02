@@ -43,7 +43,7 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
                             <h1>관리</h1>
-                            <span class="subheading">주민들에게 안내 사항이 있으신가요? 여기서 해결하세요!</span>
+                            <span class="subheading">주민들에게 안내 사항이 있으신가요?<br>여기서 해결하세요!</span>
                         </div>
                     </div>
                 </div>
@@ -56,58 +56,32 @@
                     <!-- Post preview-->
                     <div class="post-preview">
                         <a href="/dd/post.html" th:href="@{/templates/management/post.html}">
-                            <h2 class="post-title">Man must explore, and this is exploration at its greatest</h2>
-                            <h3 class="post-subtitle">Problems look mighty small from 150 miles up</h3>
+                            <h2 class="post-title">공지 사항 전파</h2>
+                            <h3 class="post-subtitle">특정 주차 구역을 금지해야 하나요?<br> 공지 사항 전파를 통해 사전에 미리 주민에게 안내할 수 있습니다!</h3>
                         </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Start Bootstrap</a>
-                            on September 24, 2022
-                        </p>
-                    </div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
-                    <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="/dd/post.html" th:href="@{/templates/management/post.html}"><h2 class="post-title">I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.</h2></a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Start Bootstrap</a>
-                            on September 18, 2022
-                        </p>
                     </div>
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Post preview-->
                     <div class="post-preview">
                         <a href="/dd/post.html" th:href="@{/templates/management/post.html}">
-                            <h2 class="post-title">Science has not yet mastered prophecy</h2>
-                            <h3 class="post-subtitle">We predict too much for the next year and yet far too little for the next ten.</h3>
+                            <h2 class="post-title">방문자 양식</h2>
+                            <h3 class="post-subtitle">방문자 차량을 등록해야 하는데 정보를 모른다구요? <br> 미리 안내해서 필요한 정보를 받아보세요!</h3>
                         </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Start Bootstrap</a>
-                            on August 24, 2022
-                        </p>
                     </div>
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Post preview-->
                     <div class="post-preview">
                         <a href="/dd/post.html" th:href="@{/templates/management/post.html}">
-                            <h2 class="post-title">Failure is not an option</h2>
-                            <h3 class="post-subtitle">Many say exploration is part of our destiny, but it’s actually our duty to future generations.</h3>
+                            <h2 class="post-title">블랙리스트 관리</h2>
+                            <h3 class="post-subtitle">블랙리스트를 관리할 수 있습니다!</h3>
                         </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Start Bootstrap</a>
-                            on July 8, 2022
-                        </p>
                     </div>
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" th:href="@{/}">홈으로</a></div>
                 </div>
             </div>
         </div>
@@ -118,7 +92,7 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <ul class="list-inline text-center">
                             <li class="list-inline-item">
-                                <a href="#!">
+                                <a th:href="@{https://ohju96.notion.site/51590115f550416db482a607786d90d4}" th:target="_blank">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
@@ -126,7 +100,7 @@
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="#!">
+                                <a th:href="@{https://ohju.tistory.com/category/Project/%EC%86%8C%EA%B2%BD%EA%B4%80}" th:target="_blank">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
@@ -134,7 +108,7 @@
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="#!">
+                                <a th:href="@{https://github.com/ohju96/S_P_M_Project}" th:target="_blank">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-github fa-stack-1x fa-inverse"></i>
@@ -142,7 +116,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2022</div>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Small Parking Manager</div>
                     </div>
                 </div>
             </div>
