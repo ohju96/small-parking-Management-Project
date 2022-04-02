@@ -12,4 +12,29 @@ public class TestController {
     public String test() {
         return "index";
     }
+
+    @GetMapping("/myInfo/myInfo")
+    public String test1() {
+        return "myInfo/myInfo";
+    }
+
+    @GetMapping("/management/management")
+    public String test2() {
+        return "management/management";
+    }
+
+    @GetMapping("/carManagement/carManagement")
+    public String test3() {
+        return "carManagement/carManagement";
+    }
+
+    @GetMapping("/carList/carList")
+    public String test4() {
+        return "carList/carList";
+    }
+
+    @GetMapping("/carCheck/carCheck")
+    public String test5() {
+        return "carCheck/carCheck";
+    }
 }
