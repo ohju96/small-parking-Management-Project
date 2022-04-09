@@ -1,11 +1,17 @@
 package project.SPM.Entity;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import project.SPM.dto.UserDTO;
 
 import javax.persistence.*;
 
+@Builder
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USER_INFO")
 public class UserEntity {
 
@@ -37,32 +43,14 @@ public class UserEntity {
     @Column(name = "USER_ADDR", length = 200)
     private String userAddr;
 
-    /**
-     *  setter 사용을 지양하기 위해 만든 생성자.
-     *
-     * @param userNo 시퀸스 넘버
-     * @param userName 이름
-     * @param userPn 핸드폰 번호
-     * @param userEmail 이메일
-     * @param userId 아이디
-     * @param userPw 비밀번호
-     * @param userAddr 근무 주소
-     */
-
-    public void changeUserInfo(Long userNo,
-                      String userName,
-                      String userPn,
-                      String userEmail,
-                      String userId,
-                      String userPw,
-                      String userAddr) {
-        this.userNo = userNo;
-        this.userName = userName;
-        this.userPn = userPn;
-        this.userEmail = userEmail;
-        this.userId = userId;
-        this.userPw = userPw;
-        this.userAddr = userAddr;
+    @Builder
+    public UserEntity(UserDTO userDTO) {
+        this.userName = userDTO.getUserName();
+        this.userPn = userDTO.getUserPn();
+        this.userEmail = userDTO.getUserEmail();
+        this.userId = userDTO.getUserId();
+        this.userPw = userDTO.getUserPw();
+        this.userAddr = userDTO.getUserAddr();
     }
 
 }
