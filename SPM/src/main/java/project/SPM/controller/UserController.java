@@ -14,7 +14,17 @@ import project.SPM.dto.UserDTO;
 public class UserController {
 
     @PostMapping("/regUser")
-    public String regUser(UserDTO userDTO) throws Exception{
+    public String regUser() throws Exception{
+
+        UserDTO userDTO = null;
+
+        userDTO.setUserId("userName");
+        userDTO.setUserPn("userPn");
+        userDTO.setUserEmail("userEmail");
+        userDTO.setUserId("userId");
+        userDTO.setUserPw("userPw");
+        userDTO.setUserAddr("userAddr");
+        
 
         return "/logIn";
     }
