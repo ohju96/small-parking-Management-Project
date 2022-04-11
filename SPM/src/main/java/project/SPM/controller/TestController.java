@@ -43,11 +43,6 @@ public class TestController {
         return "user/logIn";
     }
 
-    @GetMapping("/user/regUser")
-    public String test7() {
-        return "user/regUser";
-    }
-
     @GetMapping("/user/changePassword")
     public String test8() {
         return "user/changePassword";

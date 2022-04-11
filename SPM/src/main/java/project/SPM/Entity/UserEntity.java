@@ -1,9 +1,6 @@
 package project.SPM.Entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import project.SPM.dto.UserDTO;
 
 import javax.persistence.*;
@@ -12,7 +9,9 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "USER_INFO")
+@ToString
 public class UserEntity {
 
     /**
@@ -43,7 +42,25 @@ public class UserEntity {
     @Column(name = "USER_ADDR", length = 200)
     private String userAddr;
 
-    @Builder
+
+
+
+/*    @Builder
+    public UserEntity(String userName,
+                      String userPn,
+                      String userEmail,
+                      String userId,
+                      String userPw,
+                      String userAddr) {
+        this.userName = userName;
+        this.userPn = userPn;
+        this.userEmail = userEmail;
+        this.userId = userId;
+        this.userPw = userPw;
+        this.userAddr = userAddr;
+    }*/
+
+/*    @Builder
     public UserEntity(UserDTO userDTO) {
         this.userName = userDTO.getUserName();
         this.userPn = userDTO.getUserPn();
@@ -51,7 +68,7 @@ public class UserEntity {
         this.userId = userDTO.getUserId();
         this.userPw = userDTO.getUserPw();
         this.userAddr = userDTO.getUserAddr();
-    }
+    }*/
 
 }
 
