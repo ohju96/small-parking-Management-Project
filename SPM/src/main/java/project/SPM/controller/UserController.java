@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import project.SPM.Entity.UserEntity;
 import project.SPM.service.impl.UserService;
@@ -35,7 +36,7 @@ public class UserController {
      * 회원가입 로직 처리
      */
     @PostMapping("/user/regUser/insert")
-    public String InsertRegUser(HttpServletRequest request) throws Exception{
+    public String InsertRegUser(@Validated HttpServletRequest request) throws Exception{
 
         log.info(this.getClass().getName() + ".InsertRegUser 회원가입 로직 처리 시작 !!");
 
@@ -49,9 +50,19 @@ public class UserController {
                 .userAddr(request.getParameter("userAddr"))
                 .build();
 
+
         log.info("UserEntity ={}", userEntity);
 
-        userService.createUser(userEntity);
+        int res = userService.createUser(userEntity);
+
+        log.info("컨트롤러에서 체크 res ={}", res);
+
+        if (res > 0) {
+            System.out.println("회원가입 성공");
+        } else {
+            System.out.println("회원가입 실패");
+        }
+
 
         return "/user/logIn";
     }
