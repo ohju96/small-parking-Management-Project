@@ -1,7 +1,6 @@
 package project.SPM.Entity;
 
 import lombok.*;
-import project.SPM.dto.UserDTO;
 
 import javax.persistence.*;
 
@@ -34,7 +33,7 @@ public class UserEntity {
     @Column(name = "USER_ID", length = 200)
     private String userId;
 
-    @Column(name = "USER_PW", length = 50)
+    @Column(name = "USER_PW", length = 200)
     private String userPw;
 
     @Column(name = "USER_ADDR", length = 200)
