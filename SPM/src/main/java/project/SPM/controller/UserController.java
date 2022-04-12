@@ -42,7 +42,7 @@ public class UserController {
     @PostMapping("/user/regUser/insert")
     public String InsertRegUser(HttpServletRequest request) throws Exception{
 
-        log.info(this.getClass().getName() + ".InsertRegUser Start");
+        log.info(this.getClass().getName() + ".InsertRegUser 회원가입 로직 처리 시작 !!");
 
         //log.info(userDTO.getUserId());
 
@@ -54,6 +54,8 @@ public class UserController {
                 .userPw(request.getParameter("userPw"))
                 .userAddr(request.getParameter("userAddr"))
                 .build();
+
+        log.info("UserEntity ={}", userEntity);
 
         userService.createUser(userEntity);
 
