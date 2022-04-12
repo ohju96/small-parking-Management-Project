@@ -5,11 +5,9 @@ import project.SPM.dto.UserDTO;
 
 import javax.persistence.*;
 
-@Builder
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Table(name = "USER_INFO")
 @ToString
 public class UserEntity {
@@ -42,33 +40,22 @@ public class UserEntity {
     @Column(name = "USER_ADDR", length = 200)
     private String userAddr;
 
-
-
-
-/*    @Builder
-    public UserEntity(String userName,
+    @Builder
+    public UserEntity(Long userNo,
+                      String userName,
                       String userPn,
                       String userEmail,
                       String userId,
                       String userPw,
                       String userAddr) {
+        this.userNo = userNo;
         this.userName = userName;
         this.userPn = userPn;
         this.userEmail = userEmail;
         this.userId = userId;
         this.userPw = userPw;
         this.userAddr = userAddr;
-    }*/
-
-/*    @Builder
-    public UserEntity(UserDTO userDTO) {
-        this.userName = userDTO.getUserName();
-        this.userPn = userDTO.getUserPn();
-        this.userEmail = userDTO.getUserEmail();
-        this.userId = userDTO.getUserId();
-        this.userPw = userDTO.getUserPw();
-        this.userAddr = userDTO.getUserAddr();
-    }*/
+    }
 
 }
 

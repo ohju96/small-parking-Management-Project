@@ -7,4 +7,5 @@ import project.SPM.dto.UserDTO;
 
 @Repository
 public interface IUserRepository extends JpaRepository<UserEntity, Long> {
+   // UserEntity findByUserEmail(String userEmail);
 }

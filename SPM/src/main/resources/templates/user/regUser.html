@@ -55,54 +55,50 @@
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
                             <form th:action="@{/user/regUser/insert}" id="contactForm" data-sb-form-api-token="API_TOKEN" th:method="post">
+
                                 <div class="form-floating">
-                                    <input class="form-control" id="userName" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userName" name="userName" type="text" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userName">이름</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
+
                                 <div class="form-floating">
-                                    <input class="form-control" id="userPn" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userPn" name="userPn" type="text" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userPn">전화번호(ex : 010-1234-5678)</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
+
                                 <div class="form-floating">
-                                    <input class="form-control" id="userEmail" type="email" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userEmail" type="email" name="userEmail" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userEmail">이메일</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
+
                                 <div class="form-floating">
-                                    <input class="form-control" id="userId" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userId" type="text" name="userId" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userId">아이디</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
+
                                 <div class="form-floating">
-                                    <input class="form-control" id="userPw" type="password" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userPw" type="password" name="userPw" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userPw">비밀번호</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
+
                                 <div class="form-floating">
-                                    <input class="form-control" id="userPws" type="password" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userPws" type="password" name="userPws" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userPws">비밀번호 재확인</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
+
                                 <div class="form-floating">
-                                    <input class="form-control" id="userAddr" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userAddr" type="text" name="userAddr" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userAddr">주소</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
+
                                 <br />
-                                <!-- Submit success message-->
-                                <!---->
-                                <!-- This is what your users will see when the form-->
-                                <!-- has successfully submitted-->
-                                <div class="d-none" id="submitSuccessMessage">
-                                    <div class="text-center mb-3">
-                                        <div class="fw-bolder">Form submission successful!</div>
-                                        To activate this form, sign up at
-                                        <br />
-                                        <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                                    </div>
-                                </div>
                                 <!-- Submit Button-->
                                 <button class="btn btn-primary text-uppercase" type="submit">완료</button>
                             </form>

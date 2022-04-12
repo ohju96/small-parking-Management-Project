@@ -9,6 +9,8 @@ import project.SPM.dto.UserDTO;
 import project.SPM.repository.IUserRepository;
 import project.SPM.service.IUserService;
 
+import javax.swing.text.html.parser.Entity;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -20,19 +22,9 @@ public class UserService implements IUserService {
     @Override
     public int createUser(UserEntity userEntity) throws Exception {
 
-        UserDTO userDTO = new UserDTO();
-
-
-        UserEntity.builder()
-                .userName(userEntity.getUserName())
-                .userPn(userEntity.getUserPn())
-                .userEmail(userEntity.getUserEmail())
-                .userId(userEntity.getUserId())
-                .userPw(userEntity.getUserPw())
-                .userAddr(userEntity.getUserAddr())
-                .build();
 
         iUserRepository.save(userEntity);
+
         return 0;
     }
 }

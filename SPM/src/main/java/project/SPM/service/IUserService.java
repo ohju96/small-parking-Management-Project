@@ -5,5 +5,5 @@ import project.SPM.dto.UserDTO;
 
 public interface IUserService {
 
-    void createUser(UserEntity userEntity) throws Exception;
+    int createUser(UserEntity userEntity) throws Exception;
 }

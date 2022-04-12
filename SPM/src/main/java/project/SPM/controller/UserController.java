@@ -2,6 +2,7 @@ package project.SPM.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,43 +40,20 @@ public class UserController {
      * 회원가입 로직 처리
      */
     @PostMapping("/user/regUser/insert")
-    public String InsertRegUser(HttpServletRequest request,
-                                UserEntity userEntity) throws Exception{
-
+    public String InsertRegUser(HttpServletRequest request) throws Exception{
 
         log.info(this.getClass().getName() + ".InsertRegUser Start");
 
-/*        UserEntity.UserEntityBuilder builder = UserEntity.builder()
+        //log.info(userDTO.getUserId());
+
+        UserEntity userEntity = UserEntity.builder()
                 .userName(request.getParameter("userName"))
                 .userPn(request.getParameter("userPn"))
                 .userEmail(request.getParameter("userEmail"))
                 .userId(request.getParameter("userId"))
                 .userPw(request.getParameter("userPw"))
                 .userAddr(request.getParameter("userAddr"))
-                .build()*/
-
-
-/*        String userName = CmmUtil.nvl(request.getParameter("userName"));
-        String userPn = CmmUtil.nvl(request.getParameter("userPn"));
-        String userEmail = CmmUtil.nvl(request.getParameter("userEmail"));
-        String userId = CmmUtil.nvl(request.getParameter("userId"));
-        String userPw = CmmUtil.nvl(request.getParameter("userPw"));
-        String userAddr = CmmUtil.nvl(request.getParameter("userAddr"));
-
-        log.info("userName ={}", userName);
-        log.info("userPn ={}", userPn);
-        log.info("userEmail ={}", userEmail);
-        log.info("userId ={}", userId);
-        log.info("UserPw ={}", userPw);
-        log.info("userAddr ={}", userAddr);
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserName(userName);
-        userDTO.setUserPn(userPn);
-        userDTO.setUserEmail(EncryptUtil.encAES128CBC(userEmail));
-        userDTO.setUserId(userId);
-        userDTO.setUserPw(EncryptUtil.encHashSHA256(userPw));
-        userDTO.setUserAddr(userAddr);*/
+                .build();
 
         userService.createUser(userEntity);
 
