@@ -29,7 +29,7 @@ public class UserController {
      * 회원가입 페이지로 이동
      */
     @GetMapping("/user/regUser")
-    public String regUserForm(Model model) {
+    public String regUserForm(@Validated Model model) {
 
         log.info(this.getClass().getName() + ".user/regUser 회원가입으로 이동 !!");
 
@@ -51,14 +51,8 @@ public class UserController {
 
         log.info(this.getClass().getName() + ".InsertRegUser 회원가입 로직 처리 시작 !!");
 
-        if (userSaveForm.getUserId() != null && userSaveForm.getUserEmail() != null) {
-
-        }
-
-        log.info("DTO 값을 Entity에 넣기 = {}", UserEntity.builder().userName(userSaveForm.getUserName()));
-
         /**
-         * 1. builder를 통해 Entity에 View에서 받아온 값을 담는다.
+         * builder를 통해 Entity에 View에서 받아온 값을 담는다.
          */
         UserEntity userEntity = UserEntity.builder()
                 .userName(request.getParameter("userName"))
@@ -72,14 +66,14 @@ public class UserController {
         log.info("UserEntity ={}", userEntity);
 
         /**
-         *  2. 중복 확인
+         * 회원 가입 로직 실행 전 중복 체크
          */
+        int check = userService.checkUser(userSaveForm);
 
 
         /**
-         * 3. 회원 가입 로직 실행
+         * 회원 가입 로직 실행
          */
-
         int res = userService.createUser(userEntity);
 
         log.info("컨트롤러에서 체크 res ={}", res);

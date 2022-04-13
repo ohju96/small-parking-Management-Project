@@ -10,6 +10,10 @@ import project.SPM.dto.UserSaveForm;
 import project.SPM.repository.IUserRepository;
 import project.SPM.service.IUserService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.Optional;
 
 @Slf4j
@@ -20,6 +24,17 @@ public class UserService implements IUserService {
     @Autowired
     IUserRepository iUserRepository;
 
+
+    @Override
+    public int checkUser(UserSaveForm userSaveForm) throws Exception {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+
+        return 0;
+    }
 
     @Override
     public int createUser(UserEntity userEntity) throws Exception {
