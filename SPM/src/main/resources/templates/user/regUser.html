@@ -54,35 +54,35 @@
                             <!-- To make this form functional, sign up at-->
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
-                            <form th:action="@{/user/regUser/insert}" id="contactForm" data-sb-form-api-token="API_TOKEN" th:method="post">
+                            <form th:action="@{/user/regUser/insert}" th:object="${userSaveForm}" id="contactForm" data-sb-form-api-token="API_TOKEN" th:method="post">
 
                                 <div class="form-floating">
-                                    <input class="form-control" id="userName" name="userName" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userName" th:field="*{userName}" type="text" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userName">이름</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
 
                                 <div class="form-floating">
-                                    <input class="form-control" id="userPn" name="userPn" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userPn" th:field="*{userPn}" type="text" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userPn">전화번호(ex : 010-1234-5678)</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
 
                                 <div class="form-floating">
-                                    <input class="form-control" id="userEmail" type="email" name="userEmail" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userEmail" type="email" th:field="*{userEmail}" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userEmail">이메일</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
 
                                 <div class="form-floating">
-                                    <input class="form-control" id="userId" type="text" name="userId" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userId" type="text" th:field="*{userId}" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userId">아이디</label>
 
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
 
                                 <div class="form-floating">
-                                    <input class="form-control" id="userPw" type="password" name="userPw" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userPw" type="password" th:field="*{userPw}" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userPw">비밀번호</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
@@ -94,7 +94,7 @@
                                 </div>
 
                                 <div class="form-floating">
-                                    <input class="form-control" id="userAddr" type="text" name="userAddr" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="userAddr" type="text" th:field="*{userAddr}" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="userAddr">주소</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
