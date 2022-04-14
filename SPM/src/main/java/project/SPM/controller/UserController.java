@@ -2,20 +2,16 @@ package project.SPM.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import project.SPM.Entity.UserEntity;
+import project.SPM.dto.UserDTO;
 import project.SPM.dto.UserSaveForm;
 import project.SPM.service.impl.UserService;
-import project.SPM.util.EncryptUtil;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -29,7 +25,7 @@ public class UserController {
      * 회원가입 페이지로 이동
      */
     @GetMapping("/user/regUser")
-    public String regUserForm(@Validated Model model) {
+    public String regUserForm(Model model) {
 
         log.info(this.getClass().getName() + ".user/regUser 회원가입으로 이동 !!");
 
@@ -43,47 +39,36 @@ public class UserController {
      * 회원가입 로직 처리
      */
     @PostMapping("/user/regUser/insert")
-    public String InsertRegUser(@Validated Model model,
-                                HttpServletRequest request,
-                                UserSaveForm userSaveForm,
-                                BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes) throws Exception{
+    public String InsertRegUser(@Valid UserSaveForm form, BindingResult result) throws Exception{
 
-        log.info(this.getClass().getName() + ".InsertRegUser 회원가입 로직 처리 시작 !!");
+        log.info(this.getClass().getName() + "회원가입 로직 처리 시작");
 
         /**
-         * builder를 통해 Entity에 View에서 받아온 값을 담는다.
+         * 1. @Valid 검증 로직 실행
          */
-        UserEntity userEntity = UserEntity.builder()
-                .userName(request.getParameter("userName"))
-                .userPn(request.getParameter("userPn"))
-                .userEmail(EncryptUtil.encAES128CBC(request.getParameter("userEmail")))
-                .userId(request.getParameter("userId"))
-                .userPw(EncryptUtil.encHashSHA256(request.getParameter("userPw")))
-                .userAddr(request.getParameter("userAddr"))
-                .build();
-
-        log.info("UserEntity ={}", userEntity);
-
-        /**
-         * 회원 가입 로직 실행 전 중복 체크
-         */
-        int check = userService.checkUser(userSaveForm);
-
-
-        /**
-         * 회원 가입 로직 실행
-         */
-        int res = userService.createUser(userEntity);
-
-        log.info("컨트롤러에서 체크 res ={}", res);
-
-        if (res > 0) {
-            System.out.println("회원가입 성공");
-        } else {
-            System.out.println("회원가입 실패");
+        if (result.hasErrors()) {
+            log.info(" 회원가입 로직 처리 중 Errors 처리 result ={}", result);
+            return "user/regUser";
         }
 
+        /**
+         * 2. DTO 생성자에 VO 값 세팅
+         */
+        UserDTO userDTO = new UserDTO(
+                form.getUserName(),
+                form.getUserPn(),
+                form.getUserEmail(),
+                form.getUserId(),
+                form.getUserPw(),
+                form.getUserAddr()
+        );
+
+        log.info("UserDTO ={}", userDTO);
+
+        /**
+         * 3. 회원 가입 정보 DTO를 Controller -> Service 전달
+         */
+        userService.InsertUser(userDTO);
 
         return "/user/logIn";
     }

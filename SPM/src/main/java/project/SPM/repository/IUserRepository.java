@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import project.SPM.Entity.UserEntity;
 import project.SPM.dto.UserSaveForm;
 
-@Repository
+
 public interface IUserRepository extends JpaRepository<UserEntity, Long> {
 
 }

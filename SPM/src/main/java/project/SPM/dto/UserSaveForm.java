@@ -5,15 +5,14 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
 public class UserSaveForm {
 
-    @Column(name = "USER_NO", length = 10)
-    private Long userNo;
-
     @NotBlank(message = "이름을 입력해주세요.")
+    @NotNull
     private String userName;
 
     @NotBlank(message = "연락처를 입력해주세요.")
