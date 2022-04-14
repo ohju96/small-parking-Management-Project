@@ -13,19 +13,13 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class UserEntity {
 
-    /**
-     * USER TABLE
-     * DB : MariaDB
-     * 대상 : 사용자, 경비원
-     */
-
     @Column(name = "USER_NAME", length = 20)
     private String userName;
 
     @Column(name = "USER_PN", length = 40)
     private String userPn;
 
-    @Email @NotNull
+    @NotNull
     @Column(name = "USER_EMAIL", length = 200)
     private String userEmail;
 
@@ -52,11 +46,6 @@ public class UserEntity {
         this.userId = userId;
         this.userPw = userPw;
         this.userAddr = userAddr;
-    }
-
-    @Builder
-    public UserEntity(String Email) {
-        this.userEmail = userEmail;
     }
 
 }

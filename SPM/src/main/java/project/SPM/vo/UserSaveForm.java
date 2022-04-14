@@ -1,4 +1,4 @@
-package project.SPM.dto;
+package project.SPM.vo;
 
 import lombok.*;
 

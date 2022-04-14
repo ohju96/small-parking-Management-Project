@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import project.SPM.dto.UserDTO;
-import project.SPM.dto.UserSaveForm;
+import project.SPM.vo.UserSaveForm;
 import project.SPM.service.impl.UserService;
 
 import javax.validation.Valid;

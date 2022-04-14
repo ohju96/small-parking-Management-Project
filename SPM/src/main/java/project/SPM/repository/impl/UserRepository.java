@@ -23,7 +23,6 @@ public class UserRepository {
      * 회원 데이터 저장
      * @param userEntity
      */
-
     public void save(UserEntity userEntity) {
         em.persist(userEntity);
     }
@@ -41,18 +40,7 @@ public class UserRepository {
         return em.find(UserEntity.class, userId);
     }
 
-    /**
-     * UserService에서 회원 가입 시 Email 중복 체크
-     * @param userEmail
-     * @return
-     */
-    public UserEntity findEmail(String userEmail) {
-        log.info("레포지토리에서 이메일 조회 시작");
-        log.info("입력한 이메일 값 ={}", userEmail);
-        log.info("체크 된 이메일 값 = {}", em.find(UserEntity.class, userEmail));
-        log.info("레포지토리에서 이메일 조회 끝");
-        return em.find(UserEntity.class, userEmail);
-    }
+
 
     public List<UserEntity> findAll() {
         return em.createQuery("select m from UserEntity  m", UserEntity.class)
@@ -60,6 +48,11 @@ public class UserRepository {
                 .getResultList();
     }
 
+    /**
+     * UserService에서 회원 가입 시 Email 중복 체크
+     * @param userEmail
+     * @return
+     */
     public List<UserEntity> findByEmail(String userEmail) {
         log.info("레포지토리에서 이메일 조회 시작");
         log.info("입력한 이메일 값 ={}", userEmail);

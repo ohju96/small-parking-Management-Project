@@ -9,6 +9,7 @@ import project.SPM.Entity.UserEntity;
 import project.SPM.dto.UserDTO;
 import project.SPM.repository.impl.UserRepository;
 import project.SPM.service.IUserService;
+import project.SPM.util.EncryptUtil;
 
 import java.util.List;
 
@@ -31,9 +32,9 @@ public class UserService implements IUserService {
         UserEntity userEntity = UserEntity.builder()
                 .userName(userDTO.getUserName())
                 .userPn(userDTO.getUserPn())
-                .userEmail(userDTO.getUserEmail())
+                .userEmail(EncryptUtil.encHashSHA256(userDTO.getUserEmail()))
                 .userId(userDTO.getUserId())
-                .userPw(userDTO.getUserPw())
+                .userPw(EncryptUtil.encHashSHA256(userDTO.getUserPw()))
                 .userAddr(userDTO.getUserAddr())
                 .build();
 
@@ -61,6 +62,8 @@ public class UserService implements IUserService {
          */
         UserEntity findUserId = userRepository.findId(userEntity.getUserId());
 
+        log.info("로직 후 아이디 ={}", findUserId);
+
         if (findUserId != null) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
@@ -71,6 +74,7 @@ public class UserService implements IUserService {
         List<UserEntity> findUserEmail = userRepository.findByEmail(userEntity.getUserEmail());
 
         log.info("로직 후 이메일 ={}", findUserEmail);
+
         if (!findUserEmail.isEmpty()) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
