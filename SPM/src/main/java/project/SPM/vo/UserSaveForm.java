@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 @Data
 public class UserSaveForm {
 
+    private Long userNo;
+
     @NotBlank(message = "이름을 입력해주세요.")
     @NotNull
     private String userName;

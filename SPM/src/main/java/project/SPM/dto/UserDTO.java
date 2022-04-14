@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class UserDTO {
 
+    private Long userNo;
     private String userName;
     private String userPn;
     private String userEmail;
@@ -12,7 +13,14 @@ public class UserDTO {
     private String userPw;
     private String userAddr;
 
-    public UserDTO(String userName, String userPn, String userEmail, String userId, String userPw, String userAddr) {
+    public UserDTO(Long userNo,
+                   String userName,
+                   String userPn,
+                   String userEmail,
+                   String userId,
+                   String userPw,
+                   String userAddr) {
+        this.userNo = userNo;
         this.userName = userName;
         this.userPn = userPn;
         this.userEmail = userEmail;

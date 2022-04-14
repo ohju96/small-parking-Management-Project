@@ -3,7 +3,6 @@ package project.SPM.Entity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -12,6 +11,9 @@ import javax.validation.constraints.NotNull;
 @Table(name = "USER_INFO")
 @ToString
 public class UserEntity {
+
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long userNo;
 
     @Column(name = "USER_NAME", length = 20)
     private String userName;
@@ -23,7 +25,7 @@ public class UserEntity {
     @Column(name = "USER_EMAIL", length = 200)
     private String userEmail;
 
-    @NotNull @Id
+    @NotNull
     @Column(name = "USER_ID", length = 200)
     private String userId;
 
@@ -34,12 +36,14 @@ public class UserEntity {
     private String userAddr;
 
     @Builder
-    public UserEntity(String userName,
+    public UserEntity(Long userNo,
+                      String userName,
                       String userPn,
                       String userEmail,
                       String userId,
                       String userPw,
                       String userAddr) {
+        this.userNo = userNo;
         this.userName = userName;
         this.userPn = userPn;
         this.userEmail = userEmail;

@@ -55,7 +55,7 @@
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
                             <form th:action="@{/user/regUser/insert}" th:object="${userSaveForm}" id="contactForm" data-sb-form-api-token="API_TOKEN" th:method="post">
-
+                                <div th:hidden="*{userNo}"></div>
                                 <div class="form-floating">
                                     <input class="form-control" id="userName" th:field="*{userName}" type="text" placeholder="이름을 입력하세요" data-sb-validations="required" />
                                     <label for="userName">이름</label>

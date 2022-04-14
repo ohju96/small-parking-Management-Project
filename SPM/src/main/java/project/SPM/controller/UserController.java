@@ -55,6 +55,7 @@ public class UserController {
          * 2. DTO 생성자에 VO 값 세팅
          */
         UserDTO userDTO = new UserDTO(
+                form.getUserNo(),
                 form.getUserName(),
                 form.getUserPn(),
                 form.getUserEmail(),

@@ -1,14 +1,12 @@
 package project.SPM.repository.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import project.SPM.Entity.UserEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import javax.validation.constraints.Email;
 import java.util.List;
 
 @Slf4j
@@ -32,19 +30,13 @@ public class UserRepository {
      * @param userId
      * @return
      */
-    public UserEntity findId(String userId) {
-        log.info("레포지토리에서 아이디 조회 시작");
-        log.info("입력한 아이디 값 ={}",userId);
-        log.info("체크 된 아이디 값 ={}", em.find(UserEntity.class, userId));
-        log.info("레포지토리에서 아이디 조회 끝");
-        return em.find(UserEntity.class, userId);
-    }
-
-
-
-    public List<UserEntity> findAll() {
-        return em.createQuery("select m from UserEntity  m", UserEntity.class)
-                //JPQL, SQL은 테이블을 대상으로 쿼리를 하지만 JPQL은 엔티티 객체에 대한 쿼리를 한다.
+    public List<UserEntity> findId(String userId) {
+        log.info("레포지토리에서 이메일 조회 시작");
+        log.info("입력한 이메일 값 ={}", userId);
+        log.info("체크 된 이메일 값 = {}", em.createQuery("select m from UserEntity m where m.userId = :userId", UserEntity.class));
+        log.info("레포지토리에서 이메일 조회 끝");
+        return em.createQuery("select m from UserEntity m where m.userId = :userId", UserEntity.class)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 
@@ -60,6 +52,12 @@ public class UserRepository {
         log.info("레포지토리에서 이메일 조회 끝");
         return em.createQuery("select m from UserEntity m where m.userEmail = :userEmail", UserEntity.class)
                 .setParameter("userEmail", userEmail)
+                .getResultList();
+    }
+
+    public List<UserEntity> findAll() {
+        return em.createQuery("select m from UserEntity  m", UserEntity.class)
+                //JPQL, SQL은 테이블을 대상으로 쿼리를 하지만 JPQL은 엔티티 객체에 대한 쿼리를 한다.
                 .getResultList();
     }
 }

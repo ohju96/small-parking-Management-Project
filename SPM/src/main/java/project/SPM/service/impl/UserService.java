@@ -2,7 +2,6 @@ package project.SPM.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.SPM.Entity.UserEntity;
@@ -30,6 +29,7 @@ public class UserService implements IUserService {
          *  1. builder pattern 활용하여 Entity에 값을 세팅
          */
         UserEntity userEntity = UserEntity.builder()
+                .userNo(userDTO.getUserNo())
                 .userName(userDTO.getUserName())
                 .userPn(userDTO.getUserPn())
                 .userEmail(EncryptUtil.encHashSHA256(userDTO.getUserEmail()))
@@ -60,11 +60,11 @@ public class UserService implements IUserService {
         /**
          * 3. 회원가입 중 ID 중복 체크
          */
-        UserEntity findUserId = userRepository.findId(userEntity.getUserId());
+        List<UserEntity> findUserId = userRepository.findId(userEntity.getUserId());
 
         log.info("로직 후 아이디 ={}", findUserId);
 
-        if (findUserId != null) {
+        if (!findUserId.isEmpty()) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
 
