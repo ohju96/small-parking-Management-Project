@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -30,7 +31,7 @@ public class UserRepository {
      * @param userId
      * @return
      */
-    public List<UserEntity> findId(String userId) {
+    public List<UserEntity> findById(String userId) {
         log.info("레포지토리에서 이메일 조회 시작");
         log.info("입력한 이메일 값 ={}", userId);
         log.info("체크 된 이메일 값 = {}", em.createQuery("select m from UserEntity m where m.userId = :userId", UserEntity.class));
@@ -58,6 +59,18 @@ public class UserRepository {
     public List<UserEntity> findAll() {
         return em.createQuery("select m from UserEntity  m", UserEntity.class)
                 //JPQL, SQL은 테이블을 대상으로 쿼리를 하지만 JPQL은 엔티티 객체에 대한 쿼리를 한다.
+                .getResultList();
+    }
+
+    public List<UserEntity> checkLogin(String userId, String userPw) {
+        log.info("레포지토리에서 비밀번호 조회 시작");
+        log.info("입력한 비밀번호 값 ={}", userPw);
+        log.info("입력한 아이디 값 ={}", userId);
+        log.info("체크 된 값 = {}", em.createQuery("select m from UserEntity m where m.userPw = :userPw and m.userId = :userId", UserEntity.class));
+        log.info("레포지토리에서 비밀번호 조회 끝");
+        return em.createQuery("select m from UserEntity m where m.userPw = :userPw and m.userId = :userId", UserEntity.class)
+                .setParameter("userId", userId)
+                .setParameter("userPw", userPw)
                 .getResultList();
     }
 }

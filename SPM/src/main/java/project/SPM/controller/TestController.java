@@ -38,11 +38,6 @@ public class TestController {
         return "carCheck/carCheck";
     }
 
-    @GetMapping("/user/logIn")
-    public String test6() {
-        return "user/logIn";
-    }
-
     @GetMapping("/user/changePassword")
     public String test8() {
         return "user/changePassword";

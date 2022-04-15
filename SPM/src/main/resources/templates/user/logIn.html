@@ -54,14 +54,18 @@
                             <!-- To make this form functional, sign up at-->
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
-                            <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                            <form id="contactForm" th:action="@{/user/logIn/page}" th:object="${userVo}" data-sb-form-api-token="API_TOKEN" method="post">
+
+                                <div th:hidden="*{userNo}"></div>
+
                                 <div class="form-floating">
-                                    <input class="form-control" id="id" type="text" placeholder="아이디를 입력해 주세요." data-sb-validations="required" />
+                                    <input class="form-control" id="id" type="text" th:field="*{userId}" placeholder="아이디를 입력해 주세요." data-sb-validations="required" />
                                     <label for="id">아이디</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">아이디를 입력해 주세요.</div>
                                 </div>
+
                                 <div class="form-floating">
-                                    <input class="form-control" id="pw" type="password" placeholder="비밀번호를 입력해 주세요." data-sb-validations="required,email" />
+                                    <input class="form-control" id="pw" type="password" th:field="*{userPw}" placeholder="비밀번호를 입력해 주세요." data-sb-validations="required,email" />
                                     <label for="pw">비밀번호</label>
                                     <div class="invalid-feedback" data-sb-feedback="email:required">비밀번호를 입력해 주세요.</div>
                                 </div>
@@ -86,7 +90,7 @@
                                 <!-- Submit Button-->
                                 <button class="btn btn-primary text-uppercase" type="button" th:onclick="|location.href='@{/user/regUser}'|">회원가입</button>
                                 <button class="btn btn-primary text-uppercase" type="button" th:onclick="|location.href='@{/user/changePassword}'|">비밀번호 찾기</button>
-                                <button class="btn btn-primary text-uppercase disabled" id="submitButton" type="submit">로그인</button>
+                                <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">로그인</button>
                             </form>
                         </div>
                     </div>
