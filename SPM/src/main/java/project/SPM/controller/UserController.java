@@ -126,13 +126,13 @@ public class UserController {
      * 로그인 로직 처리
      */
     @PostMapping("/user/logIn/page")
-    public String Login(@ModelAttribute UserVo userVo, HttpSession session) throws Exception {
+    public String login(@ModelAttribute UserVo userVo, HttpSession session) throws Exception {
 
         log.info(this.getClass().getName() + "로그인 로직 처리 시작");
 
         int res = 0;
 
-        try {
+
             log.info("UserDTO에 Vo값 담기 시작");
             UserDTO userDTO = new UserDTO(userVo.getUserNo(), userVo.getUserId(), userVo.getUserPw());
 
@@ -151,18 +151,9 @@ public class UserController {
                 return "user/login";
             }
 
-        } catch (Exception e) {
-
-            res = 2;
-            log.info(e.toString());
-            e.printStackTrace();
-
-        } finally {
-
             log.info(this.getClass().getName() + "로그인 로직 처리 끝");
             userVo = null;
 
-        }
         return "index";
     }
 
