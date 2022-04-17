@@ -13,7 +13,9 @@ import project.SPM.Entity.UserEntity;
 import project.SPM.dto.UserDTO;
 import project.SPM.vo.UserVo;
 import project.SPM.service.impl.UserService;
+import project.SPM.web.SessionConst;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
@@ -125,34 +127,28 @@ public class UserController {
     /**
      * 로그인 로직 처리
      */
+    // TODO: 2022-04-17 아이디 비밀번호 체크 로직 필요, Session 값 넘기는 로직 필요, 예외 처리 필요
     @PostMapping("/user/logIn/page")
-    public String login(@ModelAttribute UserVo userVo, HttpSession session) throws Exception {
+    public String login(@ModelAttribute UserVo userVo, HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + "로그인 로직 처리 시작");
 
+        HttpSession session = request.getSession();
+
         int res = 0;
 
-
-            log.info("UserDTO에 Vo값 담기 시작");
             UserDTO userDTO = new UserDTO(userVo.getUserNo(), userVo.getUserId(), userVo.getUserPw());
-
-            log.info("userDTO = {}", userDTO);
 
             res = userService.login(userDTO);
 
-            log.info("res = {}", res);
-
             if (res == 1) {
-                log.info("res = {}", res);
-                log.info("로그인 성공");
+                session.getAttribute("res");
+                session.setAttribute(SessionConst.LOGIN_MEMBER, userDTO);
             } else {
-                log.info("res = {}", res);
-                log.info("로그인 실패");
                 return "user/login";
             }
 
             log.info(this.getClass().getName() + "로그인 로직 처리 끝");
-            userVo = null;
 
         return "index";
     }

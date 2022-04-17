@@ -82,7 +82,7 @@
                                     <div th:class="field-error" th:errors="*{userId}">아이디 오류</div>
                                 </div>
                                 <div class="form-floating">
-                                    <input th:type="text" id="userPw" th:field="*{userPw}" th:errorclass="field-error" th:class="form-control" placeholder="비밀번호">
+                                    <input th:type="password" id="userPw"  th:field="*{userPw}" th:errorclass="field-error" th:class="form-control" placeholder="비밀번호">
                                     <label for="userPw">비밀번호</label>
                                     <div th:class="field-error" th:errors="*{userPw}">비밀번호 오류</div>
                                 </div>
