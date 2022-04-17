@@ -35,6 +35,8 @@
                 </div>
             </div>
         </nav>
+
+        </div>
         <!-- Page Header-->
         <header class="masthead" style="background-image: url('/bootstrap/assets/img/home-bg.jpg')">
             <div class="container position-relative px-4 px-lg-5">
@@ -48,6 +50,10 @@
                 </div>
             </div>
         </header>
+        <div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">로그아웃</button>
+            </form>
         <!-- Main Content-->
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">

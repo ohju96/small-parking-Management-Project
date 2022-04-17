@@ -8,11 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @AllArgsConstructor
 public class TestController {
 
-    @GetMapping("/")
-    public String test() {
-        return "index";
-    }
-
     @GetMapping("/myInfo/myInfo")
     public String test1() {
         return "myInfo/myInfo";
