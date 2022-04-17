@@ -133,26 +133,35 @@ public class UserController {
 
         log.info(this.getClass().getName() + "로그인 로직 처리 시작");
 
-        HttpSession session = request.getSession();
-
         int res = 0;
 
-            UserDTO userDTO = new UserDTO(userVo.getUserNo(), userVo.getUserId(), userVo.getUserPw());
+        UserDTO userDTO = new UserDTO(userVo.getUserNo(), userVo.getUserId(), userVo.getUserPw());
 
-            res = userService.login(userDTO);
+        res = userService.login(userDTO);
 
-            if (res == 1) {
-                session.getAttribute("res");
-                session.setAttribute(SessionConst.LOGIN_MEMBER, userDTO);
-            } else {
-                return "user/login";
-            }
+        if (res == 1) {
+            HttpSession session = request.getSession();
+            session.setAttribute(SessionConst.LOGIN_MEMBER, userDTO);
+        } else {
+            return "user/login";
+        }
 
-            log.info(this.getClass().getName() + "로그인 로직 처리 끝");
+    log.info(this.getClass().getName() + "로그인 로직 처리 끝");
 
-        return "index";
+    return "index";
     }
 
+    /**
+     * 로그아웃 기능 구현하기
+     */
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); //세션에 있는 정보가 싹 날라간다.
+        }
+        return "redirect:/user/logIn";
+    }
 
 
 }
