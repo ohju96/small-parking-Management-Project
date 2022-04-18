@@ -13,21 +13,20 @@ public class UserVo {
 
     private Long userNo;
 
-    @NotBlank(message = "이름을 입력해주세요.")
     @NotNull
     private String userName;
 
-    @NotBlank(message = "연락처를 입력해주세요.")
+    @NotNull
     private String userPn;
 
-    @NotBlank(message = "이메일 주소를 입력해주세요.")
+    @NotNull
     @Email(message = "올바른 이메일 주소를 입력해주세요.")
     private String userEmail;
 
-    @NotBlank(message = "아이디를 입력해주세요.")
+    @NotNull
     private String userId;
 
-    @NotBlank(message = "비밀번호를 입력해주세요.")
+    @NotNull
     @Size(min = 8, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력해주세요.")
     private String userPw;
 
