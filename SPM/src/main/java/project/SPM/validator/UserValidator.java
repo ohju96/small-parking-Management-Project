@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import project.SPM.vo.UserVo;
@@ -22,11 +21,6 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         UserVo userVo = (UserVo) target;
-
-
-        /**
-         * 1. @Valid 검증 로직 실행
-         */
 
         if (!StringUtils.hasText(userVo.getUserName())) {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userName", "label");

@@ -2,7 +2,6 @@ package project.SPM.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PatternMatchUtils;
-import project.SPM.Entity.UserEntity;
 import project.SPM.web.SessionConst;
 
 import javax.servlet.*;

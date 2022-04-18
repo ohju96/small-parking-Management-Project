@@ -4,13 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import project.SPM.Entity.UserEntity;
 import project.SPM.dto.UserDTO;
 import project.SPM.validator.UserValidator;
 import project.SPM.vo.UserVo;
@@ -56,32 +53,16 @@ public class UserController {
 
         log.info(this.getClass().getName() + "회원가입 로직 처리 시작");
 
-
         if (bindingResult.hasErrors()) {
             log.info(" 회원가입 로직 처리 중 Errors 처리 bindingResult ={}", bindingResult);
             return "user/regUser";
         }
 
-        /**
-         * 2. DTO 생성자에 VO 값 세팅
-         */
-        UserDTO userDTO = new UserDTO(
-                userVo.getUserNo(),
-                userVo.getUserName(),
-                userVo.getUserPn(),
-                userVo.getUserEmail(),
-                userVo.getUserId(),
-                userVo.getUserPw(),
-                userVo.getUserAddr()
-        );
+        UserDTO userDTO = new UserDTO(userVo.getUserNo(), userVo.getUserName(), userVo.getUserPn(), userVo.getUserEmail(), userVo.getUserId(), userVo.getUserPw(), userVo.getUserAddr());
 
         log.info("UserDTO ={}", userDTO);
 
-        /**
-         * 3. 회원 가입 정보 DTO를 Controller -> Service 전달
-         */
         userService.InsertUser(userDTO);
-
 
         return "/user/logIn";
     }
