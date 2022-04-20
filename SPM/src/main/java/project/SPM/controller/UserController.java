@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -34,7 +35,7 @@ public class UserController {
     /**
      * 회원가입 페이지 이동
      */
-    @GetMapping("/user/regUser")
+    @GetMapping("/regUser")
     public String regUserForm(Model model) {
 
         log.info(this.getClass().getName() + ".user/regUser 회원가입으로 이동 !!");
@@ -48,7 +49,7 @@ public class UserController {
     /**
      * 회원가입 로직 처리
      */
-    @PostMapping("/user/regUser/insert")
+    @PostMapping("/regUser/insert")
     public String InsertRegUser(@Validated @ModelAttribute UserVo userVo, BindingResult bindingResult) throws Exception{
 
         log.info(this.getClass().getName() + "회원가입 로직 처리 시작");
@@ -70,7 +71,7 @@ public class UserController {
     /**
      * 로그인 페이지 이동
      */
-    @GetMapping("/user/logIn")
+    @GetMapping("/logIn")
     public String userLogin(Model model) {
 
         log.info(this.getClass().getName() + ".user/login 로그인으로 이동 !!");
@@ -84,7 +85,7 @@ public class UserController {
      * 로그인 로직 처리
      */
     // TODO: 2022-04-17 아이디 비밀번호 체크 로직 필요, Session 값 넘기는 로직 필요, 예외 처리 필요
-    @PostMapping("/user/logIn/page")
+    @PostMapping("/logIn/page")
     public String login(@ModelAttribute UserVo userVo, HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + "로그인 로직 처리 시작");
