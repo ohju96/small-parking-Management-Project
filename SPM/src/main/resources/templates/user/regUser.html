@@ -155,14 +155,13 @@
                                 </div>
 
                                 <input type="hidden" id="sample4_postcode" placeholder="우편번호">
-                                <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
                                 <input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
                                 <span id="guide" style="color:#999;display:none"></span>
                                 <input type="hidden" id="sample4_detailAddress" placeholder="상세주소">
                                 <input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
 
                                 <div class="form-floating">
-                                    <input th:type="text" id="sample4_roadAddress" th:field="*{userAddr}" th:errorclass="field-error" th:class="form-control" placeholder="주소">
+                                    <input th:type="text" onclick="sample4_execDaumPostcode()" id="sample4_roadAddress" th:field="*{userAddr}" th:errorclass="field-error" th:class="form-control" placeholder="주소">
                                     <label for="sample4_roadAddress" th:text="#{label.userVo.userAddr}">주소</label>
                                     <div th:class="field-error" th:errors="*{userAddr}">주소 오류</div>
                                 </div>
