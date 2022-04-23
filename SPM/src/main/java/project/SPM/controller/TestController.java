@@ -13,14 +13,9 @@ public class TestController {
         return "myInfo/myInfo";
     }
 
-    @GetMapping("/management/management")
+    @GetMapping("/manamgement/management")
     public String test2() {
         return "management/management";
-    }
-
-    @GetMapping("/carManagement/carManagement")
-    public String test3() {
-        return "carManagement/carManagement";
     }
 
     @GetMapping("/carList/carList")
