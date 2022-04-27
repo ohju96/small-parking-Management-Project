@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @AllArgsConstructor
 public class TestController {
 
+    // git pull request test
+
     @GetMapping("/myInfo/myInfo")
     public String test1() {
         return "myInfo/myInfo";
