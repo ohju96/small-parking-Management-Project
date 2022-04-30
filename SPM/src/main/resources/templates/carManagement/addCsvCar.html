@@ -42,8 +42,8 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
-                            <h1>직접 등록</h1>
-                            <span class="subheading">새로운 차량을 등록하세요!</span>
+                            <h1>엑셀 등록</h1>
+                            <span class="subheading">엑셀 파일을 저장하여 한 번에 모든 차량을 등록하세요!</span>
                         </div>
                     </div>
                 </div>
@@ -54,15 +54,13 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
-
-                    <table th:border="1">
-                        <tr>
-                            <th>이름</th>
-                            <th>전화번호</th>
-                            <th>차량번호</th>
-                            <th>상세주소</th>
-                        </tr>
-                    </table>
+                    파일을 등록하세요.
+                    <form th:action="@{/carManagement/csv}" method="post" enctype="multipart/form-data">
+                        <ul>
+                            <li>첨부파일<input th:type="file" name="fileUpload"></li>
+                        </ul>
+                        <input th:type="submit" th:value="전송">
+                    </form>
 
                     <!-- Divider-->
                     <hr class="my-4" />
