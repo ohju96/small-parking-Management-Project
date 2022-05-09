@@ -23,6 +23,7 @@ public class CarService implements ICarService {
 
     private final ICarMapper iCarMapper;
 
+    // 엑셀 등록 로직 처리
     @Override
     public void CreateCar(MultipartFile mf) throws Exception {
 
@@ -79,10 +80,18 @@ public class CarService implements ICarService {
 
         iCarMapper.CreateCar(list);
 
-
         log.debug("리스트 안에 옮겨 담기 : {}", list);
 
+    }
 
+    // 직접 등록 로직 처리
+    @Override
+    public boolean addCar(CarDTO carDTO) throws Exception {
 
+        log.debug("#### 직접 등록 로직 처리 : {}", this.getClass().getName());
+
+        boolean res = iCarMapper.addCar(carDTO);
+
+        return res;
     }
 }
