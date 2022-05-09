@@ -32,9 +32,7 @@ public class UserController {
         dataBinder.addValidators(userValidator);
     }
 
-    /**
-     * 회원가입 페이지 이동
-     */
+    // 회원 가입 페이지 - 기본 화면
     @GetMapping("/regUser")
     public String regUserForm(Model model) {
 
@@ -45,10 +43,7 @@ public class UserController {
         return "user/regUser";
     }
 
-
-    /**
-     * 회원가입 로직 처리
-     */
+    // 회원 가입 페이지 - 로직 처리
     @PostMapping("/regUser/insert")
     public String InsertRegUser(@Validated @ModelAttribute UserVo userVo, BindingResult bindingResult) throws Exception{
 
@@ -59,7 +54,15 @@ public class UserController {
             return "user/regUser";
         }
 
-        UserDTO userDTO = new UserDTO(userVo.getUserNo(), userVo.getUserName(), userVo.getUserPn(), userVo.getUserEmail(), userVo.getUserId(), userVo.getUserPw(), userVo.getUserAddr());
+        UserDTO userDTO = new UserDTO(
+                userVo.getUserNo(),
+                userVo.getUserName(),
+                userVo.getUserPn(),
+                userVo.getUserEmail(),
+                userVo.getUserId(),
+                userVo.getUserPw(),
+                userVo.getUserAddr()
+        );
 
         log.info("UserDTO ={}", userDTO);
 
@@ -68,9 +71,7 @@ public class UserController {
         return "/user/logIn";
     }
 
-    /**
-     * 로그인 페이지 이동
-     */
+    // 로그인 페이지 - 기본 화면
     @GetMapping("/logIn")
     public String userLogin(Model model) {
 
@@ -81,10 +82,7 @@ public class UserController {
         return "user/logIn";
     }
 
-    /**
-     * 로그인 로직 처리
-     */
-    // TODO: 2022-04-17 아이디 비밀번호 체크 로직 필요, Session 값 넘기는 로직 필요, 예외 처리 필요
+    // 로그인 페이지 - 로직 처리
     @PostMapping("/logIn/page")
     public String login(@ModelAttribute UserVo userVo, HttpServletRequest request) throws Exception {
 
@@ -92,7 +90,11 @@ public class UserController {
 
         int res = 0;
 
-        UserDTO userDTO = new UserDTO(userVo.getUserNo(), userVo.getUserId(), userVo.getUserPw());
+        UserDTO userDTO = new UserDTO(
+                userVo.getUserNo(),
+                userVo.getUserId(),
+                userVo.getUserPw()
+        );
 
         res = userService.login(userDTO);
 
@@ -108,9 +110,7 @@ public class UserController {
     return "index";
     }
 
-    /**
-     * 로그아웃 기능 구현하기
-     */
+    // 로그아웃 로직 처리
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);

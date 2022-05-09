@@ -37,4 +37,24 @@ public class CarMapper implements ICarMapper {
         }
 
     }
+
+    @Override
+    public boolean addCar(CarDTO carDTO) throws Exception {
+
+        log.debug("#### Mapper carDTO : {}", carDTO);
+        boolean res = true;
+
+        MongoCollection<Document> col = mongo.getCollection("Car");
+
+        if (carDTO == null) {
+            carDTO = new CarDTO();
+            res = false;
+        }
+        col.insertOne(new Document(new ObjectMapper().convertValue(carDTO, Map.class)));
+
+
+        log.debug("#### resturn : res : {}", res);
+
+        return res;
+    }
 }

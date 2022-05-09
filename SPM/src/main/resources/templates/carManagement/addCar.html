@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -55,14 +55,17 @@
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
 
-                    <table th:border="1">
-                        <tr>
-                            <th>이름</th>
-                            <th>전화번호</th>
-                            <th>차량번호</th>
-                            <th>상세주소</th>
-                        </tr>
-                    </table>
+                    <form th:action="@{/carManagement/addCar}" th:method="post" th:object="${addCarVo}">
+                        <input placeholder="이름을 입력해 주세요." id="name" th:field="*{name}">이름</input>
+                        <br>
+                        <input placeholder="연락처를 입력해 주세요." id="phoneNumber" th:field="*{phoneNumber}">연락처</input>
+                        <br>
+                        <input placeholder="차량 번호를 입력해 주세요." id="carNumber" th:field="*{carNumber}">차량 번호</input>
+                        <br>
+                        <input placeholder="동, 호수만 적어주세요." id="address" th:field="*{address}">상세 주소</input>
+                        <br>
+                        <button type="submit">버튼</button>
+                    </form>
 
                     <!-- Divider-->
                     <hr class="my-4" />

@@ -12,4 +12,14 @@ public class CarDTO {
     private String carNumber;
     private String address;
 
+    public CarDTO(String name, String phoneNumber, String carNumber, String address) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.carNumber = carNumber;
+        this.address = address;
+    }
+
+    public CarDTO() {
+
+    }
 }
