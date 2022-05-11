@@ -15,10 +15,11 @@ public class TestController {
         return "myInfo/myInfo";
     }
 
-    @GetMapping("/manamgement/management")
+    @GetMapping("/management/management")
     public String test2() {
         return "management/management";
     }
+
 
     @GetMapping("/carCheck/carCheck")
     public String test5() {

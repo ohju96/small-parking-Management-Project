@@ -54,6 +54,14 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
+                    <div class="post-preview">
+                        <form th:action="@{/user/logout}" method="post">
+                            <button class="btn btn-outline-primary" type="submit">로그아웃</button>
+                        </form>
+                    </div>
+
+                    <hr class="my-4" />
+
                     사용법을 간단하게 작성해야 한다.
                     제일 마지막에 작성할 것 !
                     <!-- Divider-->

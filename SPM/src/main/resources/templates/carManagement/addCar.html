@@ -56,23 +56,54 @@
                     <!-- Post preview-->
 
                     <form th:action="@{/carManagement/addCar}" th:method="post" th:object="${addCarVo}">
-                        <input placeholder="이름을 입력해 주세요." id="name" th:field="*{name}">이름</input>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg0">이름</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
+                                   placeholder="이름을 입력해 주세요." id="name" th:field="*{name}">
+                        </div>
+
                         <br>
-                        <input placeholder="연락처를 입력해 주세요." id="phoneNumber" th:field="*{phoneNumber}">연락처</input>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg1">연락처</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
+                                   placeholder="연락처를 입력해 주세요." id="phoneNumber" th:field="*{phoneNumber}">
+                        </div>
+
                         <br>
-                        <input placeholder="차량 번호를 입력해 주세요." id="carNumber" th:field="*{carNumber}">차량 번호</input>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg2">차량 번호</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
+                                   placeholder="차량 번호를 입력해 주세요." id="carNumber" th:field="*{carNumber}">
+                        </div>
+
                         <br>
-                        <input placeholder="동, 호수만 적어주세요." id="address" th:field="*{address}">상세 주소</input>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg3">상세 주소</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
+                                   placeholder="동, 호수만 적어주세요." id="address" th:field="*{address}">
+                        </div>
+
                         <br>
-                        <input placeholder="주민, 방문자, 무단" id="sort" th:field="*{sort}">구분</input>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg4">구분</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
+                                   placeholder="주민, 방문자, 무단" id="sort" th:field="*{sort}" >
+                        </div>
+
                         <br>
-                        <button type="submit">버튼</button>
+
+                        <div class="d-flex justify-content-end mb-4"><button type="submit" class="btn btn-primary text-uppercase">등록</button></div>
                     </form>
 
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" th:href="@{/static}">홈으로</a></div>
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" th:href="@{/carManagement/carManagement}">뒤로가기</a></div>
                 </div>
             </div>
         </div>
