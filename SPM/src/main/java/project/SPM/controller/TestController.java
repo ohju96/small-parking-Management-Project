@@ -20,11 +20,6 @@ public class TestController {
         return "management/management";
     }
 
-    @GetMapping("/carList/carList")
-    public String test4() {
-        return "carList/carList";
-    }
-
     @GetMapping("/carCheck/carCheck")
     public String test5() {
         return "carCheck/carCheck";

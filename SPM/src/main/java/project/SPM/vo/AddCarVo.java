@@ -19,6 +19,7 @@ public class AddCarVo {
     @NotNull
     private String address;
 
+    @NotNull
     private String sort;
 
 }

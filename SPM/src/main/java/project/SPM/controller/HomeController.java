@@ -20,8 +20,7 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String index(
-            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)UserDTO userDTO, Model model) {
+    public String index(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)UserDTO userDTO, Model model) {
 
         if (userDTO == null ) {
             return "/user/logIn";
