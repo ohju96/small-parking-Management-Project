@@ -48,7 +48,8 @@ public class CarController {
                 addCarVo.getName(),
                 addCarVo.getPhoneNumber(),
                 addCarVo.getCarNumber(),
-                addCarVo.getAddress()
+                addCarVo.getAddress(),
+                addCarVo.getSort()
         );
 
         log.debug("#### Controller CarDTO : {}", carDTO);
