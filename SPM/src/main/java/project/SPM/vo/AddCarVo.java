@@ -19,4 +19,6 @@ public class AddCarVo {
     @NotNull
     private String address;
 
+    private String sort;
+
 }

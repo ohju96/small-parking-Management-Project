@@ -38,7 +38,7 @@ public class CarService implements ICarService {
         XSSFSheet sheet = workbook.getSheetAt(0);
 
         // i는 몇 번째 행 부터 체크를 할 것인지 정한다.
-        for (int i=0; i<sheet.getLastRowNum() + 1; i++) {
+        for (int i=1; i<sheet.getLastRowNum() + 1; i++) {
 
             CarDTO carDTO = new CarDTO();
 
@@ -71,6 +71,12 @@ public class CarService implements ICarService {
             cell = row.getCell(3);
             if (null != cell) {
                 carDTO.setAddress(cell.getStringCellValue());
+            }
+
+            // 행의 다섯 번째 열(구분)
+            cell = row.getCell(4);
+            if (null != cell) {
+                carDTO.setSort(cell.getStringCellValue());
             }
 
             // 리스트에 담는다.
