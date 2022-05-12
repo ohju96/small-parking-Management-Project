@@ -3,12 +3,19 @@ package project.SPM.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import project.SPM.dto.CarDTO;
+import project.SPM.service.ICarListService;
+
+import java.util.List;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class CarListController {
+
+    private final ICarListService iCarListService;
 
     // 차량 리스트 페이지 - 기본 화면
     @GetMapping("/carList/carList")
@@ -16,10 +23,16 @@ public class CarListController {
         return "carList/carList";
     }
 
-    // 차량 전체 리스트 페이지 및 로직
+     //차량 전체 리스트 페이지 및 로직
     @GetMapping("/carList/fullCarList")
-    public String fullCarList() {
+    public String fullCarList(Model model) throws Exception {
+
+        List<CarDTO> carDTOList = iCarListService.getFullCarList();
+
+        model.addAttribute(carDTOList);
+
         return "carList/fullCarList";
+
     }
 
     // 차량 주민 리스트 페이지 및 로직
