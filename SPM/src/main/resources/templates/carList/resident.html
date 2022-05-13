@@ -55,6 +55,27 @@
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
 
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">이름</th>
+                            <th scope="col">연락처</th>
+                            <th scope="col">차량번호</th>
+                            <th scope="col">주소</th>
+                            <th scope="col">구분</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="m: ${carDTOList}">
+                            <td th:text="${m.name}"></td>
+                            <td th:text="${m.phoneNumber}"></td>
+                            <td th:text="${m.carNumber}"></td>
+                            <td th:text="${m.address}"></td>
+                            <td th:text="${m.sort}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Pager-->

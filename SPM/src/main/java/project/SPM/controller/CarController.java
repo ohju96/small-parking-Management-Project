@@ -59,7 +59,9 @@ public class CarController {
         log.debug("#### Controller 마지막 로직에서 체크한 res 값 : {}", res);
         String msg;
         String url;
-        if (res == true) {
+
+        // TODO: 2022-05-11 로직 추가 해야한다. 
+        if (res) {
             msg = "차량 등록을 완료하였습니다.";
             url = "carManagement/carManagement";
         } else {

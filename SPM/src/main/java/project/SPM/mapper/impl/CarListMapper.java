@@ -53,6 +53,37 @@ public class CarListMapper implements ICarListMapper {
 
         }
 
+        return carDTOList;
+    }
+
+    // 주민 차량 조회
+    @Override
+    public List<CarDTO> getResidentList() throws Exception {
+
+        LinkedList<CarDTO> carDTOList = new LinkedList<>();
+
+        MongoCollection<Document> col = mongo.getCollection("Car");
+
+        Document projection = new Document();
+        projection.append("_id", 0);
+
+        FindIterable<Document> documents = col.find().projection(projection);
+        for (Document doc : documents) {
+            if (doc == null) {
+                doc = new Document();
+            }
+
+            CarDTO carDTO = new CarDTO();
+
+            carDTO.setName(doc.getString("name"));
+            carDTO.setPhoneNumber(doc.getString("phoneNumber"));
+            carDTO.setCarNumber(doc.getString("carNumber"));
+            carDTO.setAddress(doc.getString("address"));
+            carDTO.setSort(doc.getString("sort"));
+
+            carDTOList.add(carDTO);
+
+        }
 
         return carDTOList;
     }

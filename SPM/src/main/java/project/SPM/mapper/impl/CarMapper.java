@@ -1,6 +1,7 @@
 package project.SPM.mapper.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import project.SPM.dto.CarDTO;
 import project.SPM.mapper.ICarMapper;
 
+import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +25,10 @@ public class CarMapper implements ICarMapper {
     @Override
     public void CreateCar(List<CarDTO> list) throws Exception {
 
+        // TODO: 2022-05-11 차량 번호 중복 등록 처리 로직 구현하기
+        //Document query = new Document();
+
+
         //mongo.createCollection("Car");
         // 저장할 컬렉션 객체 생성
         MongoCollection<Document> col = mongo.getCollection("Car");
@@ -31,9 +37,13 @@ public class CarMapper implements ICarMapper {
             if (carDTO == null) {
                 carDTO = new CarDTO();
             }
+          //  query.append("carNumber", carDTO.getCarNumber());
+
+            //FindIterable<Document> documents = col.find(query);
 
             // DTO를 Map 데이터타입으로 변경 한 뒤, 변경된 Map 데이터타입을 Document로 변경하기
             col.insertOne(new Document(new ObjectMapper().convertValue(carDTO, Map.class)));
+
         }
 
     }
