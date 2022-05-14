@@ -37,7 +37,12 @@ public class CarListController {
 
     // 차량 주민 리스트 페이지 및 로직
     @GetMapping("/carList/resident")
-    public String resident() {
+    public String resident(Model model) throws Exception {
+
+        List<CarDTO> carDTOList = iCarListService.getResidentList();
+
+        model.addAttribute(carDTOList);
+
         return "carList/resident";
     }
 
