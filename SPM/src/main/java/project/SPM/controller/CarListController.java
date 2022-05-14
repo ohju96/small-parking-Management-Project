@@ -48,13 +48,23 @@ public class CarListController {
 
     // 차량 주민 리스트 페이지 및 로직
     @GetMapping("/carList/visit")
-    public String visit() {
+    public String visit(Model model) throws Exception {
+
+        List<CarDTO> carDTOList = iCarListService.getVisitList();
+
+        model.addAttribute(carDTOList);
+
         return "carList/visit";
     }
 
     // 차량 블랙리스트 페이지 및 로직
     @GetMapping("/carList/blackList")
-    public String blackList() {
+    public String blackList(Model model) throws Exception {
+
+        List<CarDTO> carDTOList = iCarListService.getBlackList();
+
+        model.addAttribute(carDTOList);
+
         return "carList/blackList";
     }
 

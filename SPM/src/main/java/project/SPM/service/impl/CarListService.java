@@ -18,6 +18,7 @@ public class CarListService implements ICarListService {
     private final ICarListMapper iCarListMapper;
 
 
+    // 전체 차량 조회
     @Override
     public List<CarDTO> getFullCarList() throws Exception {
 
@@ -33,6 +34,7 @@ public class CarListService implements ICarListService {
         return carDTOList;
     }
 
+    // 주민 차량 조회
     @Override
     public List<CarDTO> getResidentList() throws Exception {
 
@@ -40,6 +42,38 @@ public class CarListService implements ICarListService {
         List<CarDTO> carDTOList = null;
 
         carDTOList = iCarListMapper.getResidentList();
+
+        if (carDTOList == null) {
+            carDTOList = new LinkedList<>();
+        }
+
+        return carDTOList;
+    }
+
+    // 방문자 차량 조회
+    @Override
+    public List<CarDTO> getVisitList() throws Exception {
+
+        // 결과 값
+        List<CarDTO> carDTOList = null;
+
+        carDTOList = iCarListMapper.getVisitList();
+
+        if (carDTOList == null) {
+            carDTOList = new LinkedList<>();
+        }
+
+        return carDTOList;
+    }
+
+    // 블랙리스트 조회
+    @Override
+    public List<CarDTO> getBlackList() throws Exception {
+
+        // 결과 값
+        List<CarDTO> carDTOList = null;
+
+        carDTOList = iCarListMapper.getBlackList();
 
         if (carDTOList == null) {
             carDTOList = new LinkedList<>();
