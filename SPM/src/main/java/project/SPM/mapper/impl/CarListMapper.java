@@ -95,4 +95,79 @@ public class CarListMapper implements ICarListMapper {
 
         return carDTOList;
     }
+
+    @Override
+    public List<CarDTO> getVisitList() throws Exception {
+
+        LinkedList<CarDTO> carDTOList = new LinkedList<>();
+
+        MongoCollection<Document> col = mongo.getCollection("Car");
+
+        // 조회할 조건, SQL의 WHERE 역할
+        Document query = new Document();
+        query.append("sort", "방문자");
+
+        // 조회 결과 중 출력할 컬럼
+        Document projection = new Document();
+        // ObjectId를 가져오지 않기 위해 사용한다.
+        projection.append("_id", 0);
+
+        FindIterable<Document> documents = col.find(query).projection(projection);
+
+        for (Document doc : documents) {
+            if (doc == null) {
+                doc = new Document();
+            }
+
+            CarDTO carDTO = new CarDTO();
+
+            carDTO.setName(doc.getString("name"));
+            carDTO.setPhoneNumber(doc.getString("phoneNumber"));
+            carDTO.setCarNumber(doc.getString("carNumber"));
+            carDTO.setAddress(doc.getString("address"));
+            carDTO.setSort(doc.getString("sort"));
+
+            carDTOList.add(carDTO);
+
+        }
+
+        return carDTOList;
+    }
+
+    @Override
+    public List<CarDTO> getBlackList() throws Exception {
+        LinkedList<CarDTO> carDTOList = new LinkedList<>();
+
+        MongoCollection<Document> col = mongo.getCollection("Car");
+
+        // 조회할 조건, SQL의 WHERE 역할
+        Document query = new Document();
+        query.append("sort", "무단");
+
+        // 조회 결과 중 출력할 컬럼
+        Document projection = new Document();
+        // ObjectId를 가져오지 않기 위해 사용한다.
+        projection.append("_id", 0);
+
+        FindIterable<Document> documents = col.find(query).projection(projection);
+
+        for (Document doc : documents) {
+            if (doc == null) {
+                doc = new Document();
+            }
+
+            CarDTO carDTO = new CarDTO();
+
+            carDTO.setName(doc.getString("name"));
+            carDTO.setPhoneNumber(doc.getString("phoneNumber"));
+            carDTO.setCarNumber(doc.getString("carNumber"));
+            carDTO.setAddress(doc.getString("address"));
+            carDTO.setSort(doc.getString("sort"));
+
+            carDTOList.add(carDTO);
+
+        }
+
+        return carDTOList;
+    }
 }
