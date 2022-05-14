@@ -32,4 +32,19 @@ public class CarListService implements ICarListService {
 
         return carDTOList;
     }
+
+    @Override
+    public List<CarDTO> getResidentList() throws Exception {
+
+        // 결과 값
+        List<CarDTO> carDTOList = null;
+
+        carDTOList = iCarListMapper.getResidentList();
+
+        if (carDTOList == null) {
+            carDTOList = new LinkedList<>();
+        }
+
+        return carDTOList;
+    }
 }

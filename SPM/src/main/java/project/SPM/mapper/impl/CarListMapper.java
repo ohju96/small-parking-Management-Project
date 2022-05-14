@@ -60,14 +60,22 @@ public class CarListMapper implements ICarListMapper {
     @Override
     public List<CarDTO> getResidentList() throws Exception {
 
+        // 조회 결과를 전달하기 위한 객체 생성하기
         LinkedList<CarDTO> carDTOList = new LinkedList<>();
 
         MongoCollection<Document> col = mongo.getCollection("Car");
 
+        // 조회할 조건, SQL의 WHERE 역할과 같다.
+        Document query = new Document();
+        query.append("sort", "주민");
+
+        // 조회 결과 중 출력할 컬럼
         Document projection = new Document();
+        // ObjectId를 가져오지 않기 위해 사용한다.
         projection.append("_id", 0);
 
-        FindIterable<Document> documents = col.find().projection(projection);
+        FindIterable<Document> documents = col.find(query).projection(projection);
+
         for (Document doc : documents) {
             if (doc == null) {
                 doc = new Document();
