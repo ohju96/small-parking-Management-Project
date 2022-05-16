@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -20,7 +20,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="carCheck" th:href="@{/}">소경관</a>
+                <a class="navbar-brand" href="carCheck" th:href="@{/static}">소경관</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -42,8 +42,8 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
-                            <h1>차량 체크</h1>
-                            <span class="subheading">근무가 시작됐나요?<br>간단하게 체크하고 등록하세요!</span>
+                            <h1>직접 체크</h1>
+                            <span class="subheading">주차된 차량을 확인하고 체크합니다.</span>
                         </div>
                     </div>
                 </div>
@@ -54,34 +54,37 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="/dd/post.html" th:href="@{/carCheck/touchCheck}">
-                            <h2 class="post-title">직접 체크</h2>
-                            <h3 class="post-subtitle">직접 터치를 통해 주차 상황을 체크할 수 있습니다!</h3>
-                        </a>
-                    </div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
-                    <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="/dd/post.html" th:href="@{/carCheck/imgCheck}">
-                            <h2 class="post-title">사진 인식 체크</h2>
-                            <h3 class="post-subtitle">이미지 인식을 통해 사진으로도 체크할 수 있습니다!</h3>
-                        </a>
-                    </div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
-                    <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="/dd/post.html" th:href="@{/templates/post.html}">
-                            <h2 class="post-title">완료 항목 보기</h2>
-                            <h3 class="post-subtitle">근무 일지를 확인해 보세요!</h3>
-                        </a>
-                    </div>
+                    <form th:action="@{/carCheck/touchCheckSave}" th:object="${carDTO}" method="post">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">이름</th>
+                                <th scope="col">연락처</th>
+                                <th scope="col">차량번호</th>
+                                <th scope="col">주소</th>
+                                <th scope="col">구분</th>
+                                <th scope="col">주차여부</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="m: ${carDTOList}">
+                                <td th:text="${m.name}"></td>
+                                <td th:text="${m.phoneNumber}"></td>
+                                <td th:text="${m.carNumber}"></td>
+                                <td th:text="${m.address}"></td>
+                                <td th:text="${m.sort}"></td>
+                                <td>
+                                    <input th:type="checkbox" id="open" name="open" th:field="*{check}" class="form-check-input">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button th:type="submit" th:text="저장하기"></button>
+                    </form>
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" th:href="@{/}">홈으로</a></div>
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" th:href="@{/carList/carList}">뒤로가기</a></div>
                 </div>
             </div>
         </div>
