@@ -80,7 +80,7 @@ public class CarController {
 
     // 차량 관리 페이지 - 엑셀 등록 기본 화면 - 엑셀 등록 로직
     @PostMapping("/csv")
-    public String addCsvCar(@RequestParam(value = "fileUpload")MultipartFile mf, Model model) throws Exception{
+    public String addCsvCar(@RequestParam(value = "fileUpload")MultipartFile mf) throws Exception{
 
         iCarService.CreateCar(mf);
 

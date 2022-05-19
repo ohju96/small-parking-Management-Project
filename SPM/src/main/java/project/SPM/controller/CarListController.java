@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import project.SPM.dto.CarDTO;
 import project.SPM.service.ICarListService;
 
@@ -12,19 +13,20 @@ import java.util.List;
 
 @Slf4j
 @Controller
+@RequestMapping("/carList")
 @RequiredArgsConstructor
 public class CarListController {
 
     private final ICarListService iCarListService;
 
     // 차량 리스트 페이지 - 기본 화면
-    @GetMapping("/carList/carList")
+    @GetMapping("/carList")
     public String carList() {
         return "carList/carList";
     }
 
-     //차량 전체 리스트 페이지 및 로직
-    @GetMapping("/carList/fullCarList")
+     //차량 전체 리스트 페이지
+    @GetMapping("/fullCarList")
     public String fullCarList(Model model) throws Exception {
 
         List<CarDTO> carDTOList = iCarListService.getFullCarList();
@@ -36,7 +38,7 @@ public class CarListController {
     }
 
     // 차량 주민 리스트 페이지 및 로직
-    @GetMapping("/carList/resident")
+    @GetMapping("/resident")
     public String resident(Model model) throws Exception {
 
         List<CarDTO> carDTOList = iCarListService.getResidentList();
@@ -47,7 +49,7 @@ public class CarListController {
     }
 
     // 차량 주민 리스트 페이지 및 로직
-    @GetMapping("/carList/visit")
+    @GetMapping("/visit")
     public String visit(Model model) throws Exception {
 
         List<CarDTO> carDTOList = iCarListService.getVisitList();
@@ -58,7 +60,7 @@ public class CarListController {
     }
 
     // 차량 블랙리스트 페이지 및 로직
-    @GetMapping("/carList/blackList")
+    @GetMapping("/blackList")
     public String blackList(Model model) throws Exception {
 
         List<CarDTO> carDTOList = iCarListService.getBlackList();

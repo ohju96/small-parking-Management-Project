@@ -20,12 +20,6 @@ public class TestController {
         return "management/management";
     }
 
-
-    @GetMapping("/carCheck/carCheck")
-    public String test5() {
-        return "carCheck/carCheck";
-    }
-
     @GetMapping("/user/changePassword")
     public String test8() {
         return "user/changePassword";
