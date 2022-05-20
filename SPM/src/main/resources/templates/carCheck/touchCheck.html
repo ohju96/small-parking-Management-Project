@@ -54,7 +54,7 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
-                    <form th:action="@{/carCheck/touchCheckSave}" th:object="${carDTO}" method="post">
+                    <form th:action="@{/carCheck/touchCheckSave}" th:object="${checkDTO}" method="post">
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -63,7 +63,7 @@
                                 <th scope="col">차량번호</th>
                                 <th scope="col">주소</th>
                                 <th scope="col">구분</th>
-                                <th scope="col">주차여부</th>
+                                <th scope="col">주차완료</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -74,7 +74,7 @@
                                 <td th:text="${m.address}"></td>
                                 <td th:text="${m.sort}"></td>
                                 <td>
-                                    <input th:type="checkbox" id="open" name="open" th:field="*{check}" class="form-check-input">
+                                    <input th:type="checkbox" th:field="*{checkList}" th:value="true">
                                 </td>
                             </tr>
                             </tbody>
