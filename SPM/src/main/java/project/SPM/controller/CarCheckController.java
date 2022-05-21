@@ -4,14 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import project.SPM.dto.CarDTO;
-import project.SPM.dto.CheckDTO;
 import project.SPM.service.ICarListService;
 import project.SPM.service.ICheckService;
+import project.SPM.vo.CheckListVo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -36,24 +34,24 @@ public class CarCheckController {
 
         List<CarDTO> carDTOList = iCarListService.getFullCarList();
 
-        model.addAttribute(carDTOList);
-        model.addAttribute("checkDTO", new CheckDTO());
+        CheckListVo checkListVo = new CheckListVo();
+        checkListVo.setCarDtoList(carDTOList);
+
+        model.addAttribute("carDTOList", carDTOList);
+        model.addAttribute("checkListVo", checkListVo);
 
         return "carCheck/touchCheck";
     }
 
     // 터치 체크 저장 로직
     @PostMapping("/touchCheckSave")
-    public String touchCheckSave(@Validated @ModelAttribute CarDTO carDTO, @ModelAttribute CheckDTO checkDTO, @ModelAttribute ArrayList<CheckDTO> checkDTOList) throws Exception {
+     public String touchCheckSave(@ModelAttribute CheckListVo checkListVo) throws Exception {
 
         log.debug("### CarCheckController touchCheckSave Start! : {}", this.getClass().getName());
 
+        log.debug("### View에서 받아온 checkListVo : {}", checkListVo);
 
-        log.debug("### View에서 받아온 carDTO : {}", carDTO);
-        log.debug("### View에서 받아온 checkDTO : {}", checkDTO);
-        log.debug("### View에서 받아온 checkDTOList : {}", checkDTOList);
-
-        boolean res = iCheckService.saveTouchCheck(carDTO);
+        boolean res = iCheckService.saveTouchCheck(checkListVo);
 
         /// TODO: 2022-05-19 msg, url로 return 값 대체하기 필요 !
 

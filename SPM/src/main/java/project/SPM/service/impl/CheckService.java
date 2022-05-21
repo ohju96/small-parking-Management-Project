@@ -8,8 +8,8 @@ import project.SPM.mapper.ICarListMapper;
 import project.SPM.mapper.ICheckMapper;
 import project.SPM.service.ICheckService;
 import project.SPM.util.DateUtil;
+import project.SPM.vo.CheckListVo;
 
-import java.util.LinkedList;
 import java.util.List;
 @Slf4j
 @Service("CheckService")
@@ -21,11 +21,13 @@ public class CheckService implements ICheckService {
 
     // 직접 체크 로직
     @Override
-    public boolean saveTouchCheck(CarDTO carDTO) throws Exception {
+    public boolean saveTouchCheck(CheckListVo checkListVo) throws Exception {
 
         log.debug("### CheckService saveTouchCheck Start! : {}", this.getClass().getName());
 
         boolean res;
+
+        log.debug("####### checkListVo : {}", checkListVo);
 
         // 결과 값
         List<CarDTO> carDTOList = null;
@@ -34,16 +36,17 @@ public class CheckService implements ICheckService {
 
         log.debug("### CheckService CarListMapper => carDTOList : {}" , carDTOList);
 
-        // 데이터 저장하기
-        for (CarDTO dto : carDTOList) {
-            carDTO.setCheck(carDTO.isCheck());
-            carDTO.setCheckTime(DateUtil.getDateTime("yyyyMMddhhmmss"));
 
-            log.debug("### CheckService iter dto : {}", dto);
-            log.debug("### CheckService iter catDTOList : {}", carDTOList);
-
-            carDTOList.add(dto);
-        }
+//        // 데이터 저장하기
+//        for (CarDTO dto : carDTOList) {
+//            checkListVo.setCheck(checkListVo.isCheck());
+//            checkListVo.setCheckTime(DateUtil.getDateTime("yyyyMMddhhmmss"));
+//
+//            log.debug("### CheckService iter dto : {}", dto);
+//            log.debug("### CheckService iter catDTOList : {}", carDTOList);
+//
+//            carDTOList.add(dto);
+//        }
 
         // 생성할 컬렉션 명
         String colNm = "CHECK_" + DateUtil.getDateTime("yyyyMMdd");
