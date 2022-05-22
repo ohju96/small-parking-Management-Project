@@ -2,6 +2,10 @@ package project.SPM.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -13,7 +17,6 @@ public class CarDTO {
     private String address;
     private String sort;
     private boolean check;
-    private String checkTime;
 
     public CarDTO(String name, String phoneNumber, String carNumber, String address, String sort) {
         this.name = name;
@@ -23,14 +26,13 @@ public class CarDTO {
         this.sort = sort;
     }
 
-    public CarDTO(String name, String phoneNumber, String carNumber, String address, String sort, boolean check, String checkTime) {
+    public CarDTO(String name, String phoneNumber, String carNumber, String address, String sort, boolean check) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.carNumber = carNumber;
         this.address = address;
         this.sort = sort;
         this.check = check;
-        this.checkTime = checkTime;
     }
 
     public CarDTO() {
