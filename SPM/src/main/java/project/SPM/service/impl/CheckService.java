@@ -10,6 +10,7 @@ import project.SPM.service.ICheckService;
 import project.SPM.util.DateUtil;
 import project.SPM.vo.CheckListVo;
 
+import java.util.ArrayList;
 import java.util.List;
 @Slf4j
 @Service("CheckService")
@@ -26,36 +27,24 @@ public class CheckService implements ICheckService {
         log.debug("### CheckService saveTouchCheck Start! : {}", this.getClass().getName());
 
         boolean res;
+        List<CarDTO> list = new ArrayList<>();
+
 
         log.debug("####### checkListVo : {}", checkListVo);
 
-        // 결과 값
-        List<CarDTO> carDTOList = null;
+        for (CarDTO carDTO : checkListVo.getCarDtoList()) {
+            list.add(carDTO);
+        }
 
-        carDTOList = iCarListMapper.getFullCarList();
-
-        log.debug("### CheckService CarListMapper => carDTOList : {}" , carDTOList);
-
-
-//        // 데이터 저장하기
-//        for (CarDTO dto : carDTOList) {
-//            checkListVo.setCheck(checkListVo.isCheck());
-//            checkListVo.setCheckTime(DateUtil.getDateTime("yyyyMMddhhmmss"));
-//
-//            log.debug("### CheckService iter dto : {}", dto);
-//            log.debug("### CheckService iter catDTOList : {}", carDTOList);
-//
-//            carDTOList.add(dto);
-//        }
-
+        log.debug("### CheckService checkListVo = carDTO = list ####### : {}", list);
         // 생성할 컬렉션 명
-        String colNm = "CHECK_" + DateUtil.getDateTime("yyyyMMdd");
+        String colNm = "CHECK_" + DateUtil.getDateTime("yyyyMMdd hh:mm:ss");
 
-        log.debug("### CheckService iter End catDTOList : {}", carDTOList);
+        log.debug("### CheckService iter End checkListVo : {}", checkListVo);
         log.debug("### CheckService colNm : {}", colNm);
 
         // MongoDB에 데이터 저장
-        res = iCheckMapper.saveTouchCheck(carDTOList, colNm);
+        res = iCheckMapper.saveTouchCheck(list, colNm);
 
         log.debug("### CheckService saveTouchCheck End! : {}", this.getClass().getName());
 

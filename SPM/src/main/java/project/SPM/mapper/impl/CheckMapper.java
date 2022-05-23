@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import project.SPM.dto.CarDTO;
 import project.SPM.mapper.AbstractMongoDBComon;
 import project.SPM.mapper.ICheckMapper;
+import project.SPM.util.DateUtil;
+import project.SPM.vo.CheckListVo;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,40 +19,44 @@ import java.util.Map;
 
 @Slf4j
 @Component("CheckMapper")
-public class CheckMapper extends AbstractMongoDBComon implements ICheckMapper {
+@RequiredArgsConstructor
+public class CheckMapper implements ICheckMapper {
 // 공통 기능 및 mongo 객체 사용을 위해 extends로 AbstractMongoDBComon을 상속 받는다.
 
+    private final MongoTemplate mongo;
+
     @Override
-    public boolean saveTouchCheck(List<CarDTO> carDTOList, String colNm) throws Exception {
+    public boolean saveTouchCheck(List<CarDTO> list, String colNm) throws Exception {
 
         log.debug("### CheckMapper saveTouchCheck Start ! : {}", this.getClass().getName());
 
         boolean res;
 
-        if (carDTOList == null) {
-            carDTOList = new LinkedList<>();
-        }
-
         // 데이터를 저장할 컬렉션 생성
-        super.createCollection(colNm, "checkTime");
+        mongo.createCollection(colNm);
 
-        MongoCollection<Document> col = mongodb.getCollection(colNm);
+        log.debug("### CheckMapper saveTouchCheck colNm : {}", colNm);
 
-        for (CarDTO carDTO : carDTOList) {
+        MongoCollection<Document> col = mongo.getCollection(colNm);
+
+        for (CarDTO carDTO : list) {
+
             if (carDTO == null) {
                 carDTO = new CarDTO();
             }
 
-            /// TODO: 2022-05-16 insertMany 알아보기
-            // 한개씩 저장하기
+            log.debug("### CheckMapper saveTouchCheck carDTO : {}", carDTO);
+
             col.insertOne(new Document(new ObjectMapper().convertValue(carDTO, Map.class)));
         }
 
+        // 한개씩 저장하기
+
         res = true;
 
-        log.debug("### CheckMapper saveTouchCheck Start ! : {}", this.getClass().getName());
 
         log.debug("### CheckMapper saveTouchCHeck Login End = res : {}", res);
+        log.debug("### CheckMapper saveTouchCheck End ! : {}", this.getClass().getName());
 
         return res;
     }
