@@ -1,7 +1,6 @@
 package project.SPM.mapper.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
 import project.SPM.dto.CarDTO;
 import project.SPM.mapper.ICarMapper;
 
-import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.Map;
 

@@ -8,12 +8,8 @@ import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import project.SPM.dto.CarDTO;
-import project.SPM.mapper.AbstractMongoDBComon;
 import project.SPM.mapper.ICheckMapper;
-import project.SPM.util.DateUtil;
-import project.SPM.vo.CheckListVo;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
