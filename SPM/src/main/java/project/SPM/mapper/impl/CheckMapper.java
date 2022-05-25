@@ -21,6 +21,7 @@ public class CheckMapper implements ICheckMapper {
 
     private final MongoTemplate mongo;
 
+    // 직접 저장 로직
     @Override
     public boolean saveTouchCheck(List<CarDTO> list, String colNm) throws Exception {
 
@@ -57,6 +58,7 @@ public class CheckMapper implements ICheckMapper {
         return res;
     }
 
+    // 이미지 저장 로직
     @Override
     public List<CarDTO> saveImgCheck() throws Exception {
 
