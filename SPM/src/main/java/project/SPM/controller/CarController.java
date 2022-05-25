@@ -9,8 +9,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.SPM.dto.CarDTO;
+import project.SPM.service.ICarListService;
 import project.SPM.service.ICarService;
 import project.SPM.vo.AddCarVo;
+import project.SPM.vo.UpdateCarListVo;
+
+import java.util.List;
 
 
 @Slf4j
@@ -20,6 +24,7 @@ import project.SPM.vo.AddCarVo;
 public class CarController {
 
     private final ICarService iCarService;
+    private final ICarListService iCarListService;
 
 
     // 차량 관리 페이지 - 기본 화면
@@ -82,8 +87,47 @@ public class CarController {
     @PostMapping("/csv")
     public String addCsvCar(@RequestParam(value = "fileUpload")MultipartFile mf) throws Exception{
 
-        iCarService.CreateCar(mf);
+        iCarService.createCar(mf);
 
         return "carManagement/carManagement";
+    }
+
+    // 차량 관리 페이지 - 차량 수정 기본 화면
+    @GetMapping("/updateCar")
+    public String updateCarPage(Model model) throws Exception {
+
+        List<CarDTO> carDTOList = iCarListService.getFullCarList();
+
+        UpdateCarListVo updateCarListVo = new UpdateCarListVo();
+        updateCarListVo.setCarDtoList(carDTOList);
+
+        model.addAttribute("carDTOList", carDTOList);
+        model.addAttribute("updateCarListVo", updateCarListVo);
+
+        return "carManagement/updateCar";
+    }
+
+    // 차량 관리 페이지 - 차량 수정 기본 화면 - 차량 수정 및 삭제 로직
+    @PostMapping("/update")
+    public String updateCar(@ModelAttribute UpdateCarListVo updateCarListVo) throws Exception {
+
+        log.debug("### CarController updateCar Start : {}", this.getClass().getName());
+
+        log.debug("### View에서 받아온 updateCarListVo : {}", updateCarListVo);
+
+        boolean res = iCarService.updateCar(updateCarListVo);
+
+        log.debug("### CarController res : {}", res);
+
+        if (res == false) {
+
+            log.debug("### CarController updateCar false End : {}", this.getClass().getName());
+            return "carManagement/updateCar";
+        } else {
+
+            log.debug("### CarController updateCar true End : {}", this.getClass().getName());
+            return "carManagement/carManagement";
+        }
+
     }
 }
