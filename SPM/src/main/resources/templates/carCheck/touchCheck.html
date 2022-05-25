@@ -58,21 +58,18 @@
     </div>
 </header>
 <!-- Main Content-->
-<div class="container px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-        <div class="col-md-10 col-lg-8 col-xl-7">
             <!-- Post preview-->
             <form th:action="@{/carCheck/touchCheckSave}" th:object="${checkListVo}" method="post">
 
-                <table class="table table-striped">
+                <table class="table table-striped" align="left">
 
                     <thead>
                     <tr>
                         <th scope="col">이름</th>
                         <th scope="col">연락처</th>
-                        <th scope="col">차량번호</th>
-                        <th scope="col">주소</th>
                         <th scope="col">구분</th>
+                        <th scope="col">주소</th>
+                        <th scope="col">차량번호</th>
                         <th scope="col">주차</th>
                     </tr>
                     </thead>
@@ -89,15 +86,15 @@
                         </td>
 
                         <td>
-                            <input type="text" class="btn btn-outline-primary" th:field="*{carDtoList[__${mStat.index}__].carNumber}" readonly>
-                        </td>
-
-                        <td>
                             <input type="text" class="btn btn-outline-primary" th:field="*{carDtoList[__${mStat.index}__].address}" readonly>
                         </td>
 
                         <td>
                             <input type="text" class="btn btn-outline-primary" th:field="*{carDtoList[__${mStat.index}__].sort}" readonly>
+                        </td>
+
+                        <td>
+                            <input type="text" class="btn btn-outline-primary" th:field="*{carDtoList[__${mStat.index}__].carNumber}" readonly>
                         </td>
 
                         <td>
@@ -115,11 +112,9 @@
             <!-- Divider-->
             <hr class="my-4"/>
             <!-- Pager-->
-            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase"
-                                                            th:href="@{/carList/carList}">뒤로가기</a></div>
-        </div>
-    </div>
-</div>
+            <div class="d-flex justify-content-end mb-4">
+                <a class="btn btn-primary text-uppercase" th:href="@{/carList/carList}">뒤로가기</a>
+            </div>
 <!-- Footer-->
 <footer class="border-top">
     <div class="container px-4 px-lg-5">
