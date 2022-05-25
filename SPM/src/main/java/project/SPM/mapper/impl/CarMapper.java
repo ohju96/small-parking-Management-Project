@@ -1,6 +1,7 @@
 package project.SPM.mapper.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class CarMapper implements ICarMapper {
 
     private final MongoTemplate mongo;
 
+    // 엑셀 등록 로직
     @Override
     public void CreateCar(List<CarDTO> list) throws Exception {
 
@@ -46,6 +48,7 @@ public class CarMapper implements ICarMapper {
 
     }
 
+    // 직접 등록 로직
     @Override
     public boolean addCar(CarDTO carDTO) throws Exception {
 
@@ -63,6 +66,33 @@ public class CarMapper implements ICarMapper {
 
         log.debug("#### resturn : res : {}", res);
 
+        return res;
+    }
+
+    // 수정 및 삭제 로직
+    @Override
+    public boolean updateCar(List<CarDTO> list) throws Exception {
+
+        log.debug("### CarMapper updateCar Start : {}", this.getClass().getName());
+
+        boolean res = true;
+
+        MongoCollection<Document> col = mongo.getCollection("Car");
+
+        // 컬렉션이 존재할 경우에만 삭제한다.
+        if (mongo.collectionExists("Car")) {
+            mongo.dropCollection("Car");
+        }
+
+        for (CarDTO carDTO : list) {
+            if (carDTO == null) {
+                carDTO = new CarDTO();
+            }
+
+            col.insertOne(new Document(new ObjectMapper().convertValue(carDTO, Map.class)));
+        }
+
+        log.debug("### CarMapper updateCar End : {}", this.getClass().getName());
         return res;
     }
 }

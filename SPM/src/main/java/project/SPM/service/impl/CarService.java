@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import project.SPM.dto.CarDTO;
 import project.SPM.mapper.ICarMapper;
 import project.SPM.service.ICarService;
+import project.SPM.vo.UpdateCarListVo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class CarService implements ICarService {
 
     // 엑셀 등록 로직 처리
     @Override
-    public void CreateCar(MultipartFile mf) throws Exception {
+    public void createCar(MultipartFile mf) throws Exception {
 
         log.debug("############### 엑셀 등록 서비스 로직 시작 ###############");
         log.debug("############### Controller에서 넘어온 값 체크 : {} ###############", mf);
@@ -97,6 +98,33 @@ public class CarService implements ICarService {
         log.debug("#### 직접 등록 로직 처리 : {}", this.getClass().getName());
 
         boolean res = iCarMapper.addCar(carDTO);
+
+        return res;
+    }
+
+    // 수정 및 삭제
+    @Override
+    public boolean updateCar(UpdateCarListVo updateCarListVo) throws Exception {
+
+        log.debug("### CarService updateCar Start : {}", this.getClass().getName());
+
+        boolean res;
+
+        ArrayList<CarDTO> list = new ArrayList<>();
+
+        log.debug("### CarService updateCarListVo : {}", updateCarListVo);
+
+        // check가 false인 경우에만 list에 저장
+        for (CarDTO carDTO : updateCarListVo.getCarDtoList()){
+            if (carDTO.isCheck() == false) {
+                list.add(carDTO);
+            }
+        }
+
+        res = iCarMapper.updateCar(list);
+
+        log.debug("### CarService res : {}", res);
+        log.debug("### CarService updateCar End : {}", this.getClass().getName());
 
         return res;
     }

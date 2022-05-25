@@ -11,4 +11,7 @@ public interface ICarMapper {
 
     // 직접 등록
     boolean addCar(CarDTO carDTO) throws Exception;
+
+    // 수정 및 삭제
+    boolean updateCar(List<CarDTO> list) throws Exception;
 }
