@@ -1,6 +1,7 @@
 package project.SPM.mapper;
 
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.ViewCarDTO;
 import project.SPM.vo.CheckListVo;
 
 import java.util.List;
@@ -12,4 +13,8 @@ public interface ICheckMapper {
 
     // 이미지 저장 로직
     List<CarDTO> saveImgCheck() throws Exception;
+
+    // 완료 항목 보기
+    List<ViewCarDTO> viewCheck() throws Exception;
+
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.ViewCarDTO;
 import project.SPM.service.ICarListService;
 import project.SPM.service.ICheckService;
 import project.SPM.vo.CheckListVo;
@@ -71,5 +72,22 @@ public class CarCheckController {
     @GetMapping("/imgCheck")
     public String imgCheck() {
         return "carCheck/imgCheck";
+    }
+
+    // 완료 항목 보기
+    @GetMapping("/viewCheck")
+    public String viewCheck(Model model) throws Exception {
+
+        List<ViewCarDTO> viewCarDTOList = iCheckService.viewCheck();
+
+        model.addAttribute(viewCarDTOList);
+
+        return "carCheck/viewCheck";
+    }
+
+    // 완료 항목 상세 보기
+    @PostMapping("/viewCheck/{}")
+    public String viewCheck() throws Exception {
+        return "redirect: carCheck/viewCheck";
     }
 }

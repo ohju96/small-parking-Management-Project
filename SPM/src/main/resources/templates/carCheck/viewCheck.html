@@ -22,7 +22,7 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="management" th:href="@{/}">소경관</a>
+        <a class="navbar-brand" href="carCheck" th:href="@{/}">소경관</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
@@ -50,8 +50,8 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="site-heading">
-                    <h1>전체 차량 조회</h1>
-                    <span class="subheading">등록된 모든 차량을 조회합니다.</span>
+                    <h1>완료 항목 보기</h1>
+                    <span class="subheading">완료 항목을 확인할 수 있습니다.</span>
                 </div>
             </div>
         </div>
@@ -62,76 +62,67 @@
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
             <!-- Post preview-->
-
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">이름</th>
-                    <th scope="col">연락처</th>
-                    <th scope="col">차량번호</th>
-                    <th scope="col">주소</th>
-                    <th scope="col">구분</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="m: ${carDTOList}">
-                    <td th:text="${m.name}"></td>
-                    <td th:text="${m.phoneNumber}"></td>
-                    <td th:text="${m.carNumber}"></td>
-                    <td th:text="${m.address}"></td>
-                    <td th:text="${m.sort}"></td>
-                </tr>
-                </tbody>
-            </table>
-
+            <form>
+                <table class="table table-striped">
+                    <tr>
+                        <th scope="col">저장 목록</th>
+                    </tr>
+                    <tr th:each="m :${viewCarDTOList}">
+                        <td th:text="${m.checkCollectionName}"></td>
+                        <td th:onclick="@{/}"></td>
+                    </tr>
+                </table>
+            </form>
             <!-- Divider-->
             <hr class="my-4"/>
             <!-- Pager-->
-            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase"
-                                                            th:href="@{/carList/carList}">뒤로가기</a></div>
-        </div>
-    </div>
-</div>
-<!-- Footer-->
-<footer class="border-top">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <ul class="list-inline text-center">
-                    <li class="list-inline-item">
-                        <a th:href="@{https://ohju96.notion.site/371e5ee80acc40019547cb3aa8bc6b62}" th:target="_blank">
+            <div class="d-flex justify-content-end mb-4">
+                <a class="btn btn-primary text-uppercase" th:href="@{/carList/carList}">뒤로가기</a>
+            </div>
+            <!-- Footer-->
+            <footer class="border-top">
+                <div class="container px-4 px-lg-5">
+                    <div class="row gx-4 gx-lg-5 justify-content-center">
+                        <div class="col-md-10 col-lg-8 col-xl-7">
+                            <ul class="list-inline text-center">
+                                <li class="list-inline-item">
+                                    <a th:href="@{https://ohju96.notion.site/3642e4fbcc0849429c9950288dd28973}"
+                                       th:target="_blank">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-solid fa-book fa-stack-1x fa-inverse"></i>
                                     </span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a th:href="@{https://ohju.tistory.com/category/Project/%EC%86%8C%EA%B2%BD%EA%B4%80}"
-                           th:target="_blank">
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a th:href="@{https://ohju.tistory.com/category/Project/%EC%86%8C%EA%B2%BD%EA%B4%80}"
+                                       th:target="_blank">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-solid fa-t fa-stack-1x fa-inverse"></i>
                                     </span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a th:href="@{https://github.com/ohju96/S_P_M_Project}" th:target="_blank">
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a th:href="@{https://github.com/ohju96/S_P_M_Project}" th:target="_blank">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                                     </span>
-                        </a>
-                    </li>
-                </ul>
-                <div class="small text-center text-muted fst-italic">Copyright &copy; Small Parking Manager</div>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="/bootstarp/js/scripts.js"></script>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="small text-center text-muted fst-italic">Copyright &copy; Small Parking
+                                Manager
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- Bootstrap core JS-->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Core theme JS-->
+            <script src="/bootstarp/js/scripts.js"></script>
 </body>
+</html>
 </html>

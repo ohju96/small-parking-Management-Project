@@ -8,10 +8,10 @@ import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.ViewCarDTO;
 import project.SPM.mapper.ICheckMapper;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Component("CheckMapper")
@@ -63,5 +63,27 @@ public class CheckMapper implements ICheckMapper {
     public List<CarDTO> saveImgCheck() throws Exception {
 
         return null;
+    }
+
+    // 완료 항목 보기
+    @Override
+    public List<ViewCarDTO> viewCheck() throws Exception {
+
+        List<ViewCarDTO> viewCarDTOList = new LinkedList<>();
+
+        for (String colNm : mongo.getCollectionNames()) {
+            if (colNm == null) {
+                colNm = new String();
+            }
+            if (colNm.length() > 5) {
+
+                ViewCarDTO viewCarDTO = new ViewCarDTO();
+                viewCarDTO.setCheckCollectionName(colNm);
+
+                viewCarDTOList.add(viewCarDTO);
+            }
+        }
+        return viewCarDTOList;
+
     }
 }

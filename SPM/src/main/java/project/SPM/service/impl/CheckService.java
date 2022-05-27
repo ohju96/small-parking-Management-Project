@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.ViewCarDTO;
 import project.SPM.mapper.ICarListMapper;
 import project.SPM.mapper.ICheckMapper;
 import project.SPM.service.ICheckService;
@@ -11,6 +12,7 @@ import project.SPM.util.DateUtil;
 import project.SPM.vo.CheckListVo;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 @Slf4j
 @Service("CheckService")
@@ -57,5 +59,18 @@ public class CheckService implements ICheckService {
     @Override
     public List<CarDTO> saveImgCheck() throws Exception {
         return null;
+    }
+
+    @Override
+    public List<ViewCarDTO> viewCheck() throws Exception {
+
+        List<ViewCarDTO> viewCarDTOList = null;
+
+        viewCarDTOList = iCheckMapper.viewCheck();
+        if (viewCarDTOList == null) {
+            viewCarDTOList = new LinkedList<>();
+        }
+
+        return viewCarDTOList;
     }
 }
