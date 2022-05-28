@@ -27,6 +27,8 @@ dependencies {
 	implementation 'org.ahache.poi:poi:4.1.2'
 	implementation 'org.apache.poi:poi-ooxml:4.1.2'
 	implementation'org.springframework.boot:spring-boot-starter-mail'
+	implementation'net.sourceforge.tess4j:tess4j:4.4.1'
+	implementation'commons-codec:commons-codec:1.10'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'

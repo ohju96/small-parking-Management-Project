@@ -2,7 +2,6 @@ package project.SPM.mapper;
 
 import project.SPM.dto.CarDTO;
 import project.SPM.dto.ViewCarDTO;
-import project.SPM.vo.CheckListVo;
 
 import java.util.List;
 

@@ -61,6 +61,7 @@ public class CheckService implements ICheckService {
         return null;
     }
 
+    // 완료 항목 보여주기 로직
     @Override
     public List<ViewCarDTO> viewCheck() throws Exception {
 
