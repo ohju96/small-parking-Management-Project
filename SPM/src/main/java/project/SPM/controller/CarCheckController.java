@@ -5,12 +5,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.OcrDTO;
 import project.SPM.dto.ViewCarDTO;
 import project.SPM.service.ICarListService;
 import project.SPM.service.ICheckService;
+import project.SPM.util.CmmUtil;
+import project.SPM.util.DateUtil;
+import project.SPM.util.FileUtil;
 import project.SPM.vo.CheckListVo;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.List;
 
 @Slf4j
@@ -21,6 +29,8 @@ public class CarCheckController {
 
     private final ICarListService iCarListService;
     private final ICheckService iCheckService;
+
+    final private String FILE_UPLOAD_SAVE_PATH = "c:/upload";
 
     // 체크 페이지
     @GetMapping("/carCheck")
@@ -71,6 +81,45 @@ public class CarCheckController {
     // 이미지 체크 로직 페이지
     @GetMapping("/imgCheck")
     public String imgCheck() {
+        return "carCheck/imgCheck";
+    }
+
+    // 이미지 체크 로직
+    @PostMapping("/imgCheck")
+    public String image(HttpServletRequest request, HttpServletResponse response, Model model,
+                        @RequestParam(value = "fileUpload") MultipartFile mf) throws Exception {
+
+        String res = "";
+
+        String originalFilename = mf.getOriginalFilename();
+        String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1, originalFilename.length()).toLowerCase();
+
+        if (ext.equals("jpeg") || ext.equals("jpg") || ext.equals("gif") || ext.equals("png")) {
+
+            String saveFileName = DateUtil.getDateTime("24hhmmss") + "." + ext;
+            String saveFilePath = FileUtil.mkdirForDate(FILE_UPLOAD_SAVE_PATH);
+            String fullFileInfo = saveFilePath + "/" + saveFileName;
+
+            mf.transferTo(new File(fullFileInfo));
+
+            OcrDTO ocrDTO = new OcrDTO();
+            ocrDTO.setFileName(saveFileName);
+            ocrDTO.setFilePath(saveFilePath);
+
+            OcrDTO dto = iCheckService.saveImgCheck(ocrDTO);
+
+            if (dto == null){
+                dto = new OcrDTO();
+            }
+
+            res = CmmUtil.nvl(dto.getTextFromImage());
+            log.debug("### ocr 읽은 값 : {}", dto.getTextFromImage());
+            ocrDTO = null;
+            dto = null;
+
+        }
+
+
         return "carCheck/imgCheck";
     }
 
