@@ -2,15 +2,19 @@ package project.SPM.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sourceforge.tess4j.Tesseract;
 import org.springframework.stereotype.Service;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.OcrDTO;
 import project.SPM.dto.ViewCarDTO;
 import project.SPM.mapper.ICarListMapper;
 import project.SPM.mapper.ICheckMapper;
 import project.SPM.service.ICheckService;
+import project.SPM.util.CmmUtil;
 import project.SPM.util.DateUtil;
 import project.SPM.vo.CheckListVo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,8 +61,33 @@ public class CheckService implements ICheckService {
 
     // 이미지 체크 로직
     @Override
-    public List<CarDTO> saveImgCheck() throws Exception {
-        return null;
+    public OcrDTO saveImgCheck(OcrDTO ocrDTO) throws Exception {
+
+        log.debug("### CheckService Start ");
+
+        File imageFile = new File(CmmUtil.nvl(ocrDTO.getFilePath() + "//" + CmmUtil.nvl(ocrDTO.getFileName())));
+
+
+        log.debug("### file : {}", imageFile);
+
+        // 테서렉트 객체 생성
+        Tesseract instence = new Tesseract();
+
+        // OCR 학습 데이터 경로
+        instence.setDatapath("C:\\git\\SPM\\SPM\\src\\main\\resources\\static\\bootstrap\\tess-data");
+
+        // 한국어 학습 데이터 선택
+        instence.setLanguage("kor");
+
+        String result = instence.doOCR(imageFile);
+
+        log.debug("### Ocr 결과 result : {}", result);
+
+        ocrDTO.setTextFromImage(result);
+        log.debug("### Ocr 결과 ocrDTO : {}", ocrDTO.getTextFromImage());
+        log.debug("### CheckService End ");
+
+        return ocrDTO;
     }
 
     // 완료 항목 보여주기 로직

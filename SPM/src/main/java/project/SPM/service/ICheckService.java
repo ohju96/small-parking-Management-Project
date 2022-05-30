@@ -1,6 +1,6 @@
 package project.SPM.service;
 
-import project.SPM.dto.CarDTO;
+import project.SPM.dto.OcrDTO;
 import project.SPM.dto.ViewCarDTO;
 import project.SPM.vo.CheckListVo;
 
@@ -12,7 +12,7 @@ public interface ICheckService {
     boolean saveTouchCheck(CheckListVo checkListVo) throws Exception;
 
     // 이미지 저장 로직
-    List<CarDTO> saveImgCheck() throws Exception;
+    OcrDTO saveImgCheck(OcrDTO ocrDTO) throws Exception;
 
     // 완료 항목 보여주기
     List<ViewCarDTO> viewCheck() throws Exception;
