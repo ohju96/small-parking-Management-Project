@@ -20,7 +20,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="carManagement" th:href="@{/}">소경관</a>
+                <a class="navbar-brand" href="management" th:href="@{/}">소경관</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -42,8 +42,8 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
-                            <h1>차량 관리</h1>
-                            <span class="subheading">차량을 등록하고! 수정하고!<br>자유롭게 관리하세요!</span>
+                            <h1>차량 데이터 초기화</h1>
+                            <span class="subheading">등록된 데이터를 초기화합니다. 작업 후 되돌릴 수 없습니다.</span>
                         </div>
                     </div>
                 </div>
@@ -54,44 +54,20 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
-                    <div class="post-preview">
-                        <a th:href="@{/carManagement/addCar}">
-                            <h2 class="post-title">직접 등록</h2>
-                            <h3 class="post-subtitle">관리하는 차량을 직접 등록할 수 있습니다!</h3>
-                        </a>
-                    </div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
-                    <!-- Post preview-->
-                    <div class="post-preview">
-                        <a th:href="@{/carManagement/addCsvCar}">
-                            <h2 class="post-title">엑셀 등록</h2>
-                            <h3 class="post-subtitle">Excel로 간단하게! 한 번에! 등록할 수 있습니다!</h3>
-                        </a>
-                    </div>
+                    <b>데이터 초기화 후 되돌릴 수 없습니다.
+                    <br> 버튼을 누르면 즉시 초기화가 진행됩니다.</b>
 
-                    <!-- Divider-->
-                    <hr class="my-4" />
-                    <!-- Post preview-->
-                    <div class="post-preview">
-                        <a th:href="@{/carManagement/updateCar}">
-                            <h2 class="post-title">차량 수정</h2>
-                            <h3 class="post-subtitle">차량 정보를 잘 못 등록하셨나요?<br> 걱정하지 마세요! 등록된 차량을 수정할 수 있습니다!</h3>
-                        </a>
-                    </div>
-                    <hr class="my-4" />
+                    <form th:action="@{/carManagement/dropCar}" method="post">
 
-                    <div class="post-preview">
-                        <a th:href="@{/carManagement/dropCar}">
-                            <h2 class="post-title">차량 데이터 초기화</h2>
-                            <h3 class="post-subtitle">차량 정보를 전체 삭제할 수 있습니다.</h3>
-                        </a>
-                    </div>
-                    <!-- Divider-->
+                        <button type="submit" class="btn btn-danger">초기화</button>
+                        <hr class="my-4" />
+
+                    </form>
+
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" th:href="@{/}">홈으로</a></div>
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" th:href="@{/carManagement/carManagement}">뒤로가기</a></div>
                 </div>
             </div>
         </div>
@@ -102,7 +78,7 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <ul class="list-inline text-center">
                             <li class="list-inline-item">
-                                <a th:href="@{https://ohju96.notion.site/d0763826975b427e8729acd9a9b9c75a?v=4711071a16a54f4e90f54172cb0cddb9}" th:target="_blank">
+                                <a th:href="@{https://ohju96.notion.site/apache-poi-mongoDB-7946445271c54b61b5408120e1f16119}" th:target="_blank">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-solid fa-book fa-stack-1x fa-inverse"></i>

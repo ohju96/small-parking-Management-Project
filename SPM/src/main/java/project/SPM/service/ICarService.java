@@ -14,4 +14,7 @@ public interface ICarService {
 
     // 수정 및 삭제
     boolean updateCar(UpdateCarListVo updateCarListVo) throws Exception;
+
+    // 초기화
+    boolean dropCar() throws Exception;
 }

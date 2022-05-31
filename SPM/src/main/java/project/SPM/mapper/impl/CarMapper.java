@@ -95,4 +95,14 @@ public class CarMapper implements ICarMapper {
         log.debug("### CarMapper updateCar End : {}", this.getClass().getName());
         return res;
     }
+
+    @Override
+    public boolean dropCar() throws Exception {
+
+        boolean res = true;
+
+        mongo.dropCollection("Car");
+
+        return res;
+    }
 }

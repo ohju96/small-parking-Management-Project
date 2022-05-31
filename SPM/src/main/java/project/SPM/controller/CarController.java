@@ -130,4 +130,25 @@ public class CarController {
         }
 
     }
+
+    // 차량 데이터 전체 삭제 (초기화) 페이지
+    @GetMapping("/dropCar")
+    public String dropCarPage() {
+        return "carManagement/dropCar";
+    }
+
+    // 차량 데이터 초기화 로직
+    @PostMapping("/dropCar")
+    public String dropCar() throws Exception {
+
+        boolean res = iCarService.dropCar();
+
+        if (res == true) {
+
+            return "carManagement/carManagement";
+        } else {
+
+            return "carManagement/dropCar";
+        }
+    }
 }

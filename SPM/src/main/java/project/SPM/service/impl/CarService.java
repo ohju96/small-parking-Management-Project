@@ -128,4 +128,14 @@ public class CarService implements ICarService {
 
         return res;
     }
+
+    @Override
+    public boolean dropCar() throws Exception {
+
+        boolean res;
+
+        res = iCarMapper.dropCar();
+
+        return res;
+    }
 }
