@@ -15,4 +15,7 @@ public interface ICarMapper {
     // 수정 및 삭제
     boolean updateCar(List<CarDTO> list) throws Exception;
 
+    // 초기화
+    boolean dropCar() throws Exception;
+
 }
