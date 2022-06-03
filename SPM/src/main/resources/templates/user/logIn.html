@@ -54,9 +54,7 @@
                             <!-- To make this form functional, sign up at-->
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
-                            <form id="contactForm" th:action="@{/user/logIn/page}" th:object="${userVo}" data-sb-form-api-token="API_TOKEN" method="post">
-
-                                <div th:hidden="*{userNo}"></div>
+                            <form id="contactForm" th:action="@{/user/logIn/page}" th:object="${userVo}" method="post">
 
                                 <div class="form-floating">
                                     <input class="form-control" id="id" type="text" th:field="*{userId}" placeholder="아이디를 입력해 주세요." data-sb-validations="required" />

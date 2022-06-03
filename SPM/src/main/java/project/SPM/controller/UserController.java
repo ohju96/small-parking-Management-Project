@@ -101,7 +101,7 @@ public class UserController {
 
     // 로그인 페이지 - 로직 처리
     @PostMapping("/logIn/page")
-    public String login(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpSession session) throws Exception {
+    public String login(@ModelAttribute UserVo userVo, HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + "로그인 로직 처리 시작");
 
@@ -118,19 +118,14 @@ public class UserController {
         boolean res = userService.login(userDTO);
 
         if (res == true) {
-
             UserEntity dto = userService.loginSession(userDTO);
-
-            session = request.getSession();
+            HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_MEMBER, dto);
-
-            return "index";
-
         } else {
-
             return "user/login";
-
         }
+
+        return "redirect:/user/index";
     }
 
     // 로그아웃 로직 처리
@@ -141,6 +136,12 @@ public class UserController {
             session.invalidate(); //세션에 있는 정보가 싹 날라간다.
         }
         return "redirect:/user/logIn";
+    }
+
+    // TODO: 2022-06-03  인덱스 페이지 띄우기 - Home Controller 와 관계 해석하기 필요
+    @GetMapping("/index")
+    private String index(){
+        return "index";
     }
 
 
