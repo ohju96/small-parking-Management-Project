@@ -26,7 +26,7 @@ public class UserEntity {
     private String userEmail;
 
     @NotNull
-    @Column(name = "USER_ID", length = 200)
+    @Column(name = "USER_ID", length = 200, unique = true)
     private String userId;
 
     @Column(name = "USER_PW", length = 200)

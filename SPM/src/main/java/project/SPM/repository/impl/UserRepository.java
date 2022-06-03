@@ -26,11 +26,9 @@ public class UserRepository {
         em.persist(userEntity);
     }
 
-    /**
+/*    *//**
      * UserService에서 회원 가입 시 ID 중복 체크
-     * @param userId
-     * @return
-     */
+     *//*
     public List<UserEntity> findById(String userId) {
         log.info("레포지토리에서 이메일 조회 시작");
         log.info("입력한 이메일 값 ={}", userId);
@@ -41,11 +39,9 @@ public class UserRepository {
                 .getResultList();
     }
 
-    /**
+    *//**
      * UserService에서 회원 가입 시 Email 중복 체크
-     * @param userEmail
-     * @return
-     */
+     *//*
     public List<UserEntity> findByEmail(String userEmail) {
         log.info("레포지토리에서 이메일 조회 시작");
         log.info("입력한 이메일 값 ={}", userEmail);
@@ -54,7 +50,7 @@ public class UserRepository {
         return em.createQuery("select m from UserEntity m where m.userEmail = :userEmail", UserEntity.class)
                 .setParameter("userEmail", userEmail)
                 .getResultList();
-    }
+    }*/
 
     public List<UserEntity> findAll() {
         return em.createQuery("select m from UserEntity  m", UserEntity.class)
@@ -71,6 +67,24 @@ public class UserRepository {
         return em.createQuery("select m from UserEntity m where m.userPw = :userPw and m.userId = :userId", UserEntity.class)
                 .setParameter("userId", userId)
                 .setParameter("userPw", userPw)
+                .getResultList();
+     }
+
+    public List<UserEntity> check(Long userNo,
+                                       String userName,
+                                       String userPn,
+                                       String userEmail,
+                                       String userId,
+                                       String userPw,
+                                       String userAddr) {
+        return em.createQuery("select m from UserEntity m where m.userAddr = :userAddr and m.userEmail = :userEmail and m.userPn = :userPn and m.userName = :userName and m.userNo = :userNo and m.userPw = :userPw and m.userId = :userId", UserEntity.class)
+                .setParameter("userNo", userNo)
+                .setParameter("userName", userName)
+                .setParameter("userPn", userPn)
+                .setParameter("userEmail", userEmail)
+                .setParameter("userId", userId)
+                .setParameter("userPw", userPw)
+                .setParameter("userAddr", userAddr)
                 .getResultList();
     }
 }

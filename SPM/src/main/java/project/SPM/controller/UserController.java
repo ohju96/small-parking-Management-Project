@@ -8,6 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
+import project.SPM.Entity.UserEntity;
 import project.SPM.dto.UserDTO;
 import project.SPM.validator.UserValidator;
 import project.SPM.vo.UserVo;
@@ -16,9 +18,10 @@ import project.SPM.web.SessionConst;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Slf4j
-@Controller
+@Controller("userController")
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
@@ -46,30 +49,43 @@ public class UserController {
 
     // 회원 가입 페이지 - 로직 처리
     @PostMapping("/regUser/insert")
-    public String InsertRegUser(@Validated @ModelAttribute UserVo userVo, BindingResult bindingResult) throws Exception{
+    public String InsertRegUser(@Validated @ModelAttribute UserVo userVo,
+                                BindingResult bindingResult,
+                                Model model){
 
-        log.info(this.getClass().getName() + "회원가입 로직 처리 시작");
+        try {
+            UserDTO userDTO = new UserDTO(
+                    userVo.getUserNo(),
+                    userVo.getUserName(),
+                    userVo.getUserPn(),
+                    userVo.getUserEmail(),
+                    userVo.getUserId(),
+                    userVo.getUserPw(),
+                    userVo.getUserAddr()
+            );
 
-        if (bindingResult.hasErrors()) {
-            log.info(" 회원가입 로직 처리 중 Errors 처리 bindingResult ={}", bindingResult);
-            return "user/regUser";
+            userService.InsertUser(userDTO);
+
+            // 서비스에서 아이디 및 이메일 중복 체크 시 Exception을 던지고 처리
+        } catch (IllegalArgumentException httpStatusCodeException) {
+
+            log.debug(httpStatusCodeException.getMessage());
+
+            model.addAttribute("msg", httpStatusCodeException.getMessage());
+            model.addAttribute("url", "/user/logIn");
+
+        } finally {
+
+            if (bindingResult.hasErrors()) {
+
+                log.info(" 회원가입 로직 처리 중 Errors 처리 bindingResult ={}", bindingResult);
+
+                return "user/regUser";
+            }
+
+            return  "/user/logIn";
         }
 
-        UserDTO userDTO = new UserDTO(
-                userVo.getUserNo(),
-                userVo.getUserName(),
-                userVo.getUserPn(),
-                userVo.getUserEmail(),
-                userVo.getUserId(),
-                userVo.getUserPw(),
-                userVo.getUserAddr()
-        );
-
-        log.info("UserDTO ={}", userDTO);
-
-        userService.InsertUser(userDTO);
-
-        return "/user/logIn";
     }
 
     // 로그인 페이지 - 기본 화면
@@ -85,30 +101,36 @@ public class UserController {
 
     // 로그인 페이지 - 로직 처리
     @PostMapping("/logIn/page")
-    public String login(@ModelAttribute UserVo userVo, HttpServletRequest request) throws Exception {
+    public String login(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info(this.getClass().getName() + "로그인 로직 처리 시작");
 
-        int res = 0;
-
         UserDTO userDTO = new UserDTO(
                 userVo.getUserNo(),
+                userVo.getUserName(),
+                userVo.getUserPn(),
+                userVo.getUserEmail(),
                 userVo.getUserId(),
-                userVo.getUserPw()
+                userVo.getUserPw(),
+                userVo.getUserAddr()
         );
 
-        res = userService.login(userDTO);
+        boolean res = userService.login(userDTO);
 
-        if (res == 1) {
-            HttpSession session = request.getSession();
-            session.setAttribute(SessionConst.LOGIN_MEMBER, userDTO);
+        if (res == true) {
+
+            UserEntity dto = userService.loginSession(userDTO);
+
+            session = request.getSession();
+            session.setAttribute(SessionConst.LOGIN_MEMBER, dto);
+
+            return "index";
+
         } else {
+
             return "user/login";
+
         }
-
-    log.info(this.getClass().getName() + "로그인 로직 처리 끝");
-
-    return "index";
     }
 
     // 로그아웃 로직 처리
