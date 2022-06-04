@@ -16,8 +16,5 @@ public interface IUserRepository extends JpaRepository<UserEntity, Long> {
     boolean existsByUserEmail(String userEmail);
     boolean existsByUserId(String userId);
 
-    // 로그인 아이디 및 비밀번호 불러오기
-//    boolean findById(String userId);
-//    boolean findByPw(String userPw);
 
 }

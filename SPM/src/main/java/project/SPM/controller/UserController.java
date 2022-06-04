@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
 import project.SPM.Entity.UserEntity;
 import project.SPM.dto.UserDTO;
 import project.SPM.validator.UserValidator;
@@ -18,7 +17,6 @@ import project.SPM.web.SessionConst;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Slf4j
 @Controller("userController")
@@ -36,11 +34,16 @@ public class UserController {
         dataBinder.addValidators(userValidator);
     }
 
+    // TODO: 2022-06-03  인덱스 페이지 띄우기 - Home Controller 와 관계 해석하기 필요
+    // 인덱스 페이지
+    @GetMapping("/index")
+    private String index(){
+        return "index";
+    }
+
     // 회원 가입 페이지 - 기본 화면
     @GetMapping("/regUser")
     public String regUserForm(Model model) {
-
-        log.info(this.getClass().getName() + ".user/regUser 회원가입으로 이동 !!");
 
         model.addAttribute("userVo", new UserVo());
 
@@ -78,8 +81,6 @@ public class UserController {
 
             if (bindingResult.hasErrors()) {
 
-                log.info(" 회원가입 로직 처리 중 Errors 처리 bindingResult ={}", bindingResult);
-
                 return "user/regUser";
             }
 
@@ -92,8 +93,6 @@ public class UserController {
     @GetMapping("/logIn")
     public String userLogin(Model model) {
 
-        log.info(this.getClass().getName() + ".user/login 로그인으로 이동 !!");
-
         model.addAttribute("userVo", new UserVo());
 
         return "user/logIn";
@@ -102,8 +101,6 @@ public class UserController {
     // 로그인 페이지 - 로직 처리
     @PostMapping("/logIn/page")
     public String login(@ModelAttribute UserVo userVo, HttpServletRequest request) throws Exception {
-
-        log.info(this.getClass().getName() + "로그인 로직 처리 시작");
 
         UserDTO userDTO = new UserDTO(
                 userVo.getUserNo(),
@@ -137,12 +134,5 @@ public class UserController {
         }
         return "redirect:/user/logIn";
     }
-
-    // TODO: 2022-06-03  인덱스 페이지 띄우기 - Home Controller 와 관계 해석하기 필요
-    @GetMapping("/index")
-    private String index(){
-        return "index";
-    }
-
 
 }

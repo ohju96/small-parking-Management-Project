@@ -161,7 +161,7 @@
                                 <input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
 
                                 <div class="form-floating">
-                                    <input th:type="text" onclick="sample4_execDaumPostcode()" id="sample4_roadAddress" th:field="*{userAddr}" th:errorclass="field-error" th:class="form-control" placeholder="주소">
+                                    <input th:type="text" onclick="sample4_execDaumPostcode()" id="sample4_roadAddress" th:field="*{userAddr}" th:errorclass="field-error" th:class="form-control" placeholder="주소" readonly>
                                     <label for="sample4_roadAddress" th:text="#{label.userVo.userAddr}">주소</label>
                                     <div th:class="field-error" th:errors="*{userAddr}">주소 오류</div>
                                 </div>

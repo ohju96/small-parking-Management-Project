@@ -20,7 +20,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="myInfo" th:href="@{/}">소경관</a>
+                <a class="navbar-brand" href="management" th:href="@{/}">소경관</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -31,53 +31,43 @@
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="carManagement/carManagement.html" th:href="@{/carManagement/carManagement}">차량 관리</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="carList/carList.html" th:href="@{/carList/carList}">차량 리스트</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="carCheck/carCheck.html" th:href="@{/carCheck/carCheck}">차량 체크</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="management/management.html" th:href="@{/management/management}">관리</a></li>                    </ul>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="management/management.html" th:href="@{/management/management}">관리</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
-
-        </div>
         <!-- Page Header-->
         <header class="masthead" style="background-image: url('/bootstrap/assets/img/home-bg.jpg')">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
-                            <h1>내 정보</h1>
-                            <span class="subheading">내 정보를 수정하고 관리하세요!</span>
+                            <h1>회원 탈퇴</h1>
+                            <span class="subheading">회원 탈퇴를 진행합니다. 버튼 클릭 후 되돌릴 수 없습니다.</span>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
-        <div>
-
         <!-- Main Content-->
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
+                    <b>회원 탈퇴 후 되돌릴 수 없습니다.
+                    <br> 버튼을 누르면 즉시 탈퇴됩니다.</b>
 
-                    <!-- Divider-->
-                    <div class="post-preview">
-                        <a th:href="@{/myInfo/updateInfo}">
-                            <h2 class="post-title">내 정보</h2>
-                            <h3 class="post-subtitle">내 정보를 확인하고 변경할 수 있습니다.</h3>
-                        </a>
-                    </div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
+                    <form th:action="@{/carManagement/dropCar}" method="post">
 
-                    <div class="post-preview">
-                        <a th:href="@{/myInfo/deleteUser}">
-                            <h2 class="post-title">회원 탈퇴</h2>
-                            <h3 class="post-subtitle">서비스 이용이 만족스러우셨나요?<br>이용해 주셔서 감사합니다.</h3>
-                        </a>
-                    </div>
+                        <button type="submit" class="btn btn-danger">회원 탈퇴</button>
+                        <hr class="my-4" />
+
+                    </form>
+
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" th:href="@{/}">홈으로</a></div>
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" th:href="@{/carManagement/carManagement}">뒤로가기</a></div>
                 </div>
             </div>
         </div>
@@ -88,7 +78,7 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <ul class="list-inline text-center">
                             <li class="list-inline-item">
-                                <a th:href="@{https://ohju96.notion.site/d0763826975b427e8729acd9a9b9c75a?v=4711071a16a54f4e90f54172cb0cddb9}" th:target="_blank">
+                                <a th:href="@{https://ohju96.notion.site/apache-poi-mongoDB-7946445271c54b61b5408120e1f16119}" th:target="_blank">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-solid fa-book fa-stack-1x fa-inverse"></i>

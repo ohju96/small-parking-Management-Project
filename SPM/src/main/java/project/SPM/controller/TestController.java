@@ -18,10 +18,7 @@ public class TestController {
 
     // git pull request test
 
-    @GetMapping("/myInfo/myInfo")
-    public String test1() {
-        return "myInfo/myInfo";
-    }
+
 
     @GetMapping("/management/management")
     public String test2() {
