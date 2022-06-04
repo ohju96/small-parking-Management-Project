@@ -19,7 +19,7 @@ public class InfoService implements IInfoService {
     private final UserRepository userRepository;
 
     @Override
-    public Boolean updateInfo(UserDTO userDTO) throws Exception {
+    public boolean updateInfo(UserDTO userDTO) throws Exception {
 
         UserEntity userEntity = UserEntity.builder()
                 .userNo(userDTO.getUserNo())
@@ -32,6 +32,16 @@ public class InfoService implements IInfoService {
                 .build();
 
         iUserRepository.save(userEntity);
+        boolean res = true;
+
+        return res;
+    }
+
+    // 회원탈퇴
+    @Override
+    public boolean deleteUser(UserEntity userEntity) throws Exception {
+
+        iUserRepository.delete(userEntity);
         boolean res = true;
 
         return res;

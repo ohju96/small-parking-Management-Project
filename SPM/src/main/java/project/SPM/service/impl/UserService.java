@@ -2,21 +2,15 @@ package project.SPM.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import project.SPM.Entity.UserEntity;
 import project.SPM.dto.UserDTO;
 import project.SPM.repository.IUserRepository;
 import project.SPM.repository.impl.UserRepository;
 import project.SPM.service.IUserService;
 import project.SPM.util.EncryptUtil;
-import project.SPM.validator.UserValidator;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
