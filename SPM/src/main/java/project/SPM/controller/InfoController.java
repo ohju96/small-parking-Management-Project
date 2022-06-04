@@ -83,7 +83,6 @@ public class InfoController {
             if (session != null) {
                 session.invalidate();
             }
-
             return "redirect:/user/logIn";
         } else {
             return "myInfo/deleteUser";

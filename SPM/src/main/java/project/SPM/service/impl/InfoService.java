@@ -16,7 +16,6 @@ import project.SPM.util.EncryptUtil;
 public class InfoService implements IInfoService {
 
     private final IUserRepository iUserRepository;
-    private final UserRepository userRepository;
 
     @Override
     public boolean updateInfo(UserDTO userDTO) throws Exception {
