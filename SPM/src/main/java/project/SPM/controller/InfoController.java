@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.SPM.Entity.UserEntity;
 import project.SPM.dto.UserDTO;
 import project.SPM.service.IInfoService;
 import project.SPM.vo.UserVo;
-import project.SPM.web.SessionConst;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -71,8 +71,22 @@ public class InfoController {
 
     // 회원 탈퇴 로직
     @PostMapping("deleteUser")
-    public String deleteUser() {
-        return "user/logIn";
-    }
+    public String deleteUser(HttpServletRequest request, HttpSession session) throws Exception {
 
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        boolean res = iInfoService.deleteUser(userEntity);
+
+        if (res == true) {
+
+            session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+
+            return "redirect:/user/logIn";
+        } else {
+            return "myInfo/deleteUser";
+        }
+    }
 }
