@@ -1,20 +1,21 @@
 package project.SPM.mapper;
 
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.UserDTO;
 
 import java.util.List;
 
 public interface ICarListMapper {
 
     // 전체 차량 조회 로직
-    List<CarDTO> getFullCarList() throws Exception;
+    List<CarDTO> getFullCarList(UserDTO userDTO) throws Exception;
 
     // 주민 차량 조회 로직
-    List<CarDTO> getResidentList() throws Exception;
+    List<CarDTO> getResidentList(UserDTO userDTO) throws Exception;
 
     // 방문자 차량 조회 로직
-    List<CarDTO> getVisitList() throws Exception;
+    List<CarDTO> getVisitList(UserDTO userDTO) throws Exception;
 
     // 블랙리스트 차량 조회 로직
-    List<CarDTO> getBlackList() throws Exception;
+    List<CarDTO> getBlackList(UserDTO userDTO) throws Exception;
 }

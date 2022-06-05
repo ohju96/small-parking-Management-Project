@@ -22,4 +22,7 @@ public class AddCarVo {
     @NotNull
     private String sort;
 
+    @NotNull
+    private String userId;
+
 }

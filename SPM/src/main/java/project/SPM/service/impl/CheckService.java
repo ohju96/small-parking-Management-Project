@@ -6,6 +6,7 @@ import net.sourceforge.tess4j.Tesseract;
 import org.springframework.stereotype.Service;
 import project.SPM.dto.CarDTO;
 import project.SPM.dto.OcrDTO;
+import project.SPM.dto.UserDTO;
 import project.SPM.dto.ViewCarDTO;
 import project.SPM.mapper.ICarListMapper;
 import project.SPM.mapper.ICheckMapper;
@@ -39,12 +40,13 @@ public class CheckService implements ICheckService {
         log.debug("####### checkListVo : {}", checkListVo);
 
         for (CarDTO carDTO : checkListVo.getCarDtoList()) {
+            carDTO.setUserId(checkListVo.getUserId());
             list.add(carDTO);
         }
 
         log.debug("### CheckService checkListVo = carDTO = list ####### : {}", list);
         // 생성할 컬렉션 명
-        String colNm = "CHECK_" + DateUtil.getDateTime("yyyyMMdd hh:mm:ss");
+        String colNm = checkListVo.getUserId() + "_" + DateUtil.getDateTime("yyyyMMdd hh:mm:ss");
 
         log.debug("### CheckService iter End checkListVo : {}", checkListVo);
         log.debug("### CheckService colNm : {}", colNm);
@@ -92,11 +94,11 @@ public class CheckService implements ICheckService {
 
     // 완료 항목 보여주기 로직
     @Override
-    public List<ViewCarDTO> viewCheck() throws Exception {
+    public List<ViewCarDTO> viewCheck(UserDTO userDTO) throws Exception {
 
         List<ViewCarDTO> viewCarDTOList = null;
 
-        viewCarDTOList = iCheckMapper.viewCheck();
+        viewCarDTOList = iCheckMapper.viewCheck(userDTO);
         if (viewCarDTOList == null) {
             viewCarDTOList = new LinkedList<>();
         }

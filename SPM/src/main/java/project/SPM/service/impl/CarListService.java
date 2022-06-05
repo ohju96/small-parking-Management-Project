@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.UserDTO;
 import project.SPM.mapper.ICarListMapper;
 import project.SPM.service.ICarListService;
 
@@ -20,12 +21,12 @@ public class CarListService implements ICarListService {
 
     // 전체 차량 조회
     @Override
-    public List<CarDTO> getFullCarList() throws Exception {
+    public List<CarDTO> getFullCarList(UserDTO userDTO) throws Exception {
 
         // 결과 값
         List<CarDTO> carDTOList = null;
 
-        carDTOList = iCarListMapper.getFullCarList();
+        carDTOList = iCarListMapper.getFullCarList(userDTO);
 
         if (carDTOList == null) {
             carDTOList = new LinkedList<>();
@@ -36,12 +37,12 @@ public class CarListService implements ICarListService {
 
     // 주민 차량 조회
     @Override
-    public List<CarDTO> getResidentList() throws Exception {
+    public List<CarDTO> getResidentList(UserDTO userDTO) throws Exception {
 
         // 결과 값
         List<CarDTO> carDTOList = null;
 
-        carDTOList = iCarListMapper.getResidentList();
+        carDTOList = iCarListMapper.getResidentList(userDTO);
 
         if (carDTOList == null) {
             carDTOList = new LinkedList<>();
@@ -52,12 +53,12 @@ public class CarListService implements ICarListService {
 
     // 방문자 차량 조회
     @Override
-    public List<CarDTO> getVisitList() throws Exception {
+    public List<CarDTO> getVisitList(UserDTO userDTO) throws Exception {
 
         // 결과 값
         List<CarDTO> carDTOList = null;
 
-        carDTOList = iCarListMapper.getVisitList();
+        carDTOList = iCarListMapper.getVisitList(userDTO);
 
         if (carDTOList == null) {
             carDTOList = new LinkedList<>();
@@ -68,12 +69,12 @@ public class CarListService implements ICarListService {
 
     // 블랙리스트 조회
     @Override
-    public List<CarDTO> getBlackList() throws Exception {
+    public List<CarDTO> getBlackList(UserDTO userDTO) throws Exception {
 
         // 결과 값
         List<CarDTO> carDTOList = null;
 
-        carDTOList = iCarListMapper.getBlackList();
+        carDTOList = iCarListMapper.getBlackList(userDTO);
 
         if (carDTOList == null) {
             carDTOList = new LinkedList<>();

@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.UserDTO;
 import project.SPM.mapper.ICarMapper;
 
 import java.util.List;
@@ -79,6 +80,14 @@ public class CarMapper implements ICarMapper {
 
         MongoCollection<Document> col = mongo.getCollection("Car");
 
+        Document query = new Document();
+        query.append("userId", list.indexOf(6));
+
+        Document projection = new Document();
+        projection.append("_id", 0);
+
+        col.find(query).projection(projection);
+
         // 컬렉션이 존재할 경우에만 삭제한다.
         if (mongo.collectionExists("Car")) {
             mongo.dropCollection("Car");
@@ -96,12 +105,27 @@ public class CarMapper implements ICarMapper {
         return res;
     }
 
+    // 차량 데이터 초기화
     @Override
-    public boolean dropCar() throws Exception {
+    public boolean dropCar(UserDTO userDTO) throws Exception {
 
         boolean res = true;
 
-        mongo.dropCollection("Car");
+        log.debug("### userDTO : {}", userDTO);
+
+        MongoCollection<Document> col = mongo.getCollection("Car");
+
+        log.debug("### col : {}", col);
+
+        Document query = new Document();
+        query.append("userId", userDTO.getUserId());
+
+        // 정확한 삭제를 위해 컬렉션을 조회하고 조회된 ObjectID를 기반으로 데이터를 삭제
+        // 왜냐하면 MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있어서 정확한 PK에 매핑하기 위해서
+        FindIterable<Document> documents = col.find(query);
+
+        // 람다식을 활용해 전체 컬렉션에 있는 데이터 삭제
+        documents.forEach(doc -> col.deleteOne(doc));
 
         return res;
     }

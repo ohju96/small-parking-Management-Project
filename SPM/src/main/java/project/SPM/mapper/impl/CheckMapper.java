@@ -1,6 +1,7 @@
 package project.SPM.mapper.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,7 @@ import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.UserDTO;
 import project.SPM.dto.ViewCarDTO;
 import project.SPM.mapper.ICheckMapper;
 
@@ -67,20 +69,29 @@ public class CheckMapper implements ICheckMapper {
 
     // 완료 항목 보기
     @Override
-    public List<ViewCarDTO> viewCheck() throws Exception {
+    public List<ViewCarDTO> viewCheck(UserDTO userDTO) throws Exception {
 
         List<ViewCarDTO> viewCarDTOList = new LinkedList<>();
 
+//        String res = String.valueOf(mongo.getCollectionNames());
+//        for (ViewCarDTO viewCarDTO : viewCarDTOList) {
+//            if (res.split("_").equals(userDTO.getUserId())) {
+//                viewCarDTO.setCheckCollectionName(res);
+//                viewCarDTOList.add(viewCarDTO);
+//            }
+//        }
+
         for (String colNm : mongo.getCollectionNames()) {
+
             if (colNm == null) {
                 colNm = new String();
             }
+
             if (colNm.length() > 5) {
 
-                ViewCarDTO viewCarDTO = new ViewCarDTO();
-                viewCarDTO.setCheckCollectionName(colNm);
-
-                viewCarDTOList.add(viewCarDTO);
+                    ViewCarDTO viewCarDTO = new ViewCarDTO();
+                    viewCarDTO.setCheckCollectionName(colNm);
+                    viewCarDTOList.add(viewCarDTO);
             }
         }
         return viewCarDTOList;

@@ -1,6 +1,7 @@
 package project.SPM.mapper;
 
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.UserDTO;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ public interface ICarMapper {
     boolean updateCar(List<CarDTO> list) throws Exception;
 
     // 초기화
-    boolean dropCar() throws Exception;
+    boolean dropCar(UserDTO userDTO) throws Exception;
 
 }
