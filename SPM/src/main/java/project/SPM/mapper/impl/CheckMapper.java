@@ -1,10 +1,12 @@
 package project.SPM.mapper.impl;
 
+import antlr.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.util.StringUtil;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
@@ -69,17 +71,9 @@ public class CheckMapper implements ICheckMapper {
 
     // 완료 항목 보기
     @Override
-    public List<ViewCarDTO> viewCheck(UserDTO userDTO) throws Exception {
+    public List<ViewCarDTO> viewCheck(UserDTO userDTO) {
 
         List<ViewCarDTO> viewCarDTOList = new LinkedList<>();
-
-//        String res = String.valueOf(mongo.getCollectionNames());
-//        for (ViewCarDTO viewCarDTO : viewCarDTOList) {
-//            if (res.split("_").equals(userDTO.getUserId())) {
-//                viewCarDTO.setCheckCollectionName(res);
-//                viewCarDTOList.add(viewCarDTO);
-//            }
-//        }
 
         for (String colNm : mongo.getCollectionNames()) {
 
@@ -87,11 +81,19 @@ public class CheckMapper implements ICheckMapper {
                 colNm = new String();
             }
 
-            if (colNm.length() > 5) {
+            // 컬렉션 명을 _ 기준으로 잘라 String 배열에 담는다.
+            String res[] = colNm.split("_");
 
-                    ViewCarDTO viewCarDTO = new ViewCarDTO();
-                    viewCarDTO.setCheckCollectionName(colNm);
-                    viewCarDTOList.add(viewCarDTO);
+            // String 배열 중 ID값이 있는 부분과, 세션의 id값을 각 String 변수에 담는다.
+            String result = res[0];
+            String sessionId = userDTO.getUserId();
+
+            // 두 String을 비교하여 같을 시 리스트에 담아준다.
+            if (result.equals(sessionId)) {
+
+                ViewCarDTO viewCarDTO = new ViewCarDTO();
+                viewCarDTO.setCheckCollectionName(colNm);
+                viewCarDTOList.add(viewCarDTO);
             }
         }
         return viewCarDTOList;
