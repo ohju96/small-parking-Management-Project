@@ -8,8 +8,9 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.SessionIdDTO;
+import project.SPM.dto.UserDTO;
 import project.SPM.mapper.ICarMapper;
 import project.SPM.service.ICarService;
 import project.SPM.vo.UpdateCarListVo;
@@ -26,13 +27,14 @@ public class CarService implements ICarService {
 
     // 엑셀 등록 로직 처리
     @Override
-    public void createCar(MultipartFile mf) throws Exception {
+    public void createCar(SessionIdDTO sessionIdDTO) throws Exception {
 
         log.debug("############### 엑셀 등록 서비스 로직 시작 ###############");
-        log.debug("############### Controller에서 넘어온 값 체크 : {} ###############", mf);
+        log.debug("############### Controller에서 넘어온 값 체크 : {} ###############", sessionIdDTO);
+
         List<CarDTO> list = new ArrayList<>();
 
-        OPCPackage opcPackage = OPCPackage.open(mf.getInputStream());
+        OPCPackage opcPackage = OPCPackage.open(sessionIdDTO.getMf().getInputStream());
         XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
 
         // 첫 번째 시트를 불러온다.
@@ -80,6 +82,9 @@ public class CarService implements ICarService {
                 carDTO.setSort(cell.getStringCellValue());
             }
 
+            // 세션 아이디 값 담기
+            carDTO.setUserId(sessionIdDTO.getUserId());
+
             // 리스트에 담는다.
             list.add(carDTO);
 
@@ -117,6 +122,7 @@ public class CarService implements ICarService {
         // check가 false인 경우에만 list에 저장
         for (CarDTO carDTO : updateCarListVo.getCarDtoList()){
             if (carDTO.isCheck() == false) {
+                carDTO.setUserId(updateCarListVo.getUserId());
                 list.add(carDTO);
             }
         }
@@ -130,11 +136,11 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public boolean dropCar() throws Exception {
+    public boolean dropCar(UserDTO userDTO) throws Exception {
 
         boolean res;
 
-        res = iCarMapper.dropCar();
+        res = iCarMapper.dropCar(userDTO);
 
         return res;
     }

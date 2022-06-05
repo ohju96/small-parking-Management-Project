@@ -9,4 +9,6 @@ import java.util.List;
 public class UpdateCarListVo {
 
     private List<CarDTO> carDtoList;
+
+    private String userId;
 }

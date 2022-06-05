@@ -29,12 +29,9 @@ public class UserDTO {
         this.userAddr = userAddr;
     }
 
-    public UserDTO(Long userNo,
-                   String userId,
-                   String userPw) {
-        this.userNo = userNo;
+    public UserDTO(
+                   String userId) {
         this.userId = userId;
-        this.userPw = userPw;
     }
 }
 

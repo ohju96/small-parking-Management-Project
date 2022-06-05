@@ -118,6 +118,7 @@
                     <form th:action="@{/myInfo/updateInfo}" th:object="${userVo}" method="post">
 
                         <input th:type="hidden" th:value="${session.userDTO.userNo}" name="userNo" id="userNo">
+
                         <div class="input-group input-group-lg">
                             <span class="input-group-text" id="inputGroup-sizing-lg1">이름</span>
                             <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"

@@ -95,6 +95,8 @@
                                    placeholder="주민, 방문자, 무단" id="sort" th:field="*{sort}" >
                         </div>
 
+                        <input th:type="hidden" th:value="${session.userDTO.userId}" name="userId" id="userId">
+
                         <br>
 
                         <div class="d-flex justify-content-end mb-4"><button type="submit" class="btn btn-primary text-uppercase">등록</button></div>

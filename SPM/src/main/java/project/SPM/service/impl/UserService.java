@@ -96,14 +96,7 @@ public class UserService implements IUserService {
 
         // 로그인을 위해 ID, PW 조회
         res = checkLogin(userEntity);
-/*        boolean id = iUserRepository.findById(userEntity.getUserId());
-        boolean pw = iUserRepository.findByPw(userEntity.getUserPw());
 
-        if (id == true || pw == true) {
-            return true;
-        } else {
-            return false;
-        }*/
         return res;
     }
 
@@ -131,7 +124,7 @@ public class UserService implements IUserService {
     @Override
     public UserEntity loginSession(UserDTO userDTO) throws Exception {
 
-        List<UserEntity> userDTOList = iUserRepository.findAll();
+        List<UserEntity> userDTOList = iUserRepository.findAllByUserId(userDTO.getUserId());
         UserEntity userEntity = userDTOList.get(0);
 
         return userEntity;

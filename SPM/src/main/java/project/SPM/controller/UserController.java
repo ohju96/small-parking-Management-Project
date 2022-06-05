@@ -100,7 +100,13 @@ public class UserController {
 
     // 로그인 페이지 - 로직 처리
     @PostMapping("/logIn/page")
-    public String login(@ModelAttribute UserVo userVo, HttpServletRequest request) throws Exception {
+    public String login(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpSession session) throws Exception {
+
+        // 로그인 전에 세션 삭제
+        session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); //세션에 있는 정보가 싹 날라간다.
+        }
 
         UserDTO userDTO = new UserDTO(
                 userVo.getUserNo(),
@@ -116,7 +122,7 @@ public class UserController {
 
         if (res == true) {
             UserEntity dto = userService.loginSession(userDTO);
-            HttpSession session = request.getSession();
+            session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_MEMBER, dto);
         } else {
             return "user/login";
@@ -127,11 +133,16 @@ public class UserController {
 
     // 로그아웃 로직 처리
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate(); //세션에 있는 정보가 싹 날라간다.
-        }
+    public String logout(HttpServletRequest request, HttpSession session) {
+
+        session.invalidate();
+
+
+//        HttpSession session = request.getSession(false);
+//        if (session != null) {
+//            session.invalidate(); //세션에 있는 정보가 싹 날라간다.
+//        }
+
         return "redirect:/user/logIn";
     }
 

@@ -6,8 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import project.SPM.Entity.UserEntity;
 import project.SPM.dto.CarDTO;
 import project.SPM.dto.OcrDTO;
+import project.SPM.dto.UserDTO;
 import project.SPM.dto.ViewCarDTO;
 import project.SPM.service.ICarListService;
 import project.SPM.service.ICheckService;
@@ -18,6 +20,7 @@ import project.SPM.vo.CheckListVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.List;
 
@@ -41,9 +44,13 @@ public class CarCheckController {
 
     // 터치 체크 로직 페이지
     @GetMapping("/touchCheck")
-    public String touchCheck(Model model) throws Exception {
+    public String touchCheck(Model model, HttpSession session) throws Exception {
 
-        List<CarDTO> carDTOList = iCarListService.getFullCarList();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        UserDTO userDTO = new UserDTO(userEntity.getUserId());
+
+        List<CarDTO> carDTOList = iCarListService.getFullCarList(userDTO);
 
         CheckListVo checkListVo = new CheckListVo();
         checkListVo.setCarDtoList(carDTOList);
@@ -56,11 +63,15 @@ public class CarCheckController {
 
     // 터치 체크 저장 로직
     @PostMapping("/touchCheckSave")
-     public String touchCheckSave(@ModelAttribute CheckListVo checkListVo) throws Exception {
+     public String touchCheckSave(@ModelAttribute CheckListVo checkListVo, HttpSession session) throws Exception {
 
         log.debug("### CarCheckController touchCheckSave Start! : {}", this.getClass().getName());
 
         log.debug("### View에서 받아온 checkListVo : {}", checkListVo);
+
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        checkListVo.setUserId(userEntity.getUserId());
 
         boolean res = iCheckService.saveTouchCheck(checkListVo);
 
@@ -125,9 +136,13 @@ public class CarCheckController {
 
     // 완료 항목 보기
     @GetMapping("/viewCheck")
-    public String viewCheck(Model model) throws Exception {
+    public String viewCheck(Model model, HttpSession session) throws Exception {
 
-        List<ViewCarDTO> viewCarDTOList = iCheckService.viewCheck();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        UserDTO userDTO = new UserDTO(userEntity.getUserId());
+
+        List<ViewCarDTO> viewCarDTOList = iCheckService.viewCheck(userDTO);
 
         model.addAttribute(viewCarDTOList);
 

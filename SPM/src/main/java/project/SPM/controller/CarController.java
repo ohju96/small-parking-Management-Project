@@ -8,12 +8,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import project.SPM.Entity.UserEntity;
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.SessionIdDTO;
+import project.SPM.dto.UserDTO;
 import project.SPM.service.ICarListService;
 import project.SPM.service.ICarService;
 import project.SPM.vo.AddCarVo;
 import project.SPM.vo.UpdateCarListVo;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
@@ -54,7 +58,8 @@ public class CarController {
                 addCarVo.getPhoneNumber(),
                 addCarVo.getCarNumber(),
                 addCarVo.getAddress(),
-                addCarVo.getSort()
+                addCarVo.getSort(),
+                addCarVo.getUserId()
         );
 
         log.debug("#### Controller CarDTO : {}", carDTO);
@@ -85,18 +90,28 @@ public class CarController {
 
     // 차량 관리 페이지 - 엑셀 등록 기본 화면 - 엑셀 등록 로직
     @PostMapping("/csv")
-    public String addCsvCar(@RequestParam(value = "fileUpload")MultipartFile mf) throws Exception{
+    public String addCsvCar(@RequestParam(value = "fileUpload")MultipartFile mf, HttpSession session) throws Exception{
 
-        iCarService.createCar(mf);
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        SessionIdDTO sessionIdDTO = new SessionIdDTO();
+        sessionIdDTO.setUserId(userEntity.getUserId());
+        sessionIdDTO.setMf(mf);
+
+        iCarService.createCar(sessionIdDTO);
 
         return "carManagement/carManagement";
     }
 
     // 차량 관리 페이지 - 차량 수정 기본 화면
     @GetMapping("/updateCar")
-    public String updateCarPage(Model model) throws Exception {
+    public String updateCarPage(Model model, HttpSession session) throws Exception {
 
-        List<CarDTO> carDTOList = iCarListService.getFullCarList();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        UserDTO userDTO = new UserDTO(userEntity.getUserId());
+
+        List<CarDTO> carDTOList = iCarListService.getFullCarList(userDTO);
 
         UpdateCarListVo updateCarListVo = new UpdateCarListVo();
         updateCarListVo.setCarDtoList(carDTOList);
@@ -109,11 +124,16 @@ public class CarController {
 
     // 차량 관리 페이지 - 차량 수정 기본 화면 - 차량 수정 및 삭제 로직
     @PostMapping("/update")
-    public String updateCar(@ModelAttribute UpdateCarListVo updateCarListVo) throws Exception {
+    public String updateCar(@ModelAttribute UpdateCarListVo updateCarListVo, HttpSession session) throws Exception {
 
         log.debug("### CarController updateCar Start : {}", this.getClass().getName());
 
         log.debug("### View에서 받아온 updateCarListVo : {}", updateCarListVo);
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        UserDTO userDTO = new UserDTO(userEntity.getUserId());
+
+        updateCarListVo.setUserId(userDTO.getUserId());
 
         boolean res = iCarService.updateCar(updateCarListVo);
 
@@ -139,9 +159,13 @@ public class CarController {
 
     // 차량 데이터 초기화 로직
     @PostMapping("/dropCar")
-    public String dropCar() throws Exception {
+    public String dropCar(HttpSession session) throws Exception {
 
-        boolean res = iCarService.dropCar();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        UserDTO userDTO = new UserDTO(userEntity.getUserId());
+
+        boolean res = iCarService.dropCar(userDTO);
 
         if (res == true) {
 

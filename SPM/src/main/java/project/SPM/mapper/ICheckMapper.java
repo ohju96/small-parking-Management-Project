@@ -1,6 +1,7 @@
 package project.SPM.mapper;
 
 import project.SPM.dto.CarDTO;
+import project.SPM.dto.UserDTO;
 import project.SPM.dto.ViewCarDTO;
 
 import java.util.List;
@@ -14,6 +15,6 @@ public interface ICheckMapper {
     List<CarDTO> saveImgCheck() throws Exception;
 
     // 완료 항목 보기
-    List<ViewCarDTO> viewCheck() throws Exception;
+    List<ViewCarDTO> viewCheck(UserDTO userDTO) throws Exception;
 
 }
