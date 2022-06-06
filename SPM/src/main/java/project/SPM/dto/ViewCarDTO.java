@@ -8,4 +8,5 @@ import java.util.List;
 public class ViewCarDTO {
 
     private String CheckCollectionName;
+    private int id;
 }

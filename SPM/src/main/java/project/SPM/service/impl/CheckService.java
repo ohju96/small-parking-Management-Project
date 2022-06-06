@@ -105,4 +105,16 @@ public class CheckService implements ICheckService {
 
         return viewCarDTOList;
     }
+
+    @Override
+    public List<CarDTO> detail(String checkCollectionName) throws Exception {
+
+        List<CarDTO> carDTOList = iCheckMapper.detail(checkCollectionName);
+
+        if (carDTOList == null) {
+            carDTOList = new LinkedList<>();
+        }
+
+        return carDTOList;
+    }
 }

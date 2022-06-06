@@ -14,6 +14,7 @@ public class CarDTO {
     private String sort;
     private boolean check;
 
+    private String checks;
     private String userId;
 
     public CarDTO(String name, String phoneNumber, String carNumber, String address, String sort) {

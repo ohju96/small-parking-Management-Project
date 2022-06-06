@@ -17,4 +17,7 @@ public interface ICheckMapper {
     // 완료 항목 보기
     List<ViewCarDTO> viewCheck(UserDTO userDTO) throws Exception;
 
+    // 완료 항목 상세 보기
+    List<CarDTO> detail(String checkCollectionName) throws Exception;
+
 }
