@@ -75,11 +75,13 @@ public class CheckMapper implements ICheckMapper {
 
         List<ViewCarDTO> viewCarDTOList = new LinkedList<>();
 
+        int i = 1;
         for (String colNm : mongo.getCollectionNames()) {
 
             if (colNm == null) {
                 colNm = new String();
             }
+
 
             // 컬렉션 명을 _ 기준으로 잘라 String 배열에 담는다.
             String res[] = colNm.split("_");
@@ -91,12 +93,54 @@ public class CheckMapper implements ICheckMapper {
             // 두 String을 비교하여 같을 시 리스트에 담아준다.
             if (result.equals(sessionId)) {
 
+
                 ViewCarDTO viewCarDTO = new ViewCarDTO();
                 viewCarDTO.setCheckCollectionName(colNm);
+                viewCarDTO.setId(i);
+                i++;
                 viewCarDTOList.add(viewCarDTO);
             }
         }
         return viewCarDTOList;
 
+    }
+
+    @Override
+    public List<CarDTO> detail(String checkCollectionName) throws Exception {
+
+        LinkedList<CarDTO> carDTOList = new LinkedList<>();
+
+        MongoCollection<Document> collection = mongo.getCollection(checkCollectionName);
+
+        Document projection = new Document();
+        projection.append("_id", 0);
+
+        FindIterable<Document> documents = collection.find().projection(projection);
+
+        for (Document doc : documents) {
+            if (doc == null) {
+                doc = new Document();
+            }
+
+
+            CarDTO carDTO = new CarDTO();
+
+            carDTO.setAddress(doc.getString("address"));
+            carDTO.setCarNumber(doc.getString("carNumber"));
+//            carDTO.setCheck(doc.getBoolean("check"));
+            carDTO.setName(doc.getString("name"));
+            carDTO.setPhoneNumber(doc.getString("phoneNumber"));
+            carDTO.setSort(doc.getString("sort"));
+
+            if (doc.getBoolean("check") == true) {
+                carDTO.setChecks("주차");
+            } else {
+                carDTO.setChecks("미주차");
+            }
+
+            carDTOList.add(carDTO);
+        }
+
+        return carDTOList;
     }
 }

@@ -150,8 +150,15 @@ public class CarCheckController {
     }
 
     // 완료 항목 상세 보기
-    @PostMapping("/viewCheck/{}")
-    public String viewCheck() throws Exception {
-        return "redirect: carCheck/viewCheck";
+    @GetMapping("/detail/{checkCollectionName}")
+    public String detail(@PathVariable("checkCollectionName") String checkCollectionName, Model model) throws Exception {
+
+        log.debug("### id : {}", checkCollectionName);
+
+        List<CarDTO> carDTOList = iCheckService.detail(checkCollectionName);
+
+        model.addAttribute(carDTOList);
+
+        return "/carCheck/detail";
     }
 }

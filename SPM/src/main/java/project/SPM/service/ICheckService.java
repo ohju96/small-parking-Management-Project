@@ -1,5 +1,6 @@
 package project.SPM.service;
 
+import project.SPM.dto.CarDTO;
 import project.SPM.dto.OcrDTO;
 import project.SPM.dto.UserDTO;
 import project.SPM.dto.ViewCarDTO;
@@ -17,4 +18,6 @@ public interface ICheckService {
 
     // 완료 항목 보여주기
     List<ViewCarDTO> viewCheck(UserDTO userDTO) throws Exception;
+
+    List<CarDTO> detail(String checkCollectionName) throws Exception;
 }
