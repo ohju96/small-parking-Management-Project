@@ -1,8 +1,10 @@
 package project.SPM.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class UserDTO {
 
     private Long userNo;
@@ -33,5 +35,6 @@ public class UserDTO {
                    String userId) {
         this.userId = userId;
     }
+
 }
 

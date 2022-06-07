@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import project.SPM.Entity.UserEntity;
+import project.SPM.dto.MailDTO;
 import project.SPM.dto.UserDTO;
 import project.SPM.validator.UserValidator;
 import project.SPM.vo.UserVo;
@@ -38,7 +39,7 @@ public class UserController {
     // 인덱스 페이지
     @GetMapping("/index")
     private String index(){
-        return "index";
+        return "redirect:/index";
     }
 
     // 회원 가입 페이지 - 기본 화면
@@ -137,13 +138,27 @@ public class UserController {
 
         session.invalidate();
 
-
-//        HttpSession session = request.getSession(false);
-//        if (session != null) {
-//            session.invalidate(); //세션에 있는 정보가 싹 날라간다.
-//        }
-
         return "redirect:/user/logIn";
     }
 
+    @GetMapping("/findPw")
+    public String changePwPage() {
+
+        return "user/findPw";
+    }
+
+    @PostMapping("/findPw")
+    public String changePw(HttpServletRequest request) throws Exception {
+
+        String userEmail = request.getParameter("address");
+        log.debug("### request.getParameter : {}", request.getParameter("address")); //t
+        log.debug("### userEmail : {}", userEmail); //t
+
+        MailDTO mailDTO = userService.findPw(userEmail);
+        log.debug("### mailDTO : {}", mailDTO);
+
+        userService.sendMail(mailDTO);
+
+        return "redirect:/logIn";
+    }
 }

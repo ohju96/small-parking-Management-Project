@@ -2,8 +2,11 @@ package project.SPM.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import project.SPM.Entity.UserEntity;
+import project.SPM.dto.MailDTO;
 import project.SPM.dto.UserDTO;
 import project.SPM.repository.IUserRepository;
 import project.SPM.repository.impl.UserRepository;
@@ -19,6 +22,8 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final IUserRepository iUserRepository;
+
+    private final MailSender mailSender;
 
     // 회원 가입 로직
     @Override
@@ -128,5 +133,70 @@ public class UserService implements IUserService {
         UserEntity userEntity = userDTOList.get(0);
 
         return userEntity;
+    }
+
+    // 비밀번호찾기
+    @Override
+    public MailDTO findPw(String userEmail) throws Exception {
+
+        List<UserEntity> userDTOList = iUserRepository.findAllByUserEmail(userEmail);
+
+        MailDTO mailDTO = new MailDTO();
+
+        if (userDTOList.get(0).getUserEmail().equals(userEmail)) {
+            log.debug("### if start");
+            String result = changePw();
+
+            UserEntity userEntity = UserEntity.builder()
+                    .userNo(userDTOList.get(0).getUserNo())
+                    .userName(userDTOList.get(0).getUserName())
+                    .userPn(userDTOList.get(0).getUserPn())
+                    .userEmail(userDTOList.get(0).getUserEmail())
+                    .userId(userDTOList.get(0).getUserId())
+                    .userPw(EncryptUtil.encHashSHA256(result))
+                    .userAddr(userDTOList.get(0).getUserAddr())
+                    .build();
+
+            iUserRepository.save(userEntity);
+
+            mailDTO.setAddress(userEmail);
+            mailDTO.setTitle("[소경관] : 임시비밀번호");
+            mailDTO.setMessage("임시비밀번호 : [ " + result + " ]");
+        }
+
+        return mailDTO;
+    }
+
+    public static String changePw() {
+
+        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+        String res = "";
+
+        // 문자 배열 길이의 값을 랜덤으로 10개를 뽑아 구문을 작성함
+        int idx = 0;
+        for (int i = 0; i < 10; i++) {
+            idx = (int) (charSet.length * Math.random());
+            res += charSet[idx];
+        }
+        return res;
+    }
+
+    @Override
+    public void sendMail(MailDTO mailDTO) throws Exception {
+
+        log.debug("### sendMail start");
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mailDTO.getAddress());
+        message.setSubject(mailDTO.getTitle());
+        message.setText(mailDTO.getMessage());
+        message.setFrom("testohju@gmail.com");
+        message.setReplyTo("testohju@gmail.com");
+        mailSender.send(message);
+
+        log.debug("### sendMail END");
+
     }
 }

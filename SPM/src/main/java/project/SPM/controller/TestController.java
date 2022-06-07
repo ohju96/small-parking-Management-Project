@@ -25,9 +25,6 @@ public class TestController {
         return "management/management";
     }
 
-    @GetMapping("/user/changePassword")
-    public String test8() {
-        return "user/changePassword";
-    }
+
 
 }
