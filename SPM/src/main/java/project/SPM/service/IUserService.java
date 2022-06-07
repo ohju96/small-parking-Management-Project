@@ -1,6 +1,7 @@
 package project.SPM.service;
 
 import project.SPM.Entity.UserEntity;
+import project.SPM.dto.MailDTO;
 import project.SPM.dto.UserDTO;
 
 import java.util.List;
@@ -14,5 +15,9 @@ public interface IUserService {
     boolean login(UserDTO userDTO) throws Exception;
 
     UserEntity loginSession(UserDTO userDTO) throws Exception;
+
+    MailDTO findPw(String userEmail) throws Exception;
+
+    void sendMail(MailDTO mailDTO) throws Exception;
 
 }
