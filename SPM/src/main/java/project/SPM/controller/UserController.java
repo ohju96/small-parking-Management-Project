@@ -39,7 +39,7 @@ public class UserController {
     // 인덱스 페이지
     @GetMapping("/index")
     private String index(){
-        return "redirect:/index";
+        return "/index";
     }
 
     // 회원 가입 페이지 - 기본 화면
