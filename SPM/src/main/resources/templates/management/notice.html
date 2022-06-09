@@ -23,6 +23,7 @@
             }
         </style>
 
+
     </head>
     <body>
         <!-- Navigation-->
@@ -62,19 +63,14 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
-                    <b>모든 주민에게 안내 이메일이 전송됩니다.</b>
+                    <b>모든 주민에게 안내 문자가 전송됩니다.</b>
 
                     <form th:action="@{/management/notice}" th:object="${noticeDTO}" th:method="post">
 
                         <div class="form-floating">
-                            <input th:type="text" class="form-control" id="title" th:field="*{title}" th:errorclass="field-error" placeholder="Enter your message here..." th:class="form-control" data-sb-validations="required" />
-                            <label for="title" th:text="#{label.noticeDTO.title}">제목</label>
-                            <div th:class="field-error" th:errors="*{title}" class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
-                        </div>
-                        <div class="form-floating">
-                            <textarea th:type="text" th:field="*{content}" th:errorclass="field-error" th:class="form-control" class="form-control" id="content" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></textarea>
-                            <label for="content" th:text="#{label.noticeDTO.content}">내용</label>
-                            <div th:class="field-error" th:errors="*{content}" class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                            <textarea th:type="text" th:field="*{message}" th:errorclass="field-error" th:class="form-control" class="form-control" id="content" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></textarea>
+                            <label for="content" th:text="#{label.noticeDTO.message}">내용</label>
+                            <div th:class="field-error" th:errors="*{message}" class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
                         </div>
 
                         <button class="btn btn-primary text-uppercase" type="submit">전송</button>
