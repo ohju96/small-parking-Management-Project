@@ -20,7 +20,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="management" th:href="@{/}">소경관</a>
+                <a class="navbar-brand" href="management" th:href="@{/user/index}">소경관</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -43,7 +43,10 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
                             <h1>방문자 양식</h1>
-                            <span class="subheading">방문자 정보를 등록할 수 있게 방문자에게 양식을 보내줍니다.</span>
+                            <span class="subheading">방문자 등록을 위해 사전에 미리 등록 양식을 보냅니다.</span>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -55,7 +58,17 @@
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
                     <b>양식을 적어보세요.</b>
+                    <form th:action="@{/management/visitForm}" th:object="${visitorDTO}" th:method="post">
 
+                        <div class="form-floating">
+                            <input th:type="text" th:field="*{visitorPhoneNumber}" th:errorclass="field-error" th:class="form-control" class="form-control" id="visitorPhoneNumber" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></input>
+                            <label for="visitorPhoneNumber" th:text="#{label.visitorDTO.visitorPhoneNumber}">전화번호</label>
+                            <div th:class="field-error" th:errors="*{visitorPhoneNumber}" class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                        </div>
+
+                        <button class="btn btn-primary text-uppercase" type="submit">전송</button>
+
+                    </form>
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Pager-->

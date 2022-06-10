@@ -141,12 +141,13 @@ public class UserController {
         return "redirect:/user/logIn";
     }
 
+    // 비밀번호 찾기 페이지
     @GetMapping("/findPw")
     public String changePwPage() {
-
         return "user/findPw";
     }
 
+    // 비밀번호 찾기 로직
     @PostMapping("/findPw")
     public String changePw(HttpServletRequest request) throws Exception {
 
@@ -156,6 +157,25 @@ public class UserController {
 
         MailDTO mailDTO = userService.findPw(userEmail);
         log.debug("### mailDTO : {}", mailDTO);
+
+        userService.sendMail(mailDTO);
+
+        return "redirect:/logIn";
+    }
+
+    // 아이디 찾기 페이지
+    @GetMapping("findId")
+    public String findIdPage() {
+        return "user/findId";
+    }
+
+    // 아이디 찾기 로직
+    @PostMapping("findId")
+    public String findId(HttpServletRequest request) throws Exception {
+
+        String userEmail = request.getParameter("address");
+
+        MailDTO mailDTO = userService.findId(userEmail);
 
         userService.sendMail(mailDTO);
 
