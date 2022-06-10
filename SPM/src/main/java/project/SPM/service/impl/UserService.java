@@ -167,6 +167,7 @@ public class UserService implements IUserService {
         return mailDTO;
     }
 
+    // 비밀번호 랜덤 10자리 생성
     public static String changePw() {
 
         char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
@@ -183,6 +184,25 @@ public class UserService implements IUserService {
         return res;
     }
 
+    // 아이디 찾기
+    @Override
+    public MailDTO findId(String userEmail) throws Exception {
+
+        List<UserEntity> userDTOList = iUserRepository.findAllByUserEmail(userEmail);
+        MailDTO mailDTO = new MailDTO();
+
+        if (userDTOList.get(0).getUserEmail().equals(userEmail)) {
+            log.debug("### if start");
+
+            mailDTO.setAddress(userEmail);
+            mailDTO.setTitle("[소경관] : 아이디 찾기");
+            mailDTO.setMessage("아이디 : [ " + userDTOList.get(0).getUserId() + " ]");
+        }
+
+        return mailDTO;
+    }
+
+    // 메일 보내기
     @Override
     public void sendMail(MailDTO mailDTO) throws Exception {
 
@@ -199,4 +219,5 @@ public class UserService implements IUserService {
         log.debug("### sendMail END");
 
     }
+
 }
