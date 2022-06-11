@@ -23,7 +23,7 @@ public class SmsController {
 
     private final VisitorValidator visitorValidator;
 
-    @InitBinder("visitorValidator")
+    @InitBinder("visitorDTO")
     public void init(WebDataBinder dataBinder) {
         log.debug("### init binder : {}", dataBinder);
         dataBinder.addValidators(visitorValidator);

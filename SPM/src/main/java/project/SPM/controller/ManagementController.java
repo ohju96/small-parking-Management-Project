@@ -10,11 +10,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import project.SPM.Entity.UserEntity;
 import project.SPM.dto.NoticeDTO;
-import project.SPM.dto.UserDTO;
-import project.SPM.dto.VisitorDTO;
 import project.SPM.service.IManagementService;
 import project.SPM.validator.NoticeValidator;
-import project.SPM.validator.VisitorValidator;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,13 +22,11 @@ import javax.servlet.http.HttpSession;
 public class ManagementController {
 
     private final NoticeValidator noticeValidator;
-    private final VisitorValidator visitorValidator;
     private final IManagementService iManagementService;
 
-    @InitBinder
-    public void init(WebDataBinder dataBinder) {
+    @InitBinder("noticeVo")
+    public void initNotice(WebDataBinder dataBinder) {
         log.debug("### init binder : {}", dataBinder);
-        dataBinder.addValidators(visitorValidator);
         dataBinder.addValidators(noticeValidator);
     }
 
