@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
-import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.json.simple.JSONObject;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -31,7 +29,6 @@ public class SmsController {
         dataBinder.addValidators(visitorValidator);
     }
 
-
     @GetMapping("/management/visitForm")
     public ModelAndView visitFormPage(ModelAndView modelAndView) {
         modelAndView.setViewName("management/visitForm");
@@ -53,9 +50,9 @@ public class SmsController {
         log.debug("### visitForm start");
         log.debug("### visitorDTO : {}", visitorDTO.getVisitorPhoneNumber());
 
-        String api_key = "키ID";
-        String api_secret = "키PW";
-        String to = "발신자 연락처";
+        String api_key = "";
+        String api_secret = "";
+        String to = "";
         Message message = new Message(api_key, api_secret);
 
         // 4 params(to, from, type, text) are mandatory. must be filled
@@ -72,15 +69,45 @@ public class SmsController {
             JSONObject obj = (JSONObject) message.send(params);
             log.debug("### obj : {}", obj);
             System.out.println(obj.toString());
+
+            JSONObject jsonObject = (JSONObject) obj;
+
+            log.debug("### jsonObject : {}", (JSONObject) obj);
+            log.debug("### jsonObejct - success_count : {}" , (Long) jsonObject.get("success_count"));
+
+            // {"group_id":"dkdlelrkqt","success_count":1,"error_count":0}
+            // 리턴 값 중 'success_count'의 값이 1로 오면 전송이 성공인 것을 if문으로 msg에 담아준다.
+            boolean isEnd = false;
+
+            if ((Long) jsonObject.get("success_count") == 1) {
+                mav.addObject("msg", "전송 성공");
+                mav.addObject("url", "/management/management");
+                isEnd = true;
+            } else if ((Long) jsonObject.get("success_count") == null) {
+                mav.addObject("msg", "전송 실패 - null");
+                mav.addObject("url", "/management/management");
+                isEnd = true;
+            }else {
+                mav.addObject("msg", "전송 실패");
+                mav.addObject("url", "/management/management");
+                isEnd = true;
+            }
+
+            if (isEnd) {
+                mav.setViewName("/redirect");
+                return mav;
+            }
+
         } catch (CoolsmsException e) {
             System.out.println(e.getMessage());
             System.out.println(e.getCode());
+        } finally {
+
         }
+        mav.addObject("msg", "Sms 전송 기능이 종료되었습니다.");
+        mav.addObject("url", "/management/management");
+        mav.setViewName("/redirect");
 
-
-
-        mav.setViewName("management/management");
-        mav.addObject("msg", "전송 완료");
         return mav;
     }
 

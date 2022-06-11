@@ -85,7 +85,9 @@ public class UserController {
                 return "user/regUser";
             }
 
-            return  "/user/logIn";
+            model.addAttribute("msg", "회원가입 성공");
+            model.addAttribute("url", "/user/logIn");
+            return  "/redirect";
         }
 
     }
@@ -101,7 +103,7 @@ public class UserController {
 
     // 로그인 페이지 - 로직 처리
     @PostMapping("/logIn/page")
-    public String login(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpSession session) throws Exception {
+    public String login(@ModelAttribute UserVo userVo, HttpServletRequest request, HttpSession session, Model model) throws Exception {
 
         // 로그인 전에 세션 삭제
         session = request.getSession(false);
@@ -129,7 +131,9 @@ public class UserController {
             return "user/login";
         }
 
-        return "redirect:/user/index";
+        model.addAttribute("msg", "로그인 성공");
+        model.addAttribute("url", "/user/index");
+        return "/redirect";
     }
 
     // 로그아웃 로직 처리

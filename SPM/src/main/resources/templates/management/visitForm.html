@@ -15,6 +15,14 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link th:href="@{/bootstrap/css/styles.css}" rel="stylesheet" />
+
+        <style>
+            .field-error {
+                border-color: #dc3545;
+                color: #dc3545;
+            }
+        </style>
+
     </head>
     <body>
         <!-- Navigation-->
@@ -57,13 +65,14 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
-                    <b>양식을 적어보세요.</b>
+                    <b>방문자 휴대폰 번호를 입력하세요.</b>
                     <form th:action="@{/management/visitForm}" th:object="${visitorDTO}" th:method="post">
 
-                        <div class="form-floating">
-                            <input th:type="text" th:field="*{visitorPhoneNumber}" th:errorclass="field-error" th:class="form-control" class="form-control" id="visitorPhoneNumber" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></input>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg4">전화번호</span>
+                            <input th:type="text" th:field="*{visitorPhoneNumber}" th:errorclass="field-error" th:class="form-control" id="visitorPhoneNumber" placeholder="전화번호" />
                             <label for="visitorPhoneNumber" th:text="#{label.visitorDTO.visitorPhoneNumber}">전화번호</label>
-                            <div th:class="field-error" th:errors="*{visitorPhoneNumber}" class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                            <div th:class="field-error" th:errors="*{visitorPhoneNumber}">전화번호 입력 오류</div>
                         </div>
 
                         <button class="btn btn-primary text-uppercase" type="submit">전송</button>
