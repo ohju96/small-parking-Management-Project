@@ -58,6 +58,12 @@ public class UserController {
                                 Model model){
 
         try {
+
+            if (bindingResult.hasErrors()) {
+
+                return "user/regUser";
+            }
+
             UserDTO userDTO = new UserDTO(
                     userVo.getUserNo(),
                     userVo.getUserName(),
@@ -68,7 +74,12 @@ public class UserController {
                     userVo.getUserAddr()
             );
 
-            userService.InsertUser(userDTO);
+            String msg = userService.insertUser(userDTO);
+            log.debug("### 리턴 받은 msg 값 : {}", msg);
+
+            model.addAttribute("msg", msg);
+            model.addAttribute("url", "/user/logIn");
+            return  "/redirect";
 
             // 서비스에서 아이디 및 이메일 중복 체크 시 Exception을 던지고 처리
         } catch (IllegalArgumentException httpStatusCodeException) {
@@ -77,18 +88,15 @@ public class UserController {
 
             model.addAttribute("msg", httpStatusCodeException.getMessage());
             model.addAttribute("url", "/user/logIn");
+            return "/redirect";
 
-        } finally {
-
-            if (bindingResult.hasErrors()) {
-
-                return "user/regUser";
-            }
-
-            model.addAttribute("msg", "회원가입 성공");
-            model.addAttribute("url", "/user/logIn");
-            return  "/redirect";
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
+//        model.addAttribute("msg", "회원가입 성공");
+//        model.addAttribute("url", "/user/logIn");
+//        return  "/redirect";
 
     }
 

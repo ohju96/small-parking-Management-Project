@@ -27,9 +27,10 @@ public class UserService implements IUserService {
 
     // 회원 가입 로직
     @Override
-    public void InsertUser(UserDTO userDTO) throws Exception {
+    public String insertUser(UserDTO userDTO) throws Exception {
 
-        log.info(this.getClass().getName() + "로그인 처리 Controller -> Service");
+        log.debug("### InsertUser 실행");
+
 
         /**
          *  1-1. builder pattern 활용하여 Entity에 값을 세팅
@@ -50,11 +51,21 @@ public class UserService implements IUserService {
          *  1-2. ID 및 Email 중복 체크
          */
         boolean res = validateDuplicateUser(userEntity);
+        log.debug("### 중복 체크 후 res : {}", res);
+
+        String msg;
 
         if (res == false) {
             // 중복 체크 완료 후 회원 가입 로직
             iUserRepository.save(userEntity);
+            msg = "회원가입에 성공했습니다.";
+        } else {
+            msg = "중복된 정보가 있습니다.";
         }
+
+        log.debug("### msg : {}", msg);
+
+        return msg;
     }
 
     private boolean validateDuplicateUser(UserEntity userEntity) {
