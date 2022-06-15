@@ -1,27 +1,41 @@
 package project.SPM.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.codehaus.plexus.util.Base64;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import project.SPM.Entity.UserEntity;
 import project.SPM.dto.CarDTO;
-import project.SPM.dto.OcrDTO;
 import project.SPM.dto.UserDTO;
 import project.SPM.dto.ViewCarDTO;
 import project.SPM.service.ICarListService;
 import project.SPM.service.ICheckService;
-import project.SPM.util.CmmUtil;
 import project.SPM.util.DateUtil;
 import project.SPM.util.FileUtil;
 import project.SPM.vo.CheckListVo;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
-import java.io.File;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.*;
 import java.util.List;
 
 @Slf4j
@@ -33,7 +47,12 @@ public class CarCheckController {
     private final ICarListService iCarListService;
     private final ICheckService iCheckService;
 
+    private final RestTemplate restTemplate;
+
     final private String FILE_UPLOAD_SAVE_PATH = "c:/upload";
+
+    @Value("${kakao.appkey}")
+    private String appkey;
 
     // 체크 페이지
     @GetMapping("/carCheck")
@@ -95,15 +114,16 @@ public class CarCheckController {
         return "carCheck/imgCheck";
     }
 
-    // 이미지 체크 로직
+    // 1111################################# flask test Start
+
     @PostMapping("/imgCheck")
-    public String image(HttpServletRequest request, HttpServletResponse response, Model model,
-                        @RequestParam(value = "fileUpload") MultipartFile mf) throws Exception {
+    @ResponseBody
+    public void image(@RequestParam(value = "fileUpload") MultipartFile mf) throws IOException {
 
-        String res = "";
+        log.debug("1### imgCHeck Controller Start");
 
-        String originalFilename = mf.getOriginalFilename();
-        String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1, originalFilename.length()).toLowerCase();
+        String orginalFileName = mf.getOriginalFilename();
+        String ext = orginalFileName.substring(orginalFileName.lastIndexOf(".") + 1, orginalFileName.length()).toLowerCase();
 
         if (ext.equals("jpeg") || ext.equals("jpg") || ext.equals("gif") || ext.equals("png")) {
 
@@ -111,28 +131,187 @@ public class CarCheckController {
             String saveFilePath = FileUtil.mkdirForDate(FILE_UPLOAD_SAVE_PATH);
             String fullFileInfo = saveFilePath + "/" + saveFileName;
 
+            log.debug("2### fullFileInfo : {}", fullFileInfo);
+
+            // 파일 저장
             mf.transferTo(new File(fullFileInfo));
+            log.debug("3### 파일 저장 완료");
 
-            OcrDTO ocrDTO = new OcrDTO();
-            ocrDTO.setFileName(saveFileName);
-            ocrDTO.setFilePath(saveFilePath);
+            // 헤더 생성 및 저장
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", "application/json");
+//            headers.add("Content-Type", "multipart/form-data");
 
-            OcrDTO dto = iCheckService.saveImgCheck(ocrDTO);
+            // 바디 생성 및 저장
+            Map<String, Object> body = new HashMap<>();
+            body.put("image_path", fullFileInfo);
+            body.put("appkey", appkey);
+            log.debug("4### body : {}", body);
 
-            if (dto == null){
-                dto = new OcrDTO();
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+            log.debug("5### entity : {}", entity);
+
+            // 전송 & 받기 - Map 타입으로
+            ResponseEntity<Map> result = restTemplate.exchange("http://127.0.0.1:5000/carCheck/imgCheck", HttpMethod.GET, entity, Map.class);
+            log.debug("6### result : {}", result);
+
+            // Map 바디 까서 key값으로 list에 넣기
+            List<String> list = (List<String>) result.getBody().get("recognition_words");
+            log.debug("7### list : {}", list);
+
+            for (String value : list) {
+                log.debug("8### value : {}", value);
             }
 
-            res = CmmUtil.nvl(dto.getTextFromImage());
-            log.debug("### ocr 읽은 값 : {}", dto.getTextFromImage());
-            ocrDTO = null;
-            dto = null;
+        }
+        return ;
+    }
+    // 2222################################# flask test End
 
+    public String convertBinary(MultipartFile mf) throws Exception {
+        String fileName = StringUtils.cleanPath(mf.getOriginalFilename());
+        BufferedImage image = ImageIO.read(mf.getInputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(image, fileName.substring(fileName.lastIndexOf(".") + 1), baos);
+        return new String(Base64.encodeBase64(baos.toByteArray()));
+
+    }
+
+    @RequestMapping("imgOcr")
+    @ResponseBody
+    public void imgOcr(@RequestParam(value = "fileUpload") MultipartFile mf, HttpSession session) throws Exception {
+
+        log.debug("### start");
+
+        ModelAndView mav = new ModelAndView();
+
+        String orginalFileName = mf.getOriginalFilename();
+        String ext = orginalFileName.substring(orginalFileName.lastIndexOf(".") + 1, orginalFileName.length()).toLowerCase();
+
+        if (ext.equals("jpeg") || ext.equals("jpg") || ext.equals("gif") || ext.equals("png")) {
+
+            String saveFileName = DateUtil.getDateTime("24hhmmss") + "." + ext;
+            String saveFilePath = FileUtil.mkdirForDate(FILE_UPLOAD_SAVE_PATH);
+            String fullFileInfo = saveFilePath + "/" + saveFileName;
+
+            log.debug("### fullFileInfo : {}", fullFileInfo);
+
+            // 파일 저장
+            mf.transferTo(new File(fullFileInfo));
+            log.debug("### 파일 저장 완료");
+
+            // 저장한 파일 읽어오기
+            Resource resource = new FileSystemResource(fullFileInfo);
+
+            // 헤더 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            headers.add("Authorization", appkey);
+            log.debug("### headers : {}", headers);
+
+            // 바디 설정
+            MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
+            form.add("image", resource);
+            log.debug("### form : {}", form);
+
+            // 헤더랑 바디 합치기
+            HttpEntity<MultiValueMap<String, Object>> resquestEntity = new HttpEntity<>(form, headers);
+            log.debug("### resquestEntity : ", resquestEntity);
+
+            // api 서버
+            String serverUrl = "https://dapi.kakao.com/v2/vision/text/ocr";
+
+            // restTemplate에 Post 날리기
+            ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, resquestEntity, String.class);
+            log.debug("### response : {}", response);
+            log.debug("### response.body : {}", response.getBody());
+            log.debug("### response.body.result : {}", response.getBody().toString());
+
+            // 파일 존재 시 파일 삭제
+            File file = new File(fullFileInfo);
+            if(file.exists()) {
+                file.delete();
+            }
+
+            // JSON 파싱
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody());
+            JSONArray resultArray = (JSONArray) jsonObject.get("result");
+
+            // 파싱 데이터 뺴기
+            List<String> list = new ArrayList<String>();
+
+            // list에 JSON -> String으로 타입 변경해서 담기
+            for(int i=0 ; i<resultArray.size() ; i++){
+
+                JSONObject tempObj = (JSONObject) resultArray.get(i);
+                System.out.println(""+(i+1)+"번호 : "+tempObj.get("recognition_words"));
+
+                String res[] = tempObj.get("recognition_words").toString().split("\"");
+
+                list.add(res[1]);
+            }
+
+            log.debug("### list : {}", list);
+
+            // 저장한 경우 및 체크 확인
+            String carNumber = null;
+            boolean check = false;
+
+            // 로직 실행 ( 메소드로 만들어서 따로 빼야함)
+            if (list.get(0).length() == 3 || list.get(1).length() == 4) {
+
+                log.debug("### 1번 문항");
+                carNumber = list.get(0) + list.get(1);
+                check = true;
+                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
+
+            } else if (list.get(0).length() == 4 || list.get(1).length() == 4) {
+
+                log.debug("### 2번 문항");
+                carNumber = list.get(0) + list.get(1);
+                check = true;
+                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
+
+
+            } else if (list.get(0).length() == 7) {
+
+                log.debug("### 3번 문항");
+                carNumber = list.get(0);
+                check = true;
+                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
+
+            } else if (list.get(0).length() == 8) {
+
+                log.debug("### 4번 문항");
+                carNumber = list.get(0);
+                check = true;
+                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
+
+            } else if (list.get(1).length() == 8) {
+
+                log.debug("### 5번 문항");
+                carNumber = list.get(1);
+                check = true;
+                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
+
+            } else {
+
+                log.debug("### 6번 문항");
+                mav.addObject("msg", "자동차 번호를 인식할 수 없습니다. 다른 사진으로 시도해주세요.");
+
+            }
+
+            log.debug("### carNumber : {}", carNumber);
+            log.debug("### check : {}", check);
+            
         }
 
+        log.debug("### end");
+       // return mav;
 
-        return "carCheck/imgCheck";
     }
+
 
     // 완료 항목 보기
     @GetMapping("/viewCheck")
