@@ -3,6 +3,8 @@ package project.SPM.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.tess4j.Tesseract;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import project.SPM.dto.CarDTO;
 import project.SPM.dto.OcrDTO;
@@ -26,6 +28,10 @@ public class CheckService implements ICheckService {
     // TODO: 2022-05-16 View에서 받아온 값이 null로 체크되는데 이거 확인해야 한다. 
     private final ICheckMapper iCheckMapper;
     private final ICarListMapper iCarListMapper;
+    private final Environment env;
+
+    @Value("${file.dir}")
+    private String fileDir;
 
     // 직접 체크 로직
     @Override
@@ -69,14 +75,15 @@ public class CheckService implements ICheckService {
 
         File imageFile = new File(CmmUtil.nvl(ocrDTO.getFilePath() + "//" + CmmUtil.nvl(ocrDTO.getFileName())));
 
-
         log.debug("### file : {}", imageFile);
 
         // 테서렉트 객체 생성
         Tesseract instence = new Tesseract();
 
-        // OCR 학습 데이터 경로
-        instence.setDatapath("C:\\git\\SPM\\SPM\\src\\main\\resources\\static\\bootstrap\\tess-data");
+        // OCR 학습 데이터 경로 여러 방법으로 경로를 불러올 수 있다.
+        instence.setDatapath(fileDir);
+//        env.getProperty("file.dir");
+//        instence.setDatapath("C:\\git\\SPM\\SPM\\src\\main\\resources\\static\\bootstrap\\tess-data");
 
         // 한국어 학습 데이터 선택
         instence.setLanguage("kor");
