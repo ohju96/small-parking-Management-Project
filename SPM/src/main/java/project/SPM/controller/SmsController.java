@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,6 +23,15 @@ import java.util.HashMap;
 public class SmsController {
 
     private final VisitorValidator visitorValidator;
+
+    @Value("${sms.key}")
+    private String smsKey;
+
+    @Value("${sms.id}")
+    private String smsId;
+
+    @Value("${sms.phone}")
+    private String smsPhone;
 
     @InitBinder("visitorDTO")
     public void init(WebDataBinder dataBinder) {
@@ -50,9 +60,9 @@ public class SmsController {
         log.debug("### visitForm start");
         log.debug("### visitorDTO : {}", visitorDTO.getVisitorPhoneNumber());
 
-        String api_key = "";
-        String api_secret = "";
-        String to = "";
+        String api_key = smsId;
+        String api_secret = smsKey;
+        String to = smsPhone;
         Message message = new Message(api_key, api_secret);
 
         // 4 params(to, from, type, text) are mandatory. must be filled
@@ -60,7 +70,7 @@ public class SmsController {
         params.put("to", to);
         params.put("from", visitorDTO.getVisitorPhoneNumber());
         params.put("type", "SMS");
-        params.put("text", "양식에 맞게 작성 후 답장 보내주세요.");
+        params.put("text", "양식 : [성함/연락처/차량번호/방문동,호수] 입력 후 보내주세요.");
         params.put("app_version", "test app 1.2"); // application name and version
 
         log.debug("### params : {}", params);

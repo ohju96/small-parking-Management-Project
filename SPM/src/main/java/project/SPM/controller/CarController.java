@@ -30,7 +30,6 @@ public class CarController {
     private final ICarService iCarService;
     private final ICarListService iCarListService;
 
-
     // 차량 관리 페이지 - 기본 화면
     @GetMapping("/carManagement")
     public String addCarPage() {

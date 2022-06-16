@@ -49,7 +49,7 @@ public class CarCheckController {
 
     private final RestTemplate restTemplate;
 
-    final private String FILE_UPLOAD_SAVE_PATH = "c:/upload";
+    final private String FILE_UPLOAD_SAVE_PATH = "/user/image";
 
     @Value("${kakao.appkey}")
     private String appkey;
@@ -114,72 +114,10 @@ public class CarCheckController {
         return "carCheck/imgCheck";
     }
 
-    // 1111################################# flask test Start
-
-    @PostMapping("/imgCheck")
-    @ResponseBody
-    public void image(@RequestParam(value = "fileUpload") MultipartFile mf) throws IOException {
-
-        log.debug("1### imgCHeck Controller Start");
-
-        String orginalFileName = mf.getOriginalFilename();
-        String ext = orginalFileName.substring(orginalFileName.lastIndexOf(".") + 1, orginalFileName.length()).toLowerCase();
-
-        if (ext.equals("jpeg") || ext.equals("jpg") || ext.equals("gif") || ext.equals("png")) {
-
-            String saveFileName = DateUtil.getDateTime("24hhmmss") + "." + ext;
-            String saveFilePath = FileUtil.mkdirForDate(FILE_UPLOAD_SAVE_PATH);
-            String fullFileInfo = saveFilePath + "/" + saveFileName;
-
-            log.debug("2### fullFileInfo : {}", fullFileInfo);
-
-            // 파일 저장
-            mf.transferTo(new File(fullFileInfo));
-            log.debug("3### 파일 저장 완료");
-
-            // 헤더 생성 및 저장
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Content-Type", "application/json");
-//            headers.add("Content-Type", "multipart/form-data");
-
-            // 바디 생성 및 저장
-            Map<String, Object> body = new HashMap<>();
-            body.put("image_path", fullFileInfo);
-            body.put("appkey", appkey);
-            log.debug("4### body : {}", body);
-
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-            log.debug("5### entity : {}", entity);
-
-            // 전송 & 받기 - Map 타입으로
-            ResponseEntity<Map> result = restTemplate.exchange("http://127.0.0.1:5000/carCheck/imgCheck", HttpMethod.GET, entity, Map.class);
-            log.debug("6### result : {}", result);
-
-            // Map 바디 까서 key값으로 list에 넣기
-            List<String> list = (List<String>) result.getBody().get("recognition_words");
-            log.debug("7### list : {}", list);
-
-            for (String value : list) {
-                log.debug("8### value : {}", value);
-            }
-
-        }
-        return ;
-    }
-    // 2222################################# flask test End
-
-    public String convertBinary(MultipartFile mf) throws Exception {
-        String fileName = StringUtils.cleanPath(mf.getOriginalFilename());
-        BufferedImage image = ImageIO.read(mf.getInputStream());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(image, fileName.substring(fileName.lastIndexOf(".") + 1), baos);
-        return new String(Base64.encodeBase64(baos.toByteArray()));
-
-    }
-
+    // 이미지 체크 로직
     @RequestMapping("imgOcr")
     @ResponseBody
-    public void imgOcr(@RequestParam(value = "fileUpload") MultipartFile mf, HttpSession session) throws Exception {
+    public ModelAndView imgOcr(@RequestParam(value = "fileUpload") MultipartFile mf, HttpSession session) throws Exception {
 
         log.debug("### start");
 
@@ -187,6 +125,10 @@ public class CarCheckController {
 
         String orginalFileName = mf.getOriginalFilename();
         String ext = orginalFileName.substring(orginalFileName.lastIndexOf(".") + 1, orginalFileName.length()).toLowerCase();
+
+        // 저장한 경우 및 체크 확인
+        String carNumber = null;
+        boolean check = false;
 
         if (ext.equals("jpeg") || ext.equals("jpg") || ext.equals("gif") || ext.equals("png")) {
 
@@ -254,9 +196,6 @@ public class CarCheckController {
 
             log.debug("### list : {}", list);
 
-            // 저장한 경우 및 체크 확인
-            String carNumber = null;
-            boolean check = false;
 
             // 로직 실행 ( 메소드로 만들어서 따로 빼야함)
             if (list.get(0).length() == 3 || list.get(1).length() == 4) {
@@ -299,17 +238,34 @@ public class CarCheckController {
 
                 log.debug("### 6번 문항");
                 mav.addObject("msg", "자동차 번호를 인식할 수 없습니다. 다른 사진으로 시도해주세요.");
-
             }
 
-            log.debug("### carNumber : {}", carNumber);
-            log.debug("### check : {}", check);
-            
         }
 
-        log.debug("### end");
-       // return mav;
+        log.debug("### carNumber : {}", carNumber);
+        log.debug("### check : {}", check);
 
+        UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
+        UserDTO userDTO = new UserDTO(userEntity.getUserId());
+        log.debug("### userDTO : {}", userDTO);
+
+        int res = iCheckService.saveImageCheck(userDTO, carNumber);
+        log.debug("### res : {}", res);
+
+        if (res == 1) {
+            mav.addObject("msg", "이미지 저장에 성공하였습니다.");
+            mav.addObject("url", "/carCheck/imgCheck");
+        } else if (res == 2){
+            mav.addObject("msg", "이미지 저장에 실패하였습니다. 다시 시도해주세요.");
+            mav.addObject("url", "/carCheck/imgCheck");
+        } else {
+            mav.addObject("msg", "데이터에 없는 차량 번호입니다. 확인 후 다시 시도해주세요.");
+            mav.addObject("url", "/carCheck/imgCheck");
+
+        }
+        mav.setViewName("/redirect");
+        return mav;
     }
 
 

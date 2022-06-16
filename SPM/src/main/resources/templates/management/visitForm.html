@@ -65,14 +65,12 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
-                    <b>방문자 휴대폰 번호를 입력하세요.</b>
+                    <b>방문자 휴대폰 번호 '-' 없이 입력해주세요.</b>
                     <form th:action="@{/management/visitForm}" th:object="${visitorDTO}" th:method="post">
 
                         <div class="input-group input-group-lg">
                             <span class="input-group-text" id="inputGroup-sizing-lg4">전화번호</span>
-                            <input th:type="text" th:field="*{visitorPhoneNumber}" th:errorclass="field-error" th:class="form-control" id="visitorPhoneNumber" placeholder="전화번호" />
-                            <label for="visitorPhoneNumber" th:text="#{label.visitorDTO.visitorPhoneNumber}">전화번호</label>
-                            <div th:class="field-error" th:errors="*{visitorPhoneNumber}">전화번호 입력 오류</div>
+                            <input th:type="text" th:field="*{visitorPhoneNumber}" th:errorclass="field-error" th:class="form-control" id="visitorPhoneNumber" placeholder="01012345678" />
                         </div>
 
                         <button class="btn btn-primary text-uppercase" type="submit">전송</button>

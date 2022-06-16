@@ -7,6 +7,7 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import project.SPM.dto.CarDTO;
 import project.SPM.dto.NoticeDTO;
@@ -24,7 +25,14 @@ public class ManagementService implements IManagementService {
     private final IManagementMapper iManagementMapper;
     private DefaultMessageService messageService;
 
+    @Value("${sms.key}")
+    private String smsKey;
 
+    @Value("${sms.id}")
+    private String smsId;
+
+    @Value("${sms.phone}")
+    private String smsPhone;
 
     @Override
     public void sendNotice(NoticeDTO noticeDTO) throws Exception {
@@ -50,7 +58,7 @@ public class ManagementService implements IManagementService {
 
             // 전화번호 형식은 붙여서 사용
             SmsDTO smsDTO = new SmsDTO();
-            smsDTO.setFrom("발신자번호");
+            smsDTO.setFrom(smsPhone);
             smsDTO.setTo(result);
             smsDTO.setText(noticeDTO.getMessage());
 
@@ -70,7 +78,7 @@ public class ManagementService implements IManagementService {
         log.debug("### sendSms Start");
         log.debug("### sendSms - smsDTO : {}", smsDTO);
 
-        messageService = NurigoApp.INSTANCE.initialize("api키", "api암호",  "https://api.coolsms.co.kr");
+        messageService = NurigoApp.INSTANCE.initialize(smsId, smsKey,  "https://api.coolsms.co.kr");
 
         Message message = new Message();
         message.setFrom(smsDTO.getFrom());

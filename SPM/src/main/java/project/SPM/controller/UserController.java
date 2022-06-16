@@ -35,7 +35,6 @@ public class UserController {
         dataBinder.addValidators(userValidator);
     }
 
-    // TODO: 2022-06-03  인덱스 페이지 띄우기 - Home Controller 와 관계 해석하기 필요
     // 인덱스 페이지
     @GetMapping("/index")
     private String index(){
@@ -53,9 +52,7 @@ public class UserController {
 
     // 회원 가입 페이지 - 로직 처리
     @PostMapping("/regUser/insert")
-    public String InsertRegUser(@Validated @ModelAttribute UserVo userVo,
-                                BindingResult bindingResult,
-                                Model model){
+    public String InsertRegUser(@Validated @ModelAttribute UserVo userVo, BindingResult bindingResult, Model model){
 
         try {
 
@@ -93,10 +90,6 @@ public class UserController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-//        model.addAttribute("msg", "회원가입 성공");
-//        model.addAttribute("url", "/user/logIn");
-//        return  "/redirect";
 
     }
 
@@ -136,7 +129,9 @@ public class UserController {
             session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_MEMBER, dto);
         } else {
-            return "user/login";
+            model.addAttribute("msg", "아이디 및 비밀번호를 다시 확인해주세요.");
+            model.addAttribute("url", "/user/logIn");
+            return "/redirect";
         }
 
         model.addAttribute("msg", "로그인 성공");

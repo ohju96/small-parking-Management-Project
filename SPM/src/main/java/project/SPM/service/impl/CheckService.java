@@ -69,34 +69,50 @@ public class CheckService implements ICheckService {
 
     // 이미지 체크 로직
     @Override
-    public OcrDTO saveImgCheck(OcrDTO ocrDTO) throws Exception {
+    public int saveImageCheck(UserDTO userDTO, String carNumber) throws Exception {
 
-        log.debug("### CheckService Start ");
+        log.debug("### saveImageCheck Start");
 
-        File imageFile = new File(CmmUtil.nvl(ocrDTO.getFilePath() + "//" + CmmUtil.nvl(ocrDTO.getFileName())));
+        try {
 
-        log.debug("### file : {}", imageFile);
+            int res;
 
-        // 테서렉트 객체 생성
-        Tesseract instence = new Tesseract();
+            log.debug("### userDTO.ID : {}", userDTO.getUserId());
 
-        // OCR 학습 데이터 경로 여러 방법으로 경로를 불러올 수 있다.
-        instence.setDatapath(fileDir);
-//        env.getProperty("file.dir");
-//        instence.setDatapath("C:\\git\\SPM\\SPM\\src\\main\\resources\\static\\bootstrap\\tess-data");
+            String colNm = userDTO.getUserId() + "_" + DateUtil.getDateTime("yyyyMMdd hh:mm:ss");
+            log.debug("### colNm : {}", colNm);
 
-        // 한국어 학습 데이터 선택
-        instence.setLanguage("kor");
+            // userDTO id로 CarDTO를 불러온다.
+            CarDTO carDTO = iCheckMapper.checkId(userDTO, carNumber);
+            log.debug("### carDTO : {}", carDTO);
 
-        String result = instence.doOCR(imageFile);
+            if (carDTO == null) {
 
-        log.debug("### Ocr 결과 result : {}", result);
+            }
 
-        ocrDTO.setTextFromImage(result);
-        log.debug("### Ocr 결과 ocrDTO : {}", ocrDTO.getTextFromImage());
-        log.debug("### CheckService End ");
+            // 셋팅한다.
+            if (carDTO.getCarNumber().equals(carNumber)) {
+                carDTO.setCheck(true);
+                log.debug("### carDTO : {}", carDTO);
+                // 데이터를 저장한다.
+                res = iCheckMapper.saveImageCheck(carDTO, colNm);
+                return res;
 
-        return ocrDTO;
+            } else if(carDTO == null){
+                carDTO = new CarDTO();
+                return 3;
+
+            } else {
+                log.debug("### carDTO : {}", carDTO);
+                log.debug("### carNumber : {}", carNumber);
+                return 2;
+
+            }
+
+        } catch (NullPointerException httpStatusCodeException) {
+            return 3;
+        }
+
     }
 
     // 완료 항목 보여주기 로직
@@ -113,6 +129,7 @@ public class CheckService implements ICheckService {
         return viewCarDTOList;
     }
 
+    // 완료 항목 상세 보기
     @Override
     public List<CarDTO> detail(String checkCollectionName) throws Exception {
 

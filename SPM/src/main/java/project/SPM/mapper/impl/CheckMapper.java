@@ -62,11 +62,66 @@ public class CheckMapper implements ICheckMapper {
         return res;
     }
 
+    // 이미지 저장을 위해 userDTO id로 CarDTO를 불러온다.
+    @Override
+    public CarDTO checkId(UserDTO userDTO, String carNumber) throws Exception {
+
+        log.debug("### checkId Start");
+        log.debug("### userDTO : {}", userDTO.getUserId());
+
+        CarDTO carDTO = new CarDTO();
+        if (carDTO == null) {
+            carDTO = new CarDTO();
+        }
+        MongoCollection<Document> col = mongo.getCollection("Car");
+
+        Document query = new Document();
+        query.append("userId", userDTO.getUserId());
+        query.append("carNumber", carNumber);
+
+        Document projection = new Document();
+        projection.append("_id", 0);
+
+        FindIterable<Document> documents = col.find(query).projection(projection);
+
+        for (Document doc : documents) {
+            if (doc == null) {
+                doc = new Document();
+            }
+            carDTO.setName(doc.getString("name"));
+            carDTO.setPhoneNumber(doc.getString("phoneNumber"));
+            carDTO.setCarNumber(doc.getString("carNumber"));
+            carDTO.setAddress(doc.getString("address"));
+            carDTO.setSort(doc.getString("sort"));
+
+        }
+        log.debug("### carDTO : {}", carDTO);
+
+
+        return carDTO;
+    }
+
     // 이미지 저장 로직
     @Override
-    public List<CarDTO> saveImgCheck() throws Exception {
+    public int saveImageCheck(CarDTO carDTO, String colNm) throws Exception {
 
-        return null;
+        int res = 1;
+
+        // 데이터를 저장할 컬렉션 생성
+        mongo.createCollection(colNm);
+
+        MongoCollection<Document> col = mongo.getCollection(colNm);
+
+        if (carDTO == null) {
+            carDTO = new CarDTO();
+            res = 2;
+        }
+
+        col.insertOne(new Document(new ObjectMapper().convertValue(carDTO, Map.class)));
+
+        log.debug("### res : {}", res);
+
+        return res;
     }
 
     // 완료 항목 보기
@@ -105,6 +160,7 @@ public class CheckMapper implements ICheckMapper {
 
     }
 
+    // 상세 항목 보기
     @Override
     public List<CarDTO> detail(String checkCollectionName) throws Exception {
 
