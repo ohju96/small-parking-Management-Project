@@ -20,10 +20,7 @@ public class TestController {
 
 
 
-    @GetMapping("/management/management")
-    public String test2() {
-        return "management/management";
-    }
+
 
 
 

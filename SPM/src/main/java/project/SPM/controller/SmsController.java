@@ -104,7 +104,7 @@ public class SmsController {
             }
 
             if (isEnd) {
-                mav.setViewName("/redirect");
+                mav.setViewName("redirect");
                 return mav;
             }
 
@@ -116,7 +116,7 @@ public class SmsController {
         }
         mav.addObject("msg", "Sms 전송 기능이 종료되었습니다.");
         mav.addObject("url", "/management/management");
-        mav.setViewName("/redirect");
+        mav.setViewName("redirect");
 
         return mav;
     }

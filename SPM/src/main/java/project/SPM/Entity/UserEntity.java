@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 public class UserEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "USER_NO")
     private Long userNo;
 
     @Column(name = "USER_NAME", length = 20)

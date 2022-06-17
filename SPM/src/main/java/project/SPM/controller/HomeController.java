@@ -28,7 +28,7 @@ public class HomeController {
 
         model.addAttribute("member", userDTO);
 
-        return "/index";
+        return "index";
     }
 
 }

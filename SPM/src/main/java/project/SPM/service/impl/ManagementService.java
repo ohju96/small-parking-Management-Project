@@ -34,6 +34,7 @@ public class ManagementService implements IManagementService {
     @Value("${sms.phone}")
     private String smsPhone;
 
+    // Sms 전송하기
     @Override
     public void sendNotice(NoticeDTO noticeDTO) throws Exception {
 

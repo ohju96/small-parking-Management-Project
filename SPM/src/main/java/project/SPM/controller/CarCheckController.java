@@ -264,7 +264,7 @@ public class CarCheckController {
             mav.addObject("url", "/carCheck/imgCheck");
 
         }
-        mav.setViewName("/redirect");
+        mav.setViewName("redirect");
         return mav;
     }
 
@@ -294,6 +294,6 @@ public class CarCheckController {
 
         model.addAttribute(carDTOList);
 
-        return "/carCheck/detail";
+        return "carCheck/detail";
     }
 }

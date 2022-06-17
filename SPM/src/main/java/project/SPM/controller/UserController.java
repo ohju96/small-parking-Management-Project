@@ -38,7 +38,7 @@ public class UserController {
     // 인덱스 페이지
     @GetMapping("/index")
     private String index(){
-        return "/index";
+        return "index";
     }
 
     // 회원 가입 페이지 - 기본 화면
@@ -76,7 +76,7 @@ public class UserController {
 
             model.addAttribute("msg", msg);
             model.addAttribute("url", "/user/logIn");
-            return  "/redirect";
+            return  "redirect";
 
             // 서비스에서 아이디 및 이메일 중복 체크 시 Exception을 던지고 처리
         } catch (IllegalArgumentException httpStatusCodeException) {
@@ -85,7 +85,7 @@ public class UserController {
 
             model.addAttribute("msg", httpStatusCodeException.getMessage());
             model.addAttribute("url", "/user/logIn");
-            return "/redirect";
+            return "redirect";
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -131,12 +131,12 @@ public class UserController {
         } else {
             model.addAttribute("msg", "아이디 및 비밀번호를 다시 확인해주세요.");
             model.addAttribute("url", "/user/logIn");
-            return "/redirect";
+            return "redirect";
         }
 
         model.addAttribute("msg", "로그인 성공");
         model.addAttribute("url", "/user/index");
-        return "/redirect";
+        return "redirect";
     }
 
     // 로그아웃 로직 처리
@@ -178,13 +178,14 @@ public class UserController {
 
     // 아이디 찾기 로직
     @PostMapping("findId")
-    public String findId(HttpServletRequest request) throws Exception {
+    public String findId(HttpServletRequest request, Model model) throws Exception {
 
         String userEmail = request.getParameter("address");
 
         MailDTO mailDTO = userService.findId(userEmail);
 
         userService.sendMail(mailDTO);
+
 
         return "redirect:/logIn";
     }

@@ -30,6 +30,11 @@ public class ManagementController {
         dataBinder.addValidators(noticeValidator);
     }
 
+    @GetMapping("/management")
+    public String managementPage() {
+        return "management/management";
+    }
+
     @GetMapping("/notice")
     public String noticePage(Model model) {
 
@@ -39,12 +44,14 @@ public class ManagementController {
     }
 
     @PostMapping("/notice")
-    public String visitForm(@Validated @ModelAttribute NoticeDTO noticeDTO, BindingResult bindingResult, HttpSession session) throws Exception {
+    public String visitForm(@Validated @ModelAttribute NoticeDTO noticeDTO, BindingResult bindingResult, HttpSession session, Model model) throws Exception {
 
         // TODO: 2022-06-09 메시지 전송 중 글자 수 실시간 카운팅하기 코드 넣기 
         
         if (bindingResult.hasErrors()){
-            return "management/notice";
+            model.addAttribute("msg", "메시지 전송에 실패했습니다. 다시 시도해주세요.");
+            model.addAttribute("url", "/management/notice");
+            return "redirect";
         }
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
@@ -53,9 +60,12 @@ public class ManagementController {
 
         iManagementService.sendNotice(noticeDTO);
 
+        model.addAttribute("msg", "메시지 전송에 성공했습니다.");
+        model.addAttribute("url", "/management/management");
+
         log.debug("### notice : {}", noticeDTO);
 
 
-        return "/management/management";
+        return "redirect";
     }
 }

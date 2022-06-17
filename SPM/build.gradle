@@ -24,7 +24,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-devtools' //view 빌드 기능
-	implementation 'org.ahache.poi:poi:4.1.2' //엑셀 인식
 	implementation 'org.apache.poi:poi-ooxml:4.1.2' //엑셀 인식
 	implementation 'org.springframework.boot:spring-boot-starter-mail' // 메일
 	implementation 'net.sourceforge.tess4j:tess4j:4.4.1' //ocr
