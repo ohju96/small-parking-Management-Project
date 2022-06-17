@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.SPM.Entity.UserEntity;
@@ -14,6 +15,7 @@ import project.SPM.dto.SessionIdDTO;
 import project.SPM.dto.UserDTO;
 import project.SPM.service.ICarListService;
 import project.SPM.service.ICarService;
+import project.SPM.validator.AddCarValidator;
 import project.SPM.vo.AddCarVo;
 import project.SPM.vo.UpdateCarListVo;
 
@@ -29,6 +31,20 @@ public class CarController {
 
     private final ICarService iCarService;
     private final ICarListService iCarListService;
+
+    private final AddCarValidator addCarValidator;
+
+/*    @InitBinder
+    public void init(WebDataBinder dataBinder) {
+        log.info("init binder {}", dataBinder);
+        dataBinder.addValidators(addCarValidator);
+    }*/
+
+    @InitBinder("addCarVo")
+    public void initSameObject(WebDataBinder webDataBinder) {
+        log.info("webDataBinder={}, target={}", webDataBinder, webDataBinder.getTarget());
+        webDataBinder.addValidators(addCarValidator);
+    }
 
     // 차량 관리 페이지 - 기본 화면
     @GetMapping("/carManagement")
@@ -48,9 +64,24 @@ public class CarController {
 
     // 차량 관리 페이지 - 직접 등록 로직
     @PostMapping("/addCar")
-    public String add(@Validated @ModelAttribute AddCarVo addCarVo, BindingResult bindingResult) throws Exception {
+    public String add(@Validated @ModelAttribute AddCarVo addCarVo,BindingResult bindingResult, Model model) throws Exception {
 
         log.debug("#### Controller AddCarVo : {}", addCarVo);
+
+        String msg;
+        String url;
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("msg", "정보를 입력해주세요.");
+            model.addAttribute("url", "/carManagement/addCar");
+            return "redirect";
+        }
+
+        if (!addCarVo.getSort().equals("주민") && !addCarVo.getSort().equals("방문자") && !addCarVo.getSort().equals("무단")) {
+            model.addAttribute("msg", "주민, 방문자, 무단 중 하나를 공백 없이 입력해주세요.");
+            model.addAttribute("url", "/carManagement/addCar");
+            return "redirect";
+        }
 
         CarDTO carDTO = new CarDTO(
                 addCarVo.getName(),
@@ -66,19 +97,21 @@ public class CarController {
         boolean res = iCarService.addCar(carDTO);
 
         log.debug("#### Controller 마지막 로직에서 체크한 res 값 : {}", res);
-        String msg;
-        String url;
+
 
         // TODO: 2022-05-11 로직 추가 해야한다. 
         if (res) {
             msg = "차량 등록을 완료하였습니다.";
-            url = "carManagement/carManagement";
+            url = "/carManagement/carManagement";
         } else {
             msg = "차량 등록에 실패하였습니다. 다시 시도해주세요.";
-            url = "carManagement/addCar";
+            url = "/carManagement/addCar";
         }
 
-        return url;
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", url);
+
+        return "redirect";
     }
 
     // 차량 관리 페이지 - 엑셀 등록 기본 화면
@@ -89,31 +122,64 @@ public class CarController {
 
     // 차량 관리 페이지 - 엑셀 등록 기본 화면 - 엑셀 등록 로직
     @PostMapping("/csv")
-    public String addCsvCar(@RequestParam(value = "fileUpload")MultipartFile mf, HttpSession session) throws Exception{
+    public String addCsvCar(@RequestParam(value = "fileUpload")MultipartFile mf, HttpSession session, Model model) throws Exception{
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+        if (mf == null) {
+            model.addAttribute("msg", "엑셀 파일을 업로드해주세요.");
+            model.addAttribute("url", "/carManagement/addCsvCar");
+            return "redirect";
+        }
+
+
+        String orginalFileName = mf.getOriginalFilename();
+        String ext = orginalFileName.substring(orginalFileName.lastIndexOf(".") + 1, orginalFileName.length()).toLowerCase();
+
+        if (!ext.equals("xlsx")){
+            model.addAttribute("msg", "파일 확장자를 확인해 주세요. 반드시 엑셀 파일을 업로드해주세요.");
+            model.addAttribute("url", "/carManagement/addCsvCar");
+            return "redirect";
+        }
 
         SessionIdDTO sessionIdDTO = new SessionIdDTO();
         sessionIdDTO.setUserId(userEntity.getUserId());
         sessionIdDTO.setMf(mf);
 
-        iCarService.createCar(sessionIdDTO);
+        boolean res = iCarService.createCar(sessionIdDTO);
+        String msg;
+        String url;
+        if (res == true) {
+            msg = "엑셀 등록에 성공하였습니다.";
+        } else {
+            msg = "엑셀 등록에 실패하였습니다.";
+        }
+        url = "/carManagement/carManagement";
 
-        return "carManagement/carManagement";
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", url);
+
+        return "redirect";
     }
 
     // 차량 관리 페이지 - 차량 수정 기본 화면
     @GetMapping("/updateCar")
     public String updateCarPage(Model model, HttpSession session) throws Exception {
 
+        log.debug("### carpage Start");
+
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+        log.debug("### userEntitly {}", userEntity);
 
         UserDTO userDTO = new UserDTO(userEntity.getUserId());
+        log.debug("### userDTO", userDTO);
 
         List<CarDTO> carDTOList = iCarListService.getFullCarList(userDTO);
+        log.debug("### carDTOList {}", carDTOList);
 
         UpdateCarListVo updateCarListVo = new UpdateCarListVo();
         updateCarListVo.setCarDtoList(carDTOList);
+
+        log.debug("updateCarListvo : {}",updateCarListVo);
 
         model.addAttribute("carDTOList", carDTOList);
         model.addAttribute("updateCarListVo", updateCarListVo);
@@ -123,7 +189,7 @@ public class CarController {
 
     // 차량 관리 페이지 - 차량 수정 기본 화면 - 차량 수정 및 삭제 로직
     @PostMapping("/update")
-    public String updateCar(@ModelAttribute UpdateCarListVo updateCarListVo, HttpSession session) throws Exception {
+    public String updateCar(@ModelAttribute UpdateCarListVo updateCarListVo, HttpSession session, Model model) throws Exception {
 
         log.debug("### CarController updateCar Start : {}", this.getClass().getName());
 
@@ -138,16 +204,21 @@ public class CarController {
 
         log.debug("### CarController res : {}", res);
 
+        String msg;
+        String url;
+
         if (res == false) {
-
-            log.debug("### CarController updateCar false End : {}", this.getClass().getName());
-            return "carManagement/updateCar";
+            msg = "차량 수정에 실패하였습니다. 다시 시도해주세요.";
+            url = "/carManagement/updateCar";
         } else {
-
-            log.debug("### CarController updateCar true End : {}", this.getClass().getName());
-            return "carManagement/carManagement";
+            msg = "차량 수정에 성공하였습니다.";
+            url = "/carManagement/carManagement";
         }
 
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", url);
+
+        return "redirect";
     }
 
     // 차량 데이터 전체 삭제 (초기화) 페이지
@@ -158,7 +229,7 @@ public class CarController {
 
     // 차량 데이터 초기화 로직
     @PostMapping("/dropCar")
-    public String dropCar(HttpSession session) throws Exception {
+    public String dropCar(HttpSession session, Model model) throws Exception {
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
 
@@ -166,12 +237,19 @@ public class CarController {
 
         boolean res = iCarService.dropCar(userDTO);
 
+        String msg;
+        String url;
         if (res == true) {
-
-            return "carManagement/carManagement";
+            msg = "데이터 초기화에 성공했습니다.";
+            url = "/carManagement/carManagement";
         } else {
-
-            return "carManagement/dropCar";
+            msg = "데이터 초기화에 실패하였습니다. 다시 시도해주세요.";
+            url = "/carManagement/dropCar";
         }
+
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", url);
+
+        return "redirect";
     }
 }

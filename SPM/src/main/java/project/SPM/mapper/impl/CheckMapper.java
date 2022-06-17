@@ -199,4 +199,14 @@ public class CheckMapper implements ICheckMapper {
 
         return carDTOList;
     }
+
+    @Override
+    public boolean dropUser(List<ViewCarDTO> viewCarDTO) throws Exception {
+
+        for (ViewCarDTO carDTO : viewCarDTO) {
+            mongo.dropCollection(carDTO.getCheckCollectionName());
+        }
+
+        return true;
+    }
 }

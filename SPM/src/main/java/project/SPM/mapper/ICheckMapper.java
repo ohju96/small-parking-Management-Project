@@ -23,4 +23,6 @@ public interface ICheckMapper {
 
     // 이미지 저장 로직
     int saveImageCheck(CarDTO carDTO, String colNm) throws Exception;
+
+    boolean dropUser(List<ViewCarDTO> viewCarDTO) throws Exception;
 }

@@ -15,6 +15,12 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link th:href="@{/bootstrap/css/styles.css}" rel="stylesheet" />
+        <style>
+            .field-error {
+                border-color: #dc3545;
+                color: #dc3545;
+            }
+        </style>
     </head>
     <body>
         <!-- Navigation-->
@@ -61,6 +67,7 @@
                             <span class="input-group-text" id="inputGroup-sizing-lg0">이름</span>
                             <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
                                    placeholder="이름을 입력해 주세요." id="name" th:field="*{name}">
+                            <div th:class="field-error" th:errors="*{name}"></div>
                         </div>
 
                         <br>
@@ -69,6 +76,7 @@
                             <span class="input-group-text" id="inputGroup-sizing-lg1">연락처</span>
                             <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
                                    placeholder="연락처를 입력해 주세요." id="phoneNumber" th:field="*{phoneNumber}">
+                            <div th:class="field-error" th:errors="*{phoneNumber}"></div>
                         </div>
 
                         <br>
@@ -77,6 +85,7 @@
                             <span class="input-group-text" id="inputGroup-sizing-lg2">차량 번호</span>
                             <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
                                    placeholder="차량 번호를 입력해 주세요." id="carNumber" th:field="*{carNumber}">
+                            <div th:class="field-error" th:errors="*{carNumber}"></div>
                         </div>
 
                         <br>
@@ -85,6 +94,7 @@
                             <span class="input-group-text" id="inputGroup-sizing-lg3">상세 주소</span>
                             <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
                                    placeholder="동, 호수만 적어주세요." id="address" th:field="*{address}">
+                            <div th:class="field-error" th:errors="*{address}"></div>
                         </div>
 
                         <br>
@@ -93,6 +103,7 @@
                             <span class="input-group-text" id="inputGroup-sizing-lg4">구분</span>
                             <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
                                    placeholder="주민, 방문자, 무단" id="sort" th:field="*{sort}" >
+                            <div th:class="field-error" th:errors="*{sort}"></div>
                         </div>
 
                         <input th:type="hidden" th:value="${session.userDTO.userId}" name="userId" id="userId">

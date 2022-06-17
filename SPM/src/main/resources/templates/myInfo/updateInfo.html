@@ -149,6 +149,12 @@
                                    placeholder="새로운 비밀번호를 입력해주세요." th:field="*{userPw}" id="pw" >
                         </div>
 
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg7">비밀번호 재확인</span>
+                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
+                                   placeholder="새로운 비밀번호를 입력해주세요." th:field="*{userPwc}" id="pwc" >
+                        </div>
+
                         <input type="hidden" id="sample4_postcode" placeholder="우편번호">
                         <input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
                         <span id="guide" style="color:#999;display:none"></span>
@@ -156,7 +162,7 @@
                         <input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
 
                         <div class="input-group input-group-lg">
-                            <span class="input-group-text" id="inputGroup-sizing-lg6">주소</span>
+                            <span class="input-group-text" id="inputGroup-sizing-lg6">근무지</span>
                             <input type="text" onclick="sample4_execDaumPostcode()" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
                             th:placeholder="${session.userDTO.userAddr}" th:field="*{userAddr}" id="sample4_roadAddress" >
                         </div>

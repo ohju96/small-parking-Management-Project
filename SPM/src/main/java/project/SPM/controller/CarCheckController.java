@@ -82,13 +82,17 @@ public class CarCheckController {
 
     // 터치 체크 저장 로직
     @PostMapping("/touchCheckSave")
-     public String touchCheckSave(@ModelAttribute CheckListVo checkListVo, HttpSession session) throws Exception {
+     public String touchCheckSave(@ModelAttribute CheckListVo checkListVo, HttpSession session, Model model) throws Exception {
 
         log.debug("### CarCheckController touchCheckSave Start! : {}", this.getClass().getName());
 
         log.debug("### View에서 받아온 checkListVo : {}", checkListVo);
 
+        String msg;
+        String url;
+
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
 
         checkListVo.setUserId(userEntity.getUserId());
 
@@ -100,12 +104,17 @@ public class CarCheckController {
 
         if (res == false) {
             log.debug("### CarCheckController touchCheckSave false End! : {}", this.getClass().getName());
-            return "carCheck/touchCheckSave";
+            msg = "저장 실패";
+            url = "/carCheck/touchCheckSave";
         } else {
             log.debug("### CarCheckController touchCheckSave true End! : {}", this.getClass().getName());
-            return "carCheck/carCheck";
+            msg = "저장 완료";
+            url = "/carCheck/carCheck";
         }
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", url);
 
+        return "redirect";
     }
 
     // 이미지 체크 로직 페이지

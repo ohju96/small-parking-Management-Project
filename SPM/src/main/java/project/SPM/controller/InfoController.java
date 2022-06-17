@@ -4,10 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import project.SPM.Entity.UserEntity;
 import project.SPM.dto.UserDTO;
 import project.SPM.service.IInfoService;
+import project.SPM.validator.UserValidator;
 import project.SPM.vo.UserVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +24,14 @@ import javax.servlet.http.HttpSession;
 public class InfoController {
 
     private final IInfoService iInfoService;
+
+    private final UserValidator userValidator;
+
+    @InitBinder
+    public void init(WebDataBinder dataBinder) {
+        log.info("init binder {}", dataBinder);
+        dataBinder.addValidators(userValidator);
+    }
 
     // myInfo 페이지
     @GetMapping("/myInfo")
@@ -36,11 +48,22 @@ public class InfoController {
 
     // 마이페이지 로직
     @PostMapping("updateInfo")
-    public String updateInfo(@ModelAttribute UserVo userVo, HttpSession session) throws Exception {
+    public String updateInfo(@Validated @ModelAttribute UserVo userVo, BindingResult bindingResult, HttpSession session, Model model) throws Exception {
 
         log.debug("### 마이페이지 로직 시작");
 
         log.debug("### 마이페이지 시작 후 UserVo : {}", userVo);
+
+        if (bindingResult.hasErrors()) {
+            return "/myInfo/updateInfo";
+        }
+
+
+        if (!userVo.getUserPw().equals(userVo.getUserPwc())) {
+            model.addAttribute("msg", "비밀번호 체크에 실패하였습니다. 다시 입력해주세요");
+            model.addAttribute("url", "/myInfo/updateInfo");
+            return "redirect";
+        }
 
         UserDTO userDTO = new UserDTO(
                 userVo.getUserNo(),
@@ -57,10 +80,14 @@ public class InfoController {
         boolean res = iInfoService.updateInfo(userDTO);
 
         if (res == true) {
-            return "myInfo/updateInfo";
+            model.addAttribute("내 정보 수정에 성공하였습니다.");
         } else {
-            return "myInfo/updateInfo";
+            model.addAttribute("내 정보 수정에 실패하였습니다. 다시 시도해주세요.");
         }
+
+        model.addAttribute("url","/myInfo/updateInfo");
+
+        return "redirect";
     }
 
     // 회원 탈퇴 페이지
@@ -71,7 +98,7 @@ public class InfoController {
 
     // 회원 탈퇴 로직
     @PostMapping("deleteUser")
-    public String deleteUser(HttpServletRequest request, HttpSession session) throws Exception {
+    public String deleteUser(HttpServletRequest request, HttpSession session, Model model) throws Exception {
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
 
@@ -83,9 +110,13 @@ public class InfoController {
             if (session != null) {
                 session.invalidate();
             }
-            return "redirect:/user/logIn";
+            model.addAttribute("msg", "회원 탈퇴에 성공하였습니다.");
+            model.addAttribute("url", "/user/logIn");
+            return "redirect";
         } else {
-            return "myInfo/deleteUser";
+            model.addAttribute("msg", "회원 탈퇴에 실패하였습니다. 다시 시도해주세요.");
+            model.addAttribute("url", "/myInfo/deleteUser");
+            return "redirect";
         }
     }
 }

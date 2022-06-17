@@ -27,7 +27,7 @@ public class CarService implements ICarService {
 
     // 엑셀 등록 로직 처리
     @Override
-    public void createCar(SessionIdDTO sessionIdDTO) throws Exception {
+    public boolean createCar(SessionIdDTO sessionIdDTO) throws Exception {
 
         log.debug("############### 엑셀 등록 서비스 로직 시작 ###############");
         log.debug("############### Controller에서 넘어온 값 체크 : {} ###############", sessionIdDTO);
@@ -90,9 +90,10 @@ public class CarService implements ICarService {
 
         }
 
-        iCarMapper.CreateCar(list);
+        boolean res;
+        res = iCarMapper.CreateCar(list);
 
-        log.debug("리스트 안에 옮겨 담기 : {}", list);
+        return res;
 
     }
 

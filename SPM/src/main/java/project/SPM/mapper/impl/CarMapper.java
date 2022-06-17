@@ -24,11 +24,12 @@ public class CarMapper implements ICarMapper {
 
     // 엑셀 등록 로직
     @Override
-    public void CreateCar(List<CarDTO> list) throws Exception {
+    public boolean CreateCar(List<CarDTO> list) throws Exception {
 
         // TODO: 2022-05-11 차량 번호 중복 등록 처리 로직 구현하기
         //Document query = new Document();
 
+        boolean res = false;
 
         //mongo.createCollection("Car");
         // 저장할 컬렉션 객체 생성
@@ -45,8 +46,10 @@ public class CarMapper implements ICarMapper {
             // DTO를 Map 데이터타입으로 변경 한 뒤, 변경된 Map 데이터타입을 Document로 변경하기
             col.insertOne(new Document(new ObjectMapper().convertValue(carDTO, Map.class)));
 
+            res = true;
         }
 
+        return res;
     }
 
     // 직접 등록 로직

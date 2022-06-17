@@ -8,7 +8,7 @@ import project.SPM.vo.UpdateCarListVo;
 public interface ICarService {
 
     // 엑셀 파일 등록 로직
-    void createCar(SessionIdDTO sessionIdDTO) throws Exception;
+    boolean createCar(SessionIdDTO sessionIdDTO) throws Exception;
 
     // 직접 등록 로직
     boolean addCar(CarDTO carDTO) throws Exception;
