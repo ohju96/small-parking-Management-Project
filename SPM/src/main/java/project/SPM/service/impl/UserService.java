@@ -148,37 +148,90 @@ public class UserService implements IUserService {
 
     // 비밀번호찾기
     @Override
-    public MailDTO findPw(String userEmail) throws Exception {
+    public String findPw(String userEmail) throws Exception {
 
-        List<UserEntity> userDTOList = iUserRepository.findAllByUserEmail(userEmail);
+        String msg;
 
-        MailDTO mailDTO = new MailDTO();
+        try {
 
-        if (userDTOList.get(0).getUserEmail().equals(userEmail)) {
-            log.debug("### if start");
-            String result = changePw();
+            List<UserEntity> userDTOList = iUserRepository.findAllByUserEmail(userEmail);
 
-            UserEntity userEntity = UserEntity.builder()
-                    .userNo(userDTOList.get(0).getUserNo())
-                    .userName(userDTOList.get(0).getUserName())
-                    .userPn(userDTOList.get(0).getUserPn())
-                    .userEmail(userDTOList.get(0).getUserEmail())
-                    .userId(userDTOList.get(0).getUserId())
-                    .userPw(EncryptUtil.encHashSHA256(result))
-                    .userAddr(userDTOList.get(0).getUserAddr())
-                    .build();
+            MailDTO mailDTO = new MailDTO();
 
-            iUserRepository.save(userEntity);
+            if (userDTOList.get(0).getUserEmail().equals(userEmail)) {
+                log.debug("### if start");
+                String result = changePw();
 
-            mailDTO.setAddress(userEmail);
-            mailDTO.setTitle("[소경관] : 임시비밀번호");
-            mailDTO.setMessage("임시비밀번호 : [ " + result + " ]");
+                UserEntity userEntity = UserEntity.builder()
+                        .userNo(userDTOList.get(0).getUserNo())
+                        .userName(userDTOList.get(0).getUserName())
+                        .userPn(userDTOList.get(0).getUserPn())
+                        .userEmail(userDTOList.get(0).getUserEmail())
+                        .userId(userDTOList.get(0).getUserId())
+                        .userPw(EncryptUtil.encHashSHA256(result))
+                        .userAddr(userDTOList.get(0).getUserAddr())
+                        .build();
+
+                iUserRepository.save(userEntity);
+
+                mailDTO.setAddress(userEmail);
+                mailDTO.setTitle("[소경관] : 임시비밀번호");
+                mailDTO.setMessage("임시비밀번호 : [ " + result + " ]");
+
+                sendMail(mailDTO);
+                msg = "가입하신 이메일로 임시비밀번호가 전송되었습니다.";
+
+            } else {
+                msg = "이메일 전송에 실패하였습니다. 다시 확인해주세요.";
+            }
+
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            msg = "비밀번호 찾기에 실패하였습니다. 이메일을 다시 확인해주세요.";
         }
 
-        return mailDTO;
+        return msg;
     }
 
     // 비밀번호 랜덤 10자리 생성
+    @Override
+    public String findId(String userEmail) throws Exception {
+
+        String msg;
+        try {
+            List<UserEntity> userDTOList = iUserRepository.findAllByUserEmail(userEmail);
+            MailDTO mailDTO = new MailDTO();
+
+            boolean isEnd;
+            if (userDTOList.get(0).getUserEmail().equals(userEmail)) {
+                log.debug("### if start");
+
+                mailDTO.setAddress(userEmail);
+                mailDTO.setTitle("[소경관] : 아이디 찾기");
+                mailDTO.setMessage("아이디 : [ " + userDTOList.get(0).getUserId() + " ]");
+
+                sendMail(mailDTO);
+                msg="가입하신 이메일로 아이디가 전송되었습니다.";
+                isEnd = true;
+            } else if (userDTOList == null){
+                msg="이메일 전송에 실패하였습니다. 이메일을 다시 확인해주세요.";
+                isEnd = true;
+            } else {
+                msg="이메일 전송에 실패하였습니다. 다시 시도해주세요.";
+                isEnd = true;
+            }
+
+            if (isEnd == true) {
+                return msg;
+            }
+
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            msg = "이메일 전송에 실패하였습니다. 이메일을 다시 확인해주세요.";
+        }
+
+        return msg;
+
+    }
+
     public static String changePw() {
 
         char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
@@ -194,30 +247,15 @@ public class UserService implements IUserService {
         }
         return res;
     }
-
     // 아이디 찾기
-    @Override
-    public MailDTO findId(String userEmail) throws Exception {
-
-        List<UserEntity> userDTOList = iUserRepository.findAllByUserEmail(userEmail);
-        MailDTO mailDTO = new MailDTO();
-
-        if (userDTOList.get(0).getUserEmail().equals(userEmail)) {
-            log.debug("### if start");
-
-            mailDTO.setAddress(userEmail);
-            mailDTO.setTitle("[소경관] : 아이디 찾기");
-            mailDTO.setMessage("아이디 : [ " + userDTOList.get(0).getUserId() + " ]");
-        }
-
-        return mailDTO;
-    }
 
     // 메일 보내기
-    @Override
-    public void sendMail(MailDTO mailDTO) throws Exception {
+//    @Override
+    public boolean sendMail(MailDTO mailDTO) throws Exception {
 
         log.debug("### sendMail start");
+
+        boolean res = true;
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailDTO.getAddress());
@@ -228,6 +266,8 @@ public class UserService implements IUserService {
         mailSender.send(message);
 
         log.debug("### sendMail END");
+
+        return res;
 
     }
 

@@ -148,10 +148,17 @@
                                     <label for="userId" th:text="#{label.userVo.userId}">아이디</label>
                                     <div th:class="field-error" th:errors="*{userId}">아이디 오류</div>
                                 </div>
+
                                 <div class="form-floating">
                                     <input th:type="password" id="userPw"  th:field="*{userPw}" th:errorclass="field-error" th:class="form-control" placeholder="비밀번호">
                                     <label for="userPw" th:text="#{label.userVo.userPw}">비밀번호</label>
                                     <div th:class="field-error" th:errors="*{userPw}">비밀번호 오류</div>
+                                </div>
+
+                                <div class="form-floating">
+                                    <input th:type="password" id="userPwc"  th:field="*{userPwc}" th:errorclass="field-error" th:class="form-control" placeholder="비밀번호 재입력">
+                                    <label for="userPwc" th:text="#{label.userVo.userPwc}">비밀번호</label>
+                                    <div th:class="field-error" th:errors="*{userPwc}">비밀번호 오류</div>
                                 </div>
 
                                 <input type="hidden" id="sample4_postcode" placeholder="우편번호">

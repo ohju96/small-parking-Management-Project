@@ -57,8 +57,13 @@ public class UserController {
         try {
 
             if (bindingResult.hasErrors()) {
-
                 return "user/regUser";
+            }
+
+            if (!userVo.getUserPw().equals(userVo.getUserPwc())) {
+                model.addAttribute("msg", "비밀번호 체크에 실패하였습니다. 다시 입력해주세요");
+                model.addAttribute("url", "/user/regUser");
+                return "redirect";
             }
 
             UserDTO userDTO = new UserDTO(
@@ -156,18 +161,20 @@ public class UserController {
 
     // 비밀번호 찾기 로직
     @PostMapping("/findPw")
-    public String changePw(HttpServletRequest request) throws Exception {
+    public String changePw(HttpServletRequest request, Model model) throws Exception {
 
         String userEmail = request.getParameter("address");
         log.debug("### request.getParameter : {}", request.getParameter("address")); //t
         log.debug("### userEmail : {}", userEmail); //t
 
-        MailDTO mailDTO = userService.findPw(userEmail);
-        log.debug("### mailDTO : {}", mailDTO);
+        String msg = userService.findPw(userEmail);
 
-        userService.sendMail(mailDTO);
+        //userService.sendMail(mailDTO);
 
-        return "redirect:/logIn";
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", "/user/logIn");
+
+        return "redirect";
     }
 
     // 아이디 찾기 페이지
@@ -180,13 +187,17 @@ public class UserController {
     @PostMapping("findId")
     public String findId(HttpServletRequest request, Model model) throws Exception {
 
+        log.debug("### findId Start");
+
         String userEmail = request.getParameter("address");
 
-        MailDTO mailDTO = userService.findId(userEmail);
+        String msg = userService.findId(userEmail);
 
-        userService.sendMail(mailDTO);
+//        userService.sendMail(mailDTO);
 
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", "/user/logIn");
 
-        return "redirect:/logIn";
+        return "redirect";
     }
 }

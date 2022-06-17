@@ -43,6 +43,10 @@ public class UserValidator implements Validator {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPw", "label");
         }
 
+        if (!StringUtils.hasText(userVo.getUserPwc())) {
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPwc", "label");
+        }
+
         if (!StringUtils.hasText(userVo.getUserAddr())) {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userAddr", "label");
         }

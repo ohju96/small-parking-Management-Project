@@ -33,5 +33,8 @@ public class UserVo {
     @Column(name = "USER_ADDR", length = 200)
     private String userAddr;
 
+    @NotNull
+    private String userPwc;
+
 }
 
