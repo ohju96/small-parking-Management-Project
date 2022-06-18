@@ -27,7 +27,7 @@ public class InfoController {
 
     private final UserValidator userValidator;
 
-    @InitBinder
+    @InitBinder("userVo")
     public void init(WebDataBinder dataBinder) {
         log.info("init binder {}", dataBinder);
         dataBinder.addValidators(userValidator);
@@ -55,7 +55,10 @@ public class InfoController {
         log.debug("### 마이페이지 시작 후 UserVo : {}", userVo);
 
         if (bindingResult.hasErrors()) {
-            return "/myInfo/updateInfo";
+            log.debug("### bindingResult에 걸림");
+            model.addAttribute("url", "/myInfo/updateInfo");
+            model.addAttribute("msg", "정보를 입력해주세요.");
+            return "redirect";
         }
 
 

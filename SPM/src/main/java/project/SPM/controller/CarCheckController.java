@@ -49,7 +49,10 @@ public class CarCheckController {
 
     private final RestTemplate restTemplate;
 
-    final private String FILE_UPLOAD_SAVE_PATH = "/user/image";
+    // 배포용 경로
+//    final private String FILE_UPLOAD_SAVE_PATH = "/user/image";
+    // 테스트용 경로
+    final private String FILE_UPLOAD_SAVE_PATH = "C:\\upload";
 
     @Value("${kakao.appkey}")
     private String appkey;
@@ -137,7 +140,6 @@ public class CarCheckController {
 
         // 저장한 경우 및 체크 확인
         String carNumber = null;
-        boolean check = false;
 
         if (ext.equals("jpeg") || ext.equals("jpg") || ext.equals("gif") || ext.equals("png")) {
 
@@ -202,57 +204,16 @@ public class CarCheckController {
 
                 list.add(res[1]);
             }
-
             log.debug("### list : {}", list);
 
-
             // 로직 실행 ( 메소드로 만들어서 따로 빼야함)
-            if (list.get(0).length() == 3 || list.get(1).length() == 4) {
-
-                log.debug("### 1번 문항");
-                carNumber = list.get(0) + list.get(1);
-                check = true;
-                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
-
-            } else if (list.get(0).length() == 4 || list.get(1).length() == 4) {
-
-                log.debug("### 2번 문항");
-                carNumber = list.get(0) + list.get(1);
-                check = true;
-                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
-
-
-            } else if (list.get(0).length() == 7) {
-
-                log.debug("### 3번 문항");
-                carNumber = list.get(0);
-                check = true;
-                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
-
-            } else if (list.get(0).length() == 8) {
-
-                log.debug("### 4번 문항");
-                carNumber = list.get(0);
-                check = true;
-                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
-
-            } else if (list.get(1).length() == 8) {
-
-                log.debug("### 5번 문항");
-                carNumber = list.get(1);
-                check = true;
-                mav.addObject("msg", "자동차 번호는" + carNumber + "입니다.");
-
-            } else {
-
-                log.debug("### 6번 문항");
-                mav.addObject("msg", "자동차 번호를 인식할 수 없습니다. 다른 사진으로 시도해주세요.");
-            }
+            ArrayList<String> msgAndNumber = carNumberCheck(list);
+            mav.addObject("msg", msgAndNumber.get(0));
+            carNumber = msgAndNumber.get(1);
 
         }
 
         log.debug("### carNumber : {}", carNumber);
-        log.debug("### check : {}", check);
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
 
@@ -271,12 +232,61 @@ public class CarCheckController {
         } else {
             mav.addObject("msg", "데이터에 없는 차량 번호입니다. 확인 후 다시 시도해주세요.");
             mav.addObject("url", "/carCheck/imgCheck");
-
         }
+
         mav.setViewName("redirect");
         return mav;
     }
 
+    private ArrayList<String> carNumberCheck(List<String> list) {
+
+        String carNumber = null;
+        String msg;
+
+
+        if (list.get(0).length() == 3 || list.get(1).length() == 4) {
+
+            log.debug("### 1번 문항");
+            carNumber = list.get(0) + list.get(1);
+            msg = "자동차 번호는" + carNumber + "입니다.";
+
+        } else if (list.get(0).length() == 4 || list.get(1).length() == 4) {
+
+            log.debug("### 2번 문항");
+            carNumber = list.get(0) + list.get(1);
+            msg = "자동차 번호는" + carNumber + "입니다.";
+
+        } else if (list.get(0).length() == 7) {
+
+            log.debug("### 3번 문항");
+            carNumber = list.get(0);
+            msg = "자동차 번호는" + carNumber + "입니다.";
+
+        } else if (list.get(0).length() == 8) {
+
+            log.debug("### 4번 문항");
+            carNumber = list.get(0);
+            msg = "자동차 번호는" + carNumber + "입니다.";
+
+        } else if (list.get(1).length() == 8) {
+
+            log.debug("### 5번 문항");
+            carNumber = list.get(1);
+            msg = "자동차 번호는" + carNumber + "입니다.";
+
+        } else {
+
+            log.debug("### 6번 문항");
+            msg = "자동차 번호를 인식할 수 없습니다. 다른 사진으로 시도해주세요.";
+        }
+
+        ArrayList<String> msgAndNumber = new ArrayList<>();
+        msgAndNumber.add(msg);
+        msgAndNumber.add(carNumber);
+
+        return msgAndNumber;
+
+    }
 
     // 완료 항목 보기
     @GetMapping("/viewCheck")

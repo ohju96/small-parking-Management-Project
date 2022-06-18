@@ -9,6 +9,6 @@ import javax.validation.constraints.Size;
 public class VisitorDTO {
 
     @NotNull
-    @Size(min = 1, message = "한 글자 이상 입력해 주세요.")
+    @Size(min = 11, message = "휴대폰 번호 11자리를 입력해주세요.")
     private String visitorPhoneNumber;
 }

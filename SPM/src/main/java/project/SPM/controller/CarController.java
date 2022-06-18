@@ -194,6 +194,14 @@ public class CarController {
         log.debug("### CarController updateCar Start : {}", this.getClass().getName());
 
         log.debug("### View에서 받아온 updateCarListVo : {}", updateCarListVo);
+
+        String msg, url;
+
+        if (updateCarListVo.getCarDtoList() == null) {
+            model.addAttribute("msg","등록된 차량이 없습니다. 차량 등록 후 이용해주세요.");
+            model.addAttribute("url","/carManagement/updateCar");
+            return "redirect";
+        }
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
 
         UserDTO userDTO = new UserDTO(userEntity.getUserId());
@@ -204,8 +212,7 @@ public class CarController {
 
         log.debug("### CarController res : {}", res);
 
-        String msg;
-        String url;
+
 
         if (res == false) {
             msg = "차량 수정에 실패하였습니다. 다시 시도해주세요.";

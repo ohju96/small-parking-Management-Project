@@ -18,6 +18,7 @@ import project.SPM.dto.NoticeDTO;
 import project.SPM.dto.SmsDTO;
 import project.SPM.dto.VisitorDTO;
 import project.SPM.service.IManagementService;
+import project.SPM.validator.NoticeValidator;
 import project.SPM.validator.VisitorValidator;
 
 import javax.servlet.http.HttpSession;
@@ -31,6 +32,7 @@ import java.util.List;
 public class SmsController {
 
     private final VisitorValidator visitorValidator;
+    private final NoticeValidator noticeValidator;
     private final IManagementService iManagementService;
 
     @Value("${sms.key}")
@@ -43,9 +45,15 @@ public class SmsController {
     private String smsPhone;
 
     @InitBinder("visitorDTO")
-    public void init(WebDataBinder dataBinder) {
+    public void setVisitorValidator(WebDataBinder dataBinder) {
         log.debug("### init binder : {}", dataBinder);
         dataBinder.addValidators(visitorValidator);
+    }
+
+    @InitBinder("noticeDTO")
+    public void setNoticeValidator(WebDataBinder dataBinder) {
+        log.debug("### init binder : {}", dataBinder);
+        dataBinder.addValidators(noticeValidator);
     }
 
     // 방문자 페이지
@@ -63,8 +71,9 @@ public class SmsController {
         ModelAndView mav = new ModelAndView();
 
         if (bindingResult.hasErrors()) {
-            mav.setViewName("redirect:/management/visitForm");
-            mav.addObject("msg", "에러");
+            mav.addObject("msg", "휴대폰 번호 11자리를 모두 입력해주세요.('-' 생략)");
+            mav.addObject("url", "/management/visitForm");
+            mav.setViewName("redirect");
             return mav;
         }
 
@@ -147,6 +156,13 @@ public class SmsController {
     public ModelAndView visitForm(@Validated @ModelAttribute NoticeDTO noticeDTO, BindingResult bindingResult, HttpSession session, Model model) throws Exception {
 
         ModelAndView mav = new ModelAndView();
+
+        if (bindingResult.hasErrors()) {
+            mav.addObject("msg", "1글자 이상 40글자 이하로 입력해주세요.");
+            mav.addObject("url", "/management/notice");
+            mav.setViewName("redirect");
+            return mav;
+        }
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
 
