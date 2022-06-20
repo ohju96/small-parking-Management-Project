@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import project.SPM.Entity.UserEntity;
 import project.SPM.dto.CarDTO;
 import project.SPM.dto.NoticeDTO;
-import project.SPM.dto.SmsDTO;
 import project.SPM.dto.VisitorDTO;
 import project.SPM.service.IManagementService;
 import project.SPM.validator.NoticeValidator;
@@ -77,15 +76,11 @@ public class SmsController {
             return mav;
         }
 
-        log.debug("### visitForm start");
-        log.debug("### visitorDTO : {}", visitorDTO.getVisitorPhoneNumber());
-
         String api_key = smsId;
         String api_secret = smsKey;
         String to = smsPhone;
-        Message message = new Message(api_key, api_secret);
 
-        // 4 params(to, from, type, text) are mandatory. must be filled
+        Message message = new Message(api_key, api_secret);
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("to", to);
         params.put("from", visitorDTO.getVisitorPhoneNumber());
@@ -93,17 +88,11 @@ public class SmsController {
         params.put("text", "양식 : [성함/연락처/차량번호/방문동,호수] 입력 후 보내주세요.");
         params.put("app_version", "test app 1.2"); // application name and version
 
-        log.debug("### params : {}", params);
-
         try {
             JSONObject obj = (JSONObject) message.send(params);
-            log.debug("### obj : {}", obj);
             System.out.println(obj.toString());
 
             JSONObject jsonObject = (JSONObject) obj;
-
-            log.debug("### jsonObject : {}", (JSONObject) obj);
-            log.debug("### jsonObejct - success_count : {}", (Long) jsonObject.get("success_count"));
 
             // {"group_id":"dkdlelrkqt","success_count":1,"error_count":0}
             // 리턴 값 중 'success_count'의 값이 1로 오면 전송이 성공인 것을 if문으로 msg에 담아준다.
@@ -144,10 +133,8 @@ public class SmsController {
     // 공지 사항 페이지
     @GetMapping("/management/notice")
     public ModelAndView noticePage(ModelAndView modelAndView) {
-
         modelAndView.setViewName("management/notice");
         modelAndView.addObject("noticeDTO", new NoticeDTO());
-
         return modelAndView;
     }
 
@@ -167,7 +154,6 @@ public class SmsController {
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
 
         noticeDTO.setUserId(userEntity.getUserId());
-        log.debug("### userEntity : {}", userEntity);
 
         List<CarDTO> carDTOList = iManagementService.sendNotice(noticeDTO);
 
@@ -183,7 +169,6 @@ public class SmsController {
             String res[] = carDTO.getPhoneNumber().split("-");
             String result = res[0] + res[1] + res[2];
 
-            // 4 params(to, from, type, text) are mandatory. must be filled
             params.put("to", to);
             params.put("from", result);
             params.put("type", "SMS");
@@ -192,13 +177,9 @@ public class SmsController {
 
             try {
                 JSONObject obj = (JSONObject) message.send(params);
-                log.debug("### obj : {}", obj);
                 System.out.println(obj.toString());
 
                 JSONObject jsonObject = (JSONObject) obj;
-
-                log.debug("### jsonObject : {}", (JSONObject) obj);
-                log.debug("### jsonObejct - success_count : {}", (Long) jsonObject.get("success_count"));
 
                 // {"group_id":"dkdlelrkqt","success_count":1,"error_count":0}
                 // 리턴 값 중 'success_count'의 값이 1로 오면 전송이 성공인 것을 if문으로 msg에 담아준다.

@@ -1,10 +1,7 @@
 package project.SPM.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.codehaus.plexus.util.Base64;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,9 +27,7 @@ import project.SPM.util.DateUtil;
 import project.SPM.util.FileUtil;
 import project.SPM.vo.CheckListVo;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.List;
@@ -46,7 +40,6 @@ public class CarCheckController {
 
     private final ICarListService iCarListService;
     private final ICheckService iCheckService;
-
     private final RestTemplate restTemplate;
 
     // 배포용 경로
@@ -63,7 +56,6 @@ public class CarCheckController {
         return "carCheck/carCheck";
     }
 
-
     // 터치 체크 로직 페이지
     @GetMapping("/touchCheck")
     public String touchCheck(Model model, HttpSession session) throws Exception {
@@ -73,7 +65,6 @@ public class CarCheckController {
         UserDTO userDTO = new UserDTO(userEntity.getUserId());
 
         List<CarDTO> carDTOList = iCarListService.getFullCarList(userDTO);
-
         CheckListVo checkListVo = new CheckListVo();
         checkListVo.setCarDtoList(carDTOList);
 
@@ -87,33 +78,22 @@ public class CarCheckController {
     @PostMapping("/touchCheckSave")
      public String touchCheckSave(@ModelAttribute CheckListVo checkListVo, HttpSession session, Model model) throws Exception {
 
-        log.debug("### CarCheckController touchCheckSave Start! : {}", this.getClass().getName());
-
-        log.debug("### View에서 받아온 checkListVo : {}", checkListVo);
-
-        String msg;
-        String url;
+        String msg, url;
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
-
 
         checkListVo.setUserId(userEntity.getUserId());
 
         boolean res = iCheckService.saveTouchCheck(checkListVo);
 
-        /// TODO: 2022-05-19 msg, url로 return 값 대체하기 필요 !
-
-        log.debug("### Check logic End = res : {}", res);
-
         if (res == false) {
-            log.debug("### CarCheckController touchCheckSave false End! : {}", this.getClass().getName());
             msg = "저장 실패";
             url = "/carCheck/touchCheckSave";
         } else {
-            log.debug("### CarCheckController touchCheckSave true End! : {}", this.getClass().getName());
             msg = "저장 완료";
             url = "/carCheck/carCheck";
         }
+
         model.addAttribute("msg", msg);
         model.addAttribute("url", url);
 
@@ -131,14 +111,11 @@ public class CarCheckController {
     @ResponseBody
     public ModelAndView imgOcr(@RequestParam(value = "fileUpload") MultipartFile mf, HttpSession session) throws Exception {
 
-        log.debug("### start");
-
         ModelAndView mav = new ModelAndView();
 
         String orginalFileName = mf.getOriginalFilename();
         String ext = orginalFileName.substring(orginalFileName.lastIndexOf(".") + 1, orginalFileName.length()).toLowerCase();
 
-        // 저장한 경우 및 체크 확인
         String carNumber = null;
 
         if (ext.equals("jpeg") || ext.equals("jpg") || ext.equals("gif") || ext.equals("png")) {
@@ -146,8 +123,6 @@ public class CarCheckController {
             String saveFileName = DateUtil.getDateTime("24hhmmss") + "." + ext;
             String saveFilePath = FileUtil.mkdirForDate(FILE_UPLOAD_SAVE_PATH);
             String fullFileInfo = saveFilePath + "/" + saveFileName;
-
-            log.debug("### fullFileInfo : {}", fullFileInfo);
 
             // 파일 저장
             mf.transferTo(new File(fullFileInfo));
@@ -204,24 +179,18 @@ public class CarCheckController {
 
                 list.add(res[1]);
             }
-            log.debug("### list : {}", list);
 
             // 로직 실행 ( 메소드로 만들어서 따로 빼야함)
             ArrayList<String> msgAndNumber = carNumberCheck(list);
             mav.addObject("msg", msgAndNumber.get(0));
             carNumber = msgAndNumber.get(1);
-
         }
-
-        log.debug("### carNumber : {}", carNumber);
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
 
         UserDTO userDTO = new UserDTO(userEntity.getUserId());
-        log.debug("### userDTO : {}", userDTO);
 
         int res = iCheckService.saveImageCheck(userDTO, carNumber);
-        log.debug("### res : {}", res);
 
         if (res == 1) {
             mav.addObject("msg", "이미지 저장에 성공하였습니다.");
@@ -238,45 +207,38 @@ public class CarCheckController {
         return mav;
     }
 
+    // 차량 번호 인식 if문
     private ArrayList<String> carNumberCheck(List<String> list) {
 
         String carNumber = null;
         String msg;
 
-
         if (list.get(0).length() == 3 || list.get(1).length() == 4) {
 
-            log.debug("### 1번 문항");
             carNumber = list.get(0) + list.get(1);
             msg = "자동차 번호는" + carNumber + "입니다.";
 
         } else if (list.get(0).length() == 4 || list.get(1).length() == 4) {
 
-            log.debug("### 2번 문항");
             carNumber = list.get(0) + list.get(1);
             msg = "자동차 번호는" + carNumber + "입니다.";
 
         } else if (list.get(0).length() == 7) {
 
-            log.debug("### 3번 문항");
             carNumber = list.get(0);
             msg = "자동차 번호는" + carNumber + "입니다.";
 
         } else if (list.get(0).length() == 8) {
 
-            log.debug("### 4번 문항");
             carNumber = list.get(0);
             msg = "자동차 번호는" + carNumber + "입니다.";
 
         } else if (list.get(1).length() == 8) {
 
-            log.debug("### 5번 문항");
             carNumber = list.get(1);
             msg = "자동차 번호는" + carNumber + "입니다.";
 
         } else {
-
-            log.debug("### 6번 문항");
             msg = "자동차 번호를 인식할 수 없습니다. 다른 사진으로 시도해주세요.";
         }
 
@@ -285,7 +247,6 @@ public class CarCheckController {
         msgAndNumber.add(carNumber);
 
         return msgAndNumber;
-
     }
 
     // 완료 항목 보기
@@ -306,8 +267,6 @@ public class CarCheckController {
     // 완료 항목 상세 보기
     @GetMapping("/detail/{checkCollectionName}")
     public String detail(@PathVariable("checkCollectionName") String checkCollectionName, Model model) throws Exception {
-
-        log.debug("### id : {}", checkCollectionName);
 
         List<CarDTO> carDTOList = iCheckService.detail(checkCollectionName);
 

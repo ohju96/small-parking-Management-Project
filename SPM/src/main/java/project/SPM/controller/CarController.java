@@ -31,14 +31,7 @@ public class CarController {
 
     private final ICarService iCarService;
     private final ICarListService iCarListService;
-
     private final AddCarValidator addCarValidator;
-
-/*    @InitBinder
-    public void init(WebDataBinder dataBinder) {
-        log.info("init binder {}", dataBinder);
-        dataBinder.addValidators(addCarValidator);
-    }*/
 
     @InitBinder("addCarVo")
     public void initSameObject(WebDataBinder webDataBinder) {
@@ -56,9 +49,7 @@ public class CarController {
     // 차량 관리 페이지 - 직접 등록 기본 화면
     @GetMapping("/addCar")
     public String addCar(Model model) {
-
         model.addAttribute("addCarVo", new AddCarVo());
-
         return "carManagement/addCar";
     }
 
@@ -66,23 +57,18 @@ public class CarController {
     @PostMapping("/addCar")
     public String add(@Validated @ModelAttribute AddCarVo addCarVo,BindingResult bindingResult, Model model) throws Exception {
 
-        log.debug("#### Controller AddCarVo : {}", addCarVo);
-
-        String msg;
-        String url;
+        String msg, url;
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("msg", "정보를 입력해주세요.");
             model.addAttribute("url", "/carManagement/addCar");
             return "redirect";
         }
-
         if (!addCarVo.getSort().equals("주민") && !addCarVo.getSort().equals("방문자") && !addCarVo.getSort().equals("무단")) {
             model.addAttribute("msg", "주민, 방문자, 무단 중 하나를 공백 없이 입력해주세요.");
             model.addAttribute("url", "/carManagement/addCar");
             return "redirect";
         }
-
         CarDTO carDTO = new CarDTO(
                 addCarVo.getName(),
                 addCarVo.getPhoneNumber(),
@@ -92,14 +78,8 @@ public class CarController {
                 addCarVo.getUserId()
         );
 
-        log.debug("#### Controller CarDTO : {}", carDTO);
-
         boolean res = iCarService.addCar(carDTO);
 
-        log.debug("#### Controller 마지막 로직에서 체크한 res 값 : {}", res);
-
-
-        // TODO: 2022-05-11 로직 추가 해야한다. 
         if (res) {
             msg = "차량 등록을 완료하였습니다.";
             url = "/carManagement/carManagement";
@@ -125,12 +105,12 @@ public class CarController {
     public String addCsvCar(@RequestParam(value = "fileUpload")MultipartFile mf, HttpSession session, Model model) throws Exception{
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
+
         if (mf == null) {
             model.addAttribute("msg", "엑셀 파일을 업로드해주세요.");
             model.addAttribute("url", "/carManagement/addCsvCar");
             return "redirect";
         }
-
 
         String orginalFileName = mf.getOriginalFilename();
         String ext = orginalFileName.substring(orginalFileName.lastIndexOf(".") + 1, orginalFileName.length()).toLowerCase();
@@ -146,14 +126,15 @@ public class CarController {
         sessionIdDTO.setMf(mf);
 
         boolean res = iCarService.createCar(sessionIdDTO);
+
         String msg;
-        String url;
+        String url = "/carManagement/carManagement";
+
         if (res == true) {
             msg = "엑셀 등록에 성공하였습니다.";
         } else {
             msg = "엑셀 등록에 실패하였습니다.";
         }
-        url = "/carManagement/carManagement";
 
         model.addAttribute("msg", msg);
         model.addAttribute("url", url);
@@ -165,21 +146,13 @@ public class CarController {
     @GetMapping("/updateCar")
     public String updateCarPage(Model model, HttpSession session) throws Exception {
 
-        log.debug("### carpage Start");
-
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
-        log.debug("### userEntitly {}", userEntity);
 
         UserDTO userDTO = new UserDTO(userEntity.getUserId());
-        log.debug("### userDTO", userDTO);
 
         List<CarDTO> carDTOList = iCarListService.getFullCarList(userDTO);
-        log.debug("### carDTOList {}", carDTOList);
-
         UpdateCarListVo updateCarListVo = new UpdateCarListVo();
         updateCarListVo.setCarDtoList(carDTOList);
-
-        log.debug("updateCarListvo : {}",updateCarListVo);
 
         model.addAttribute("carDTOList", carDTOList);
         model.addAttribute("updateCarListVo", updateCarListVo);
@@ -191,10 +164,6 @@ public class CarController {
     @PostMapping("/update")
     public String updateCar(@ModelAttribute UpdateCarListVo updateCarListVo, HttpSession session, Model model) throws Exception {
 
-        log.debug("### CarController updateCar Start : {}", this.getClass().getName());
-
-        log.debug("### View에서 받아온 updateCarListVo : {}", updateCarListVo);
-
         String msg, url;
 
         if (updateCarListVo.getCarDtoList() == null) {
@@ -202,6 +171,7 @@ public class CarController {
             model.addAttribute("url","/carManagement/updateCar");
             return "redirect";
         }
+
         UserEntity userEntity = (UserEntity) session.getAttribute("userDTO");
 
         UserDTO userDTO = new UserDTO(userEntity.getUserId());
@@ -209,10 +179,6 @@ public class CarController {
         updateCarListVo.setUserId(userDTO.getUserId());
 
         boolean res = iCarService.updateCar(updateCarListVo);
-
-        log.debug("### CarController res : {}", res);
-
-
 
         if (res == false) {
             msg = "차량 수정에 실패하였습니다. 다시 시도해주세요.";
@@ -244,8 +210,8 @@ public class CarController {
 
         boolean res = iCarService.dropCar(userDTO);
 
-        String msg;
-        String url;
+        String msg, url;
+
         if (res == true) {
             msg = "데이터 초기화에 성공했습니다.";
             url = "/carManagement/carManagement";

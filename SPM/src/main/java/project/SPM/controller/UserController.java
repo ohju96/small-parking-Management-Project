@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import project.SPM.Entity.UserEntity;
-import project.SPM.dto.MailDTO;
 import project.SPM.dto.UserDTO;
 import project.SPM.validator.UserValidator;
 import project.SPM.vo.UserVo;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class UserController {
 
-    // TODO: 2022-05-16 로그인 한 유저에 맞는 테이블이 생성되야 하는데 한 테이블을 모든 유저가 공유하고 있는 큰 문제가 있다. 
     private final UserService userService;
     private final UserValidator userValidator;
 
@@ -44,9 +42,7 @@ public class UserController {
     // 회원 가입 페이지 - 기본 화면
     @GetMapping("/regUser")
     public String regUserForm(Model model) {
-
         model.addAttribute("userVo", new UserVo());
-
         return "user/regUser";
     }
 
@@ -55,7 +51,6 @@ public class UserController {
     public String InsertRegUser(@Validated @ModelAttribute UserVo userVo, BindingResult bindingResult, Model model){
 
         try {
-
             if (bindingResult.hasErrors()) {
                 return "user/regUser";
             }
@@ -77,7 +72,6 @@ public class UserController {
             );
 
             String msg = userService.insertUser(userDTO);
-            log.debug("### 리턴 받은 msg 값 : {}", msg);
 
             model.addAttribute("msg", msg);
             model.addAttribute("url", "/user/logIn");
@@ -85,8 +79,6 @@ public class UserController {
 
             // 서비스에서 아이디 및 이메일 중복 체크 시 Exception을 던지고 처리
         } catch (IllegalArgumentException httpStatusCodeException) {
-
-            log.debug(httpStatusCodeException.getMessage());
 
             model.addAttribute("msg", httpStatusCodeException.getMessage());
             model.addAttribute("url", "/user/logIn");
@@ -101,9 +93,7 @@ public class UserController {
     // 로그인 페이지 - 기본 화면
     @GetMapping("/logIn")
     public String userLogin(Model model) {
-
         model.addAttribute("userVo", new UserVo());
-
         return "user/logIn";
     }
 
@@ -147,9 +137,7 @@ public class UserController {
     // 로그아웃 로직 처리
     @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpSession session) {
-
         session.invalidate();
-
         return "redirect:/user/logIn";
     }
 
@@ -164,12 +152,8 @@ public class UserController {
     public String changePw(HttpServletRequest request, Model model) throws Exception {
 
         String userEmail = request.getParameter("address");
-        log.debug("### request.getParameter : {}", request.getParameter("address")); //t
-        log.debug("### userEmail : {}", userEmail); //t
 
         String msg = userService.findPw(userEmail);
-
-        //userService.sendMail(mailDTO);
 
         model.addAttribute("msg", msg);
         model.addAttribute("url", "/user/logIn");
@@ -187,13 +171,9 @@ public class UserController {
     @PostMapping("findId")
     public String findId(HttpServletRequest request, Model model) throws Exception {
 
-        log.debug("### findId Start");
-
         String userEmail = request.getParameter("address");
 
         String msg = userService.findId(userEmail);
-
-//        userService.sendMail(mailDTO);
 
         model.addAttribute("msg", msg);
         model.addAttribute("url", "/user/logIn");

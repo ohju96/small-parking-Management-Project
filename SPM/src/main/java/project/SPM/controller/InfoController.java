@@ -24,7 +24,6 @@ import javax.servlet.http.HttpSession;
 public class InfoController {
 
     private final IInfoService iInfoService;
-
     private final UserValidator userValidator;
 
     @InitBinder("userVo")
@@ -50,17 +49,11 @@ public class InfoController {
     @PostMapping("updateInfo")
     public String updateInfo(@Validated @ModelAttribute UserVo userVo, BindingResult bindingResult, HttpSession session, Model model) throws Exception {
 
-        log.debug("### 마이페이지 로직 시작");
-
-        log.debug("### 마이페이지 시작 후 UserVo : {}", userVo);
-
         if (bindingResult.hasErrors()) {
-            log.debug("### bindingResult에 걸림");
             model.addAttribute("url", "/myInfo/updateInfo");
             model.addAttribute("msg", "정보를 입력해주세요.");
             return "redirect";
         }
-
 
         if (!userVo.getUserPw().equals(userVo.getUserPwc())) {
             model.addAttribute("msg", "비밀번호 체크에 실패하였습니다. 다시 입력해주세요");
@@ -77,8 +70,6 @@ public class InfoController {
                 userVo.getUserPw(),
                 userVo.getUserAddr()
         );
-
-        log.debug("### 마이페이지 로직 userDTO : {}", userDTO);
 
         boolean res = iInfoService.updateInfo(userDTO);
 
@@ -108,13 +99,15 @@ public class InfoController {
         boolean res = iInfoService.deleteUser(userEntity);
 
         if (res == true) {
-
             session = request.getSession(false);
+
             if (session != null) {
                 session.invalidate();
             }
+
             model.addAttribute("msg", "회원 탈퇴에 성공하였습니다.");
             model.addAttribute("url", "/user/logIn");
+
             return "redirect";
         } else {
             model.addAttribute("msg", "회원 탈퇴에 실패하였습니다. 다시 시도해주세요.");
