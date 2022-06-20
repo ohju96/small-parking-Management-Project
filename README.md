@@ -1,2 +1,2 @@
 # Parking_management_Project
-사이드_프로젝트_주차관리시스템_개발중
+사이드_프로젝트_주차관리시스템
