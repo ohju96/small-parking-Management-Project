@@ -1,5 +1,6 @@
 package project.SPM.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

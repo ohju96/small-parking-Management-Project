@@ -151,6 +151,7 @@ public class CarController {
         UserDTO userDTO = new UserDTO(userEntity.getUserId());
 
         List<CarDTO> carDTOList = iCarListService.getFullCarList(userDTO);
+
         UpdateCarListVo updateCarListVo = new UpdateCarListVo();
         updateCarListVo.setCarDtoList(carDTOList);
 

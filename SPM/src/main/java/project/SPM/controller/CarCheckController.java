@@ -43,9 +43,9 @@ public class CarCheckController {
     private final RestTemplate restTemplate;
 
     // 배포용 경로
-//    final private String FILE_UPLOAD_SAVE_PATH = "/user/image";
+    final private String FILE_UPLOAD_SAVE_PATH = "/user/image";
     // 테스트용 경로
-    final private String FILE_UPLOAD_SAVE_PATH = "C:\\upload";
+//    final private String FILE_UPLOAD_SAVE_PATH = "C:\\upload";
 
     @Value("${kakao.appkey}")
     private String appkey;
