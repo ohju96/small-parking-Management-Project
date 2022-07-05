@@ -1,2 +1,2 @@
-# Parking_management_Project
-사이드_프로젝트_주차관리시스템
+# Small parking management Project
+# 소단지 경비원을 위한 주차 관리 웹 애플리케이션
