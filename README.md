@@ -33,5 +33,8 @@
 |Tool|`Git Hub` `IntelliJ` `Data Grip`|
 |API|`Kakao Vision API` `CoolSms API` `Daum 우편번호 서비스 API`|
 
-
+### | 시연 영상
+- 개인 정보가 있어 따로 유튜브에 업로드 하진 않았습니다.
+- 개인 노션 이력서 페이지 제일 하단 부분에서 시연 영상을 확인하실 수 있습니다.<br>
+[시연 영상 보기로 이동(페이지 하단 참고)](https://ohju96.notion.site/eaa8820c7aad4e6a9d697bd2285c6c72)
 <div>
