@@ -38,3 +38,6 @@
 - 개인 노션 이력서 페이지 제일 하단 부분에서 시연 영상을 확인하실 수 있습니다.<br>
 [시연 영상 보기로 이동(페이지 하단 참고)](https://ohju96.notion.site/eaa8820c7aad4e6a9d697bd2285c6c72)
 <div>
+
+### | 프로젝트 회고
+- [링크](https://velog.io/@ohju96/%EC%86%8C%EB%8B%A8%EC%A7%80-%EA%B2%BD%EB%B9%84%EC%9B%90%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%A3%BC%EC%B0%A8-%EA%B4%80%EB%A6%AC-%EC%9B%B9-%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%ED%9A%8C%EA%B3%A0)
